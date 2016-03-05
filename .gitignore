@@ -1,0 +1,16 @@
+# default:
+.sass-cache
+.vagrant
+.unison
+.env
+.DS_Store
+.idea
+*.iml
+*.iws
+/tags
+node_modules
+/npm-debug.log*
+*.sw?
+!*.swf
+
+# manual:
