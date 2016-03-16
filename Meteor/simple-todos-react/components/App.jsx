@@ -9,6 +9,7 @@ App = React.createClass({
     }
   },
   getMeteorData() {
+    console.log(Meteor.user())
     let query = {};
     if (this.state.hideCompleted) {
       // If hide completed is checked, filter tasks

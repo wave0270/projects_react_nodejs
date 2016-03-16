@@ -5,9 +5,9 @@ if (Meteor.isClient) {
   // This code is executed on the client only
   console.log("isClient");
 
-  Accounts.ui.config({
-    passwordSignupFields: "USERNAME_ONLY"
-  });
+  // Accounts.ui.config({
+  //   passwordSignupFields: "USERNAME_ONLY"
+  // });
   /*Get data from Server*/
   Meteor.subscribe("tasks");
 
