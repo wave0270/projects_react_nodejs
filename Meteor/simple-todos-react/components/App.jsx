@@ -15,7 +15,9 @@ App = React.createClass({
       query = {checked: {$ne: true}};
     }
     return {
-      tasks: Tasks.find(query, {sort: {createdAt: -1}}).fetch()
+      tasks: Tasks.find(query, {sort: {createdAt: -1}}).fetch(),
+      incompleteCount: Tasks.find({checked: {$ne: true}}).count(),
+      currentUser: Meteor.user()
     };
   },
   // getMeteorData() {
@@ -30,15 +32,7 @@ App = React.createClass({
   //     tasks: Tasks.find({}).fetch()
   //   }
   // },
-  // getTasks() {
-  //   return [
-  //     { _id: 1, text: "This is task 1" },
-  //     { _id: 2, text: "This is task 2" },
-  //     { _id: 3, text: "This is task 3" },
-  //     { _id: 4, text: "This is task 4" },
-  //     { _id: 5, text: "This is task 5" }
-  //   ];
-  // },
+
   toggleHideCompleted() {
     this.setState({
       hideCompleted: ! this.state.hideCompleted
@@ -47,11 +41,17 @@ App = React.createClass({
   renderTasks() {
     // Get tasks from this.data.tasks
     return this.data.tasks.map((task) => {
-      return <Task key={task._id} task={task} />;
+      const currentUserId = this.data.currentUser && this.data.currentUser._id;
+      const showPrivateButton = task.owner === currentUserId;
+      return <Task
+        key={task._id}
+        task={task}
+        showPrivateButton={showPrivateButton} />;
     });
   },
   // renderTasks() {
-  //   return this.getTasks().map((task) => {
+  //   // Get tasks from this.data.tasks
+  //   return this.data.tasks.map((task) => {
   //     return <Task key={task._id} task={task} />;
   //   });
   // },
@@ -60,10 +60,7 @@ App = React.createClass({
     // Find the text field via the React ref
     var text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
     // insert data to mongo data
-    Tasks.insert({
-      text: text,
-      createdAt: new Date() // current time
-    });
+    Meteor.call("addTask", text);
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = "";
   },
@@ -71,8 +68,10 @@ App = React.createClass({
     return (
       <div className="container">
         <header>
-          <h1>Todo List</h1>
+          <h1>Todo List ({this.data.incompleteCount})</h1>
         </header>
+
+        <AccountsUIWrapper />
 
         <label className="hide-completed">
           <input
@@ -87,12 +86,14 @@ App = React.createClass({
           {this.renderTasks()}
         </ul>
 
-        <form className="new-task" onSubmit={this.handleSubmit} >
-          <input
-            type="text"
-            ref="textInput"
-            placeholder="Type to add new tasks" />
-        </form>
+        { this.data.currentUser ?
+          <form className="new-task" onSubmit={this.handleSubmit} >
+            <input
+              type="text"
+              ref="textInput"
+              placeholder="Type to add new tasks" />
+          </form> : ''
+        }
       </div>
     );
   }
