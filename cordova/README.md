@@ -1,0 +1,31 @@
+/*
+build android app - run in browser
+*/
+//install cordova
+npm install -g cordova
+
+//create default app
+cordova create MyApp
+
+//check requirements
+cordova requirements
+
+//define variable android 
+export ANDROID_HOME="/home/binh.nguyen/Android/Sdk"
+
+//add platform
+cordova platform add android
+
+//list platform
+cordova platform list
+
+//build android platform, file will create at platforms/android/build/outputs/apk/android-debug.apk
+cordova build android
+//build all platform
+
+//run in browser
+cordova platform add browser
+cordova run browser
+
+
+
