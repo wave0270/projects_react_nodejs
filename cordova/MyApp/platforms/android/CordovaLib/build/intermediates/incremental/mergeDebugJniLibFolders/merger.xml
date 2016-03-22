@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/home/binh.nguyen/Documents/github_wave0270/projects_react_nodejs/cordova/MyApp/platforms/android/CordovaLib/src/main/jniLibs"/></dataSet><dataSet config="debug"><source path="/home/binh.nguyen/Documents/github_wave0270/projects_react_nodejs/cordova/MyApp/platforms/android/CordovaLib/src/debug/jniLibs"/></dataSet></merger>
