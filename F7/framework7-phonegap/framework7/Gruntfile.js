@@ -73,14 +73,14 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
-                    port: 3000,
+                    port: 5000,
                     base: ''
                 }
             }
         },
         open: {
             kitchen: {
-                path: 'http://localhost:3000/kitchen-sink'
+                path: 'http://localhost:5000/dist'
             }
         },
         less: {
@@ -212,11 +212,11 @@ module.exports = function (grunt) {
                 src: ['Gruntfile.js', 'build/js/framework7.js']
             }
         },
-        
+
         watch: {
             build: {
                 files: ['src/**'],
-                tasks: ['build'],
+                tasks: ['dist'],
                 options: {
                     livereload: true
                 }
@@ -258,7 +258,8 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: 'src/templates/',
-                    src: ['*.jade'],
+                    // src: ['*.jade'],
+                    src: ['*.html'],
                     dest: 'build/',
                     ext: '.html'
                 }]
@@ -301,7 +302,7 @@ module.exports = function (grunt) {
                         dest: 'examples/split-view-panel/',
                         ext: '.html'
                     },
-                    
+
                 ]
             },
             apps: {
@@ -338,14 +339,38 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'src/my-app/',
-                        src: ['my-app.css'],
-                        dest: 'build/css/'
+                        src: ['img/**'],
+                        dest: 'build/'
                     },
                     {
                         expand: true,
                         cwd: 'src/my-app/',
-                        src: ['my-app.js'],
+                        src: ['fonts/**'],
+                        dest: 'build/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/my-app/css/',
+                        src: ['*.css'],
+                        dest: 'build/css/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/my-app/js/',
+                        src: ['*.js'],
                         dest: 'build/js/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/templates',
+                        src: ['*.html'],
+                        dest: 'build/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/templates',
+                        src: ['*.html'],
+                        dest: 'build/'
                     }
                 ]
             },
@@ -380,7 +405,7 @@ module.exports = function (grunt) {
         'concat:css_build',
         'jshint',
         'copy:build',
-        'jade:build',
+        // 'jade:build',
     ]);
 
     // Release
@@ -392,7 +417,7 @@ module.exports = function (grunt) {
         'concat:css_dist',
         'jshint',
         'copy:build',
-        'jade:build',
+        // 'jade:build',
         'copy:dist',
         'uglify:dist'
     ]);
