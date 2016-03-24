@@ -19,10 +19,10 @@ var _sharedRoutes = require("../shared/routes");
 var _sharedRoutes2 = _interopRequireDefault(_sharedRoutes);
 
 var app = (0, _express2["default"])();
+// var ReactEngine = require('react-engine');
 
-// set up Jade
-app.set('views', './views');
 app.set('view engine', 'jade');
+app.set('views', './views');
 
 app.get('/*', function (req, res) {
   _reactRouter2["default"].run(_sharedRoutes2["default"], req.url, function (Handler) {

@@ -2,10 +2,11 @@ import express from "express";
 import React from "react";
 import Router from "react-router";
 const app = express();
+// var ReactEngine = require('react-engine');
 
-// set up Jade
-app.set('views', './views');
+
 app.set('view engine', 'jade');
+app.set('views', './views');
 
 import routes from "../shared/routes";
 

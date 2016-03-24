@@ -20,7 +20,7 @@ Please see the [walkthrough](http://jmfurlott.com/tutorial-setting-up-a-simple-i
  $ npm install
  $ npm start
 ```
- 
+
 In Windows npm can not yet run operation in parallel so we add in npm-run-all<br />
 Change the start command in package.json to:<br />
 "start": "npm-run-all --parallel watch-js dev-server server",
@@ -42,4 +42,8 @@ When the servers are started, visit `http://localhost:3000` to see a Hello world
 
 ## Thanks
 
-While outdated, this repo was heavily inspired by [acdlite](http://github.com/acdlite) and his [demo app for flummox](https://github.com/acdlite/flummox-isomorphic-demo) 
+While outdated, this repo was heavily inspired by [acdlite](http://github.com/acdlite) and his [demo app for flummox](https://github.com/acdlite/flummox-isomorphic-demo)
+
+###### Manual: update steps
+- use react jsx Component : done
+- replace jade view-engine by react view-engine : proccessing
