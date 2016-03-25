@@ -24,7 +24,6 @@ exports['default'] = _react2['default'].createClass({
 		};
 	},
 	getInitialState: function getInitialState() {
-		console.log(this);
 		return {
 			headline: 'state-headline value'
 		};

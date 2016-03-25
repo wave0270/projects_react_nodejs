@@ -23,12 +23,11 @@ var _componentsJsxComponent = require("./components/jsxComponent");
 var _componentsJsxComponent2 = _interopRequireDefault(_componentsJsxComponent);
 
 var auth = true;
-console.log("Run client!");
-console.log(_componentsBinh2["default"]);
+console.log(auth);
 exports["default"] = _react2["default"].createElement(
   _reactRouter.Route,
   null,
-  _react2["default"].createElement(_reactRouter.Route, { newtest: "a", name: "home", handler: _componentsBinh2["default"], path: "/" }),
-  _react2["default"].createElement(_reactRouter.Route, { newtest: "a", name: "jsx", handler: _componentsJsxComponent2["default"], path: "/jsx" })
+  _react2["default"].createElement(_reactRouter.Route, { handler: _componentsBinh2["default"], path: "/" }),
+  _react2["default"].createElement(_reactRouter.Route, { handler: _componentsJsxComponent2["default"], path: "/jsx" })
 );
 module.exports = exports["default"];

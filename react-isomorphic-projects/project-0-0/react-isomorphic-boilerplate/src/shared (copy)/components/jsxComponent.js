@@ -11,7 +11,6 @@ export default React.createClass( {
 		};
 	},
 	getInitialState: function() {
-		console.log(this)
 		return {
 			headline: 'state-headline value'
 		};

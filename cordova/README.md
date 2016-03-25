@@ -1,6 +1,7 @@
-/*
-build android app - run in browser
 */
+build android app - run in browser
+**
+**/
 //install cordova
 npm install -g cordova
 
@@ -10,7 +11,7 @@ cordova create MyApp
 //check requirements
 cordova requirements
 
-//define variable android 
+//define variable android
 export ANDROID_HOME="/home/binh.nguyen/Android/Sdk"
 
 //add platform
@@ -26,6 +27,3 @@ cordova build android
 //run in browser
 cordova platform add browser
 cordova run browser
-
-
-

@@ -6,11 +6,10 @@ import BinhHandler from "./components/binh";
 import JsxComponent from "./components/jsxComponent";
 
 var auth = true;
-console.log("Run client!")
-console.log(BinhHandler)
+console.log(auth)
 export default (
   <Route>
-		<Route newtest="a" name="home" handler={ BinhHandler } path="/" />
-    <Route newtest="a" name="jsx" handler={ JsxComponent } path="/jsx" />
+		<Route handler={ BinhHandler } path="/" />
+    <Route handler={ JsxComponent } path="/jsx" />
 	</Route>
 );

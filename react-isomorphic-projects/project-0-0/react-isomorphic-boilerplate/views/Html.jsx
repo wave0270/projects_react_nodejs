@@ -5,9 +5,12 @@ var Html = React.createClass({
     return (
       <html>
         <head>
+          <title>{ this.props.name }</title>
         </head>
         <body>
-            asdasd
+            Home
+            { this.props.content }
+            <script src='http://localhost:8080/js/app.js'></script>
         </body>
       </html>
     );
