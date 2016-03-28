@@ -9,7 +9,9 @@ var Html = React.createClass({
         </head>
         <body>
             Home
-            { this.props.content }
+            <div id="app">
+              { this.props.content }
+            </div>
             <script src='http://localhost:8080/js/app.js'></script>
         </body>
       </html>
