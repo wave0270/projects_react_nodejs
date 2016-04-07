@@ -1,0 +1,8 @@
+{
+  "models" : [
+    "DEVMenu","DEVStyle","DEVSetting",
+    "QAMenu" ,"QAStyle" ,"QASetting" ,
+    "PROMenu","PROStyle","PROSetting",
+    "TerralogicMenu","TerralogicStyle","TerralogicSetting"
+  ]
+}
