@@ -13,7 +13,7 @@ import TestServerPage from "./pages/test_server_page";
 var auth = true;
 console.log("Run client!")
 export default (
-  <Route>
+  <Route path="/">
 		<Route name="home" handler={ HomePage } path="/" />
     <Route name="jsx" handler={ JsxPage } path="/jsx" />
     <Route name="login" handler={ LoginPage } path="/login" />
@@ -21,6 +21,5 @@ export default (
 
     <Route name="bootstrap" handler={ BootstrapPage } path="/bootstrap" />
     <Route name="test-server" handler={ TestServerPage } path="/test-server" />
-
 	</Route>
 );

@@ -2,9 +2,9 @@ import express from "express";
 import React from "react";
 // import ReactDom from "react-dom";
 import Router from "react-router";
+
 const app = express();
 
-var config = require('./constant/config');
 var download = require('download-file');
 
 app.set('views', './views');
@@ -16,19 +16,17 @@ import routes from "../shared/routes";
 app.get('/download', function (req, res) {
   var url = "http://i.imgur.com/G9bDaPH.jpg"
   var options = {
-  	directory: "./images/",
-  	filename: "cat.gif"
+  	directory: "src/images/",
+  	filename: "cat.jpg"
   }
   download(url, options, function(err){
   	if (err) throw err
   })
-  // res.send(constant.port);
-  console.log(config.port)
-  res.send(config.getFullDomain());
   res.send('Download Finished!');
 });
 
 app.get('/*', function (req, res) {
+  console.log("render global")
   Router.run(routes, req.url, Handler => {
     console.log("Server-1***********************************")
     // console.log(routes)
@@ -38,6 +36,7 @@ app.get('/*', function (req, res) {
     // console.log(req.path)
     res.render('Html.jsx', { content: <Handler /> });
   });
+
 });
 
 

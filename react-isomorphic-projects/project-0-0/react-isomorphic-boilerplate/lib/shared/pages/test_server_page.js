@@ -1,17 +1,21 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-exports["default"] = _react2["default"].createClass({
-  displayName: "test_server_page",
+var _serverConfig = require('../../server/config');
+
+var _serverConfig2 = _interopRequireDefault(_serverConfig);
+
+exports['default'] = _react2['default'].createClass({
+  displayName: 'test_server_page',
 
   getDefaultProps: function getDefaultProps() {
     return {
@@ -19,11 +23,11 @@ exports["default"] = _react2["default"].createClass({
     };
   },
   render: function render() {
-    return _react2["default"].createElement(
-      "div",
+    return _react2['default'].createElement(
+      'div',
       null,
-      "imahe"
+      _react2['default'].createElement('img', { src: _serverConfig2['default'].getFullDomain() + "/src/images/cat.gif" })
     );
   }
 });
-module.exports = exports["default"];
+module.exports = exports['default'];

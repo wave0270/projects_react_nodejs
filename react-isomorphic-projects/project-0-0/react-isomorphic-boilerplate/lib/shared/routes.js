@@ -43,7 +43,7 @@ var auth = true;
 console.log("Run client!");
 exports["default"] = _react2["default"].createElement(
   _reactRouter.Route,
-  null,
+  { path: "/" },
   _react2["default"].createElement(_reactRouter.Route, { name: "home", handler: _pagesHome_page2["default"], path: "/" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "jsx", handler: _pagesJsx_page2["default"], path: "/jsx" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "login", handler: _pagesLogin_page2["default"], path: "/login" }),

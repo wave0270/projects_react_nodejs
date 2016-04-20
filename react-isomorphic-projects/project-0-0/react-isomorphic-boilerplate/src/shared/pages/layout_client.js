@@ -1,7 +1,5 @@
 import React from "react";
 
-import config from '../../server/config';
-
 export default React.createClass( {
 	getDefaultProps : function(){
 		return {
@@ -11,7 +9,7 @@ export default React.createClass( {
   render() {
       return (
         <div>
-          <img src={config.getFullDomain()+"/src/images/cat.gif"} />
+          Hello App Handler lkh asda
         </div>
       );
   }

@@ -1,18 +1,19 @@
 var React = require('react');
 
+import config from '../src/server/config';
+
 var Html = React.createClass({
   render: function () {
-    console.log("Render html component 2")
-    // console.log(this.props.content)
-    // console.log(routes)
-    // constant.getFullDomain()
-    var domain = "http://localhost:8080"
+    console.log("Render master layout!")
+    console.log(this.props.pageType)
+    var domain = config.getFullDomain();
     return (
       <html>
         <head>
           <title>{ this.props.name }</title>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
+          <link rel="stylesheet" href={domain + "/src/css/style.css"} />
         </head>
         <body>
             <div id="app">
