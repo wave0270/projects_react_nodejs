@@ -11,7 +11,7 @@ export default React.createClass( {
 		};
 	},
 	getInitialState: function() {
-		console.log(this)
+		// console.log(this)
 		return {
 			headline: 'state-headline value'
 		};
@@ -19,7 +19,7 @@ export default React.createClass( {
     render() {
         return (
           	<div>
-							New Story - { this.state.headline }
+							JSX PAGE - { this.state.headline }
           	</div>
         );
     }

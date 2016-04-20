@@ -9,7 +9,10 @@
 *.iws
 /tags
 node_modules
+.meteor
 /npm-debug.log*
+npm-debug.log.*
+.gitignore~
 *.sw?
 !*.swf
 

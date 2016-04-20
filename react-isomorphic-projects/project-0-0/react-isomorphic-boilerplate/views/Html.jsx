@@ -2,7 +2,9 @@ var React = require('react');
 
 var Html = React.createClass({
   render: function () {
-    console.log("Render html component")
+    console.log("Render html component 2")
+    console.log(this.props.content)
+    // console.log(routes)
     return (
       <html>
         <head>

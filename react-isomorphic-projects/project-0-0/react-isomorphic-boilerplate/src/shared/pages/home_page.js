@@ -1,13 +1,16 @@
 import React from "react";
 
-export default class BinhHandler extends React.Component {
+export default React.createClass( {
+	getDefaultProps : function(){
+		return {
+			name	: 'Home page',
+		};
+	},
   render() {
-    var name = 'home page';
-    console.log("home page")
-    return (
-      <div>
-        Hello App Handler lkh asda {name}
-      </div>
-    );
+      return (
+        <div>
+          Hello App Handler lkh asda
+        </div>
+      );
   }
-}
+} );
