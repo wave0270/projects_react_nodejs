@@ -22,26 +22,36 @@ var _sharedRoutes2 = _interopRequireDefault(_sharedRoutes);
 
 var app = (0, _express2["default"])();
 
-// app.set('view engine', 'jade');
-// app.set('views', './views');
+var config = require('./constant/config');
+var download = require('download-file');
 
 app.set('views', './views');
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
+app.get('/download', function (req, res) {
+  var url = "http://i.imgur.com/G9bDaPH.jpg";
+  var options = {
+    directory: "./images/",
+    filename: "cat.gif"
+  };
+  download(url, options, function (err) {
+    if (err) throw err;
+  });
+  // res.send(constant.port);
+  console.log(config.port);
+  res.send(config.getFullDomain());
+  res.send('Download Finished!');
+});
+
 app.get('/*', function (req, res) {
   _reactRouter2["default"].run(_sharedRoutes2["default"], req.url, function (Handler) {
     console.log("Server-1***********************************");
-    // console.log("req***************************************")
+    // console.log(routes)
+    // console.log("req-1***********************************")
     // console.log(req)
     // console.log(req.url)
     // console.log(req.path)
-    // console.log(req)
-    // console.log("routes******************************************")
-    // // console.log(Handler.namedRoutes[])
-    // console.log(Handler)
-    // console.log(Handler.namedRoutes)
-    // console.log(Handler.props)
     res.render('Html.jsx', { content: _react2["default"].createElement(Handler, null) });
   });
 });

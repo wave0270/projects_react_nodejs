@@ -4,8 +4,8 @@ import React from "react";
 import Router from "react-router";
 const app = express();
 
-// app.set('view engine', 'jade');
-// app.set('views', './views');
+var config = require('./constant/config');
+var download = require('download-file');
 
 app.set('views', './views');
 app.set('view engine', 'jsx');
@@ -13,22 +13,34 @@ app.engine('jsx', require('express-react-views').createEngine());
 
 import routes from "../shared/routes";
 
+app.get('/download', function (req, res) {
+  var url = "http://i.imgur.com/G9bDaPH.jpg"
+  var options = {
+  	directory: "./images/",
+  	filename: "cat.gif"
+  }
+  download(url, options, function(err){
+  	if (err) throw err
+  })
+  // res.send(constant.port);
+  console.log(config.port)
+  res.send(config.getFullDomain());
+  res.send('Download Finished!');
+});
+
 app.get('/*', function (req, res) {
   Router.run(routes, req.url, Handler => {
     console.log("Server-1***********************************")
-    // console.log("req***************************************")
+    // console.log(routes)
+    // console.log("req-1***********************************")
     // console.log(req)
     // console.log(req.url)
     // console.log(req.path)
-    // console.log(req)
-    // console.log("routes******************************************")
-    // // console.log(Handler.namedRoutes[])
-    // console.log(Handler)
-    // console.log(Handler.namedRoutes)
-    // console.log(Handler.props)
     res.render('Html.jsx', { content: <Handler /> });
   });
 });
+
+
 
 var server = app.listen(7000, function () {
   var host = server.address().address;

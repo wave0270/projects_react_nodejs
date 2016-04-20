@@ -4,12 +4,23 @@ import React from "react";
 // import AppHandler from "./components/AppHandler";
 import HomePage from "./pages/home_page";
 import JsxPage from "./pages/jsx_page";
+import LoginPage from "./pages/login_page";
+import ContactPage from "./pages/contact_page";
+//test page:
+import BootstrapPage from "./pages/test_bootstrap_page";
+import TestServerPage from "./pages/test_server_page";
 
 var auth = true;
 console.log("Run client!")
 export default (
   <Route>
-		<Route newtest="a" name="home" handler={ HomePage } path="/" />
-    <Route newtest="a" name="jsx" handler={ JsxPage } path="/jsx" />
+		<Route name="home" handler={ HomePage } path="/" />
+    <Route name="jsx" handler={ JsxPage } path="/jsx" />
+    <Route name="login" handler={ LoginPage } path="/login" />
+    <Route name="contact" handler={ ContactPage } path="/contact" />
+
+    <Route name="bootstrap" handler={ BootstrapPage } path="/bootstrap" />
+    <Route name="test-server" handler={ TestServerPage } path="/test-server" />
+
 	</Route>
 );
