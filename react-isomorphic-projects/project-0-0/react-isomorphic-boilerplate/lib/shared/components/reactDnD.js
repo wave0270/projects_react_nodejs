@@ -11,11 +11,11 @@ var _react = require("react");
 var _react2 = _interopRequireDefault(_react);
 
 exports["default"] = _react2["default"].createClass({
-  displayName: "home_page",
+  displayName: "reactDnD",
 
   getDefaultProps: function getDefaultProps() {
     return {
-      name: 'Home page'
+      name: 'React DnD Component'
     };
   },
   render: function render() {

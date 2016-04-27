@@ -12,8 +12,6 @@ Router.run(routes, Router.HistoryLocation, (Handler, state) => {
     // Handler = LoginPage;
     window.location.href = "/login"
   }else{
-    console.log(state)
-    console.log(LoginPage)
     ReactDom.render(<Handler />, document.getElementById('app'));
   }
 

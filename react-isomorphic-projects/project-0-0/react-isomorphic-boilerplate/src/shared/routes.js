@@ -9,6 +9,7 @@ import ContactPage from "./pages/contact_page";
 //test page:
 import BootstrapPage from "./pages/test_bootstrap_page";
 import TestServerPage from "./pages/test_server_page";
+import TestClientPage from "./pages/test_client_page";
 
 var auth = true;
 console.log("Run client!")
@@ -21,5 +22,6 @@ export default (
 
     <Route name="bootstrap" handler={ BootstrapPage } path="/bootstrap" />
     <Route name="test-server" handler={ TestServerPage } path="/test-server" />
+    <Route name="test-client" handler={ TestClientPage } path="/test-client" />
 	</Route>
 );

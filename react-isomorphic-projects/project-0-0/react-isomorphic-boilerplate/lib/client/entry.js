@@ -29,8 +29,6 @@ _reactRouter2["default"].run(_sharedRoutes2["default"], _reactRouter2["default"]
     // Handler = LoginPage;
     window.location.href = "/login";
   } else {
-    console.log(state);
-    console.log(_sharedPagesLogin_page2["default"]);
     _reactDom2["default"].render(_react2["default"].createElement(Handler, null), document.getElementById('app'));
   }
 });
