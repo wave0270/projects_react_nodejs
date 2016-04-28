@@ -25,6 +25,10 @@ app.get('/download', function (req, res) {
   res.send('Download Finished!');
 });
 
+app.get('/get-content', function (req, res) {
+  res.json({data: 'Get Content Finished!'});
+});
+
 app.get('/*', function (req, res) {
   console.log("render global")
   Router.run(routes, req.url, Handler => {
@@ -36,7 +40,6 @@ app.get('/*', function (req, res) {
     // console.log(req.path)
     res.render('Html.jsx', { content: <Handler /> });
   });
-
 });
 
 

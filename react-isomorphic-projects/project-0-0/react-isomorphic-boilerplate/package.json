@@ -17,7 +17,7 @@
     "react",
     "app",
     "component",
-    "chrome", 
+    "chrome",
     "firefox",
     "ie",
     "detection",
@@ -42,10 +42,13 @@
   "dependencies": {
     "download-file": "^0.1.5",
     "express-react-views": "^0.10.0",
+    "material-ui": "^0.14.4",
     "nodemon": "^1.3.7",
+    "react": "^0.14.8",
     "react-bootstrap": "^0.29.0",
-    "react-browser-detection": "^1.0.1",
     "react-dom": "^0.14.7",
-    "react-engine": "^3.1.0"
+    "react-engine": "^3.1.0",
+    "react-tap-event-plugin": "^1.0.0",
+    "superagent": "^1.8.3"
   }
 }

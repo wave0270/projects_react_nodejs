@@ -1,6 +1,8 @@
 import React from "react";
 /*Manual Component*/
 import BrowserDetection from "../components/BrowserDetection";
+
+import RaisedButton from 'material-ui/lib/raised-button';
 export default React.createClass( {
 	getDefaultProps : function(){
 		return {
@@ -18,9 +20,9 @@ export default React.createClass( {
   render() {
       return (
         <div>
-          <h1>Hello { this.props.name }</h1>
+          <p className="title-component">Hello { this.props.name }</p>
           <br/>
-					<a onClick={ this.showBrowserInfo }>Click</a>
+					<RaisedButton onClick={ this.showBrowserInfo } label="Show Detection" primary={true} />
 					{ this.state.BrowserDetection }
         </div>
       );

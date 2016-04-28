@@ -40,6 +40,10 @@ app.get('/download', function (req, res) {
   res.send('Download Finished!');
 });
 
+app.get('/get-content', function (req, res) {
+  res.json({ data: 'Get Content Finished!' });
+});
+
 app.get('/*', function (req, res) {
   console.log("render global");
   _reactRouter2["default"].run(_sharedRoutes2["default"], req.url, function (Handler) {

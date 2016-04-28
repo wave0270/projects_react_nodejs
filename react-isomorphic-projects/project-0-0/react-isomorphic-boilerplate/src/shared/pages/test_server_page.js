@@ -1,6 +1,7 @@
 import React from "react";
 
 import config from '../../server/config';
+import ConnectDatabase from "../components/ConnectDatabase";
 
 export default React.createClass( {
 	getDefaultProps : function(){
@@ -11,7 +12,9 @@ export default React.createClass( {
   render() {
       return (
         <div>
-          <img src={config.getFullDomain()+"/src/images/cat.gif"} />
+          <img style={{width:"10px",height:"10px"}} src={config.getFullDomain()+"/src/images/cat.gif"} />
+					<br/>
+					<ConnectDatabase />
         </div>
       );
   }

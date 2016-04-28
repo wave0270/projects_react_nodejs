@@ -8,17 +8,22 @@ export default React.createClass( {
 	},
 
   showNavigation: function(){
+		this.showLocation();
     var arr = [];
+		console.log("navigator: ")
+		console.log(navigator)
     for(var k in navigator){
-      if(typeof(navigator[k]) !== "function"){
-        var item = <p className>{ typeof(navigator[k])+k+" : " + JSON.stringify(navigator[k])}</p>;
+			var type = typeof(navigator[k]);
+      if(type !== "function" && type !== "object"){
+        var item = <div className="row"><div className="col-sm-3">{ typeof(navigator[k])+k+" : "} </div><div className="col-sm-9">{ JSON.stringify(navigator[k])}</div></div>;
         arr.push(item);
-      }else{
-        // console.log(typeof(navigator[k])+k+":")
       }
     }
     return arr;
   },
+	showLocation: function(){
+		console.log(window)
+	},
   render() {
       return (
         <div>

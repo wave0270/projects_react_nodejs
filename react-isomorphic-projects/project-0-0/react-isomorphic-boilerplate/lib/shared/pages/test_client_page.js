@@ -16,6 +16,10 @@ var _componentsBrowserDetection = require("../components/BrowserDetection");
 
 var _componentsBrowserDetection2 = _interopRequireDefault(_componentsBrowserDetection);
 
+var _materialUiLibRaisedButton = require('material-ui/lib/raised-button');
+
+var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
+
 exports["default"] = _react2["default"].createClass({
 	displayName: "test_client_page",
 
@@ -37,17 +41,13 @@ exports["default"] = _react2["default"].createClass({
 			"div",
 			null,
 			_react2["default"].createElement(
-				"h1",
-				null,
+				"p",
+				{ className: "title-component" },
 				"Hello ",
 				this.props.name
 			),
 			_react2["default"].createElement("br", null),
-			_react2["default"].createElement(
-				"a",
-				{ onClick: this.showBrowserInfo },
-				"Click"
-			),
+			_react2["default"].createElement(_materialUiLibRaisedButton2["default"], { onClick: this.showBrowserInfo, label: "Show Detection", primary: true }),
 			this.state.BrowserDetection
 		);
 	}

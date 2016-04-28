@@ -11,6 +11,7 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+// http://localhost:1338/parse/classes/MenuItem
 var PORT = '1338';
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',  //define mongo db server

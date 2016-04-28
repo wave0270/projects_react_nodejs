@@ -20,20 +20,35 @@ exports["default"] = _react2["default"].createClass({
   },
 
   showNavigation: function showNavigation() {
+    this.showLocation();
     var arr = [];
+    console.log("navigator: ");
+    console.log(navigator);
     for (var k in navigator) {
-      if (typeof navigator[k] !== "function") {
+      var type = typeof navigator[k];
+      if (type !== "function" && type !== "object") {
         var item = _react2["default"].createElement(
-          "p",
-          { className: true },
-          typeof navigator[k] + k + " : " + JSON.stringify(navigator[k])
+          "div",
+          { className: "row" },
+          _react2["default"].createElement(
+            "div",
+            { className: "col-sm-3" },
+            typeof navigator[k] + k + " : ",
+            " "
+          ),
+          _react2["default"].createElement(
+            "div",
+            { className: "col-sm-9" },
+            JSON.stringify(navigator[k])
+          )
         );
         arr.push(item);
-      } else {
-        // console.log(typeof(navigator[k])+k+":")
       }
     }
     return arr;
+  },
+  showLocation: function showLocation() {
+    console.log(window);
   },
   render: function render() {
     return _react2["default"].createElement(
