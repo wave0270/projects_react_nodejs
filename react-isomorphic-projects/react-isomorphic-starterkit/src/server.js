@@ -47,7 +47,7 @@ try {
 						<html lang="en-us">
 							<head>
 								<meta charset="utf-8">
-								<title>react-isomorphic-starterkit</title>
+								<title>999 react-isomorphic-starterkit 999</title>
 								<link rel="shortcut icon" href="/favicon.ico">
 							</head>
 							<body>

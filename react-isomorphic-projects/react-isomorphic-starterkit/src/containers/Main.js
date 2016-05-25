@@ -23,6 +23,7 @@ class Main extends React.Component {
 	 * componentWillMount() runs on server and client.
 	 */
 	componentWillMount () {
+		console.log(this.props)
 		if (__SERVER__) {
 			console.log("Hello server");
 		}
@@ -181,4 +182,3 @@ export default Transmit.createContainer(Main, {
 		}
 	}
 });
-
