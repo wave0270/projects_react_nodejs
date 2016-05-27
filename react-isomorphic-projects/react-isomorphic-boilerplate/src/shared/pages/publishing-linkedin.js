@@ -10,6 +10,11 @@ export default React.createClass( {
 	getInitialState: function(){
 		console.log('getInitialState')
 		return {
+			config: {
+	      client_id: "75hebds55kuzda",
+	      client_secret: "E3fleb4ZN96CYKXb",
+	      redirect_uri: ""
+	    },
 			post: {
 	      "comment": "",
 	      "content": {
@@ -26,40 +31,54 @@ export default React.createClass( {
 	},
 	componentDidMount: function(){
 		console.log('componentWillMount')
+		this.state.config.redirect_uri = window.location.origin+"/linkedin/oauth/callback";
 		if(sessionStorage.getItem('save')){
 			sessionStorage.removeItem('save')
-			this.setState({message: 'Post successfully'});
+			if(window && window.location.search){
+				var res = window.location.search.slice(1, window.location.search.length);
+				var arr = res.split('=')
+				this.setState({status: arr[1] });
+				window.history.pushState('object or string', 'Title', '/publishing-linkedin');
+			}
+		}
+	},
+	componentWillUnmount: function(){
+		console.log('componentWillUnMount')
+		if(sessionStorage.getItem('save')){
+			sessionStorage.removeItem('save')
 		}
 	},
   publishing: function(){
+		this.setState({message: ''});
 		var that = this;
-		// window.open('http://localhost:7000/linkedin/calloauth/linkedin-call');
 		request.post('/linkedin-call')
-			.send(this.state.post)
+			.send(this.state)
 			.set('Accept', 'application/json')
 			.end(function( error, result ) {
-				if(result.body && result.body.data){
-					var json = JSON.parse(result.body.data.text)
-					if(json.message){
-						that.setState({message: json.message });
-					}else{
-						that.setState({message: 'Post successfully' });
-					}
-				}else{
-					sessionStorage.setItem('save', 'true');
-					window.open('/linkedin/calloauth/publishing-linkedin', '_self');
-				}
+				sessionStorage.setItem('save', 'true');
+				window.open('/linkedin/calloauth/publishing-linkedin', '_self');
+				// if(result.body && result.body.data){
+				// 	var json = JSON.parse(result.body.data.text)
+				// 	if(json.message){
+				// 		that.setState({message: json.message });
+				// 	}else{
+				// 		that.setState({message: 'Post successfully' });
+				// 	}
+				// }else{
+				// 	sessionStorage.setItem('save', 'true');
+				// 	window.open('/linkedin/calloauth/publishing-linkedin', '_self');
+				// }
 			});
   },
 	handlerOnChange: function(name, event){
 		var post = this.state.post;
 		post.content[name] = event.target.value;
-		this.setState({post: post, message: ""});
+		this.setState({post: post, status: ""});
 	},
 	handlerOnChangeComment: function(name, event){
 		var post = this.state.post;
 		post[name] = event.target.value;
-		this.setState({post: post, message: ""});
+		this.setState({post: post, status: ""});
 	},
   render() {
       return (
@@ -86,8 +105,14 @@ export default React.createClass( {
 				    <input className="form-control" placeholder="Comment" value={ this.state.post.comment } onChange={ this.handlerOnChangeComment.bind(this,'comment')} />
 				  </div>
 					<div className="form-group">
-						{ this.state && this.state.message &&
-							<p className="text-primary">{ this.state? this.state.message: '' }</p>
+						{ this.state && this.state.status && this.state.status==='201' &&
+							<p className="text-primary">Push successfully!</p>
+						}
+						{ this.state && this.state.status && this.state.status==='400' &&
+							<p className="text-danger">Do not post duplicate content!</p>
+						}
+						{ this.state && this.state.status && this.state.status!=='400' && this.state.status!=='201' &&
+							<p className="text-danger">Push unsuccessfully!</p>
 						}
 						<button className="btn btn-default" onClick={ this.publishing }>Publishing</button>
 				  </div>

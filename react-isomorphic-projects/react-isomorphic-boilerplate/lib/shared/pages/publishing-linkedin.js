@@ -25,6 +25,11 @@ exports['default'] = _react2['default'].createClass({
 	getInitialState: function getInitialState() {
 		console.log('getInitialState');
 		return {
+			config: {
+				client_id: "75hebds55kuzda",
+				client_secret: "E3fleb4ZN96CYKXb",
+				redirect_uri: ""
+			},
 			post: {
 				"comment": "",
 				"content": {
@@ -41,37 +46,51 @@ exports['default'] = _react2['default'].createClass({
 	},
 	componentDidMount: function componentDidMount() {
 		console.log('componentWillMount');
+		this.state.config.redirect_uri = window.location.origin + "/linkedin/oauth/callback";
 		if (sessionStorage.getItem('save')) {
 			sessionStorage.removeItem('save');
-			this.setState({ message: 'Post successfully' });
+			if (window && window.location.search) {
+				var res = window.location.search.slice(1, window.location.search.length);
+				var arr = res.split('=');
+				this.setState({ status: arr[1] });
+				window.history.pushState('object or string', 'Title', '/publishing-linkedin');
+			}
+		}
+	},
+	componentWillUnmount: function componentWillUnmount() {
+		console.log('componentWillUnMount');
+		if (sessionStorage.getItem('save')) {
+			sessionStorage.removeItem('save');
 		}
 	},
 	publishing: function publishing() {
+		this.setState({ message: '' });
 		var that = this;
-		// window.open('http://localhost:7000/linkedin/calloauth/linkedin-call');
-		_superagent2['default'].post('/linkedin-call').send(this.state.post).set('Accept', 'application/json').end(function (error, result) {
-			if (result.body && result.body.data) {
-				var json = JSON.parse(result.body.data.text);
-				if (json.message) {
-					that.setState({ message: json.message });
-				} else {
-					that.setState({ message: 'Post successfully' });
-				}
-			} else {
-				sessionStorage.setItem('save', 'true');
-				window.open('/linkedin/calloauth/publishing-linkedin', '_self');
-			}
+		_superagent2['default'].post('/linkedin-call').send(this.state).set('Accept', 'application/json').end(function (error, result) {
+			sessionStorage.setItem('save', 'true');
+			window.open('/linkedin/calloauth/publishing-linkedin', '_self');
+			// if(result.body && result.body.data){
+			// 	var json = JSON.parse(result.body.data.text)
+			// 	if(json.message){
+			// 		that.setState({message: json.message });
+			// 	}else{
+			// 		that.setState({message: 'Post successfully' });
+			// 	}
+			// }else{
+			// 	sessionStorage.setItem('save', 'true');
+			// 	window.open('/linkedin/calloauth/publishing-linkedin', '_self');
+			// }
 		});
 	},
 	handlerOnChange: function handlerOnChange(name, event) {
 		var post = this.state.post;
 		post.content[name] = event.target.value;
-		this.setState({ post: post, message: "" });
+		this.setState({ post: post, status: "" });
 	},
 	handlerOnChangeComment: function handlerOnChangeComment(name, event) {
 		var post = this.state.post;
 		post[name] = event.target.value;
-		this.setState({ post: post, message: "" });
+		this.setState({ post: post, status: "" });
 	},
 	render: function render() {
 		return _react2['default'].createElement(
@@ -135,10 +154,20 @@ exports['default'] = _react2['default'].createClass({
 			_react2['default'].createElement(
 				'div',
 				{ className: 'form-group' },
-				this.state && this.state.message && _react2['default'].createElement(
+				this.state && this.state.status && this.state.status === '201' && _react2['default'].createElement(
 					'p',
 					{ className: 'text-primary' },
-					this.state ? this.state.message : ''
+					'Push successfully!'
+				),
+				this.state && this.state.status && this.state.status === '400' && _react2['default'].createElement(
+					'p',
+					{ className: 'text-danger' },
+					'Do not post duplicate content!'
+				),
+				this.state && this.state.status && this.state.status !== '400' && this.state.status !== '201' && _react2['default'].createElement(
+					'p',
+					{ className: 'text-danger' },
+					'Push unsuccessfully!'
 				),
 				_react2['default'].createElement(
 					'button',

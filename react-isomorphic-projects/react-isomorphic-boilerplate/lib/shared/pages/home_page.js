@@ -10,6 +10,10 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactHelmet = require("react-helmet");
+
+var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
+
 exports["default"] = _react2["default"].createClass({
   displayName: "home_page",
 
@@ -22,6 +26,7 @@ exports["default"] = _react2["default"].createClass({
     return _react2["default"].createElement(
       "div",
       null,
+      _react2["default"].createElement(_reactHelmet2["default"], { title: "home binh title" }),
       _react2["default"].createElement(
         "h1",
         null,
