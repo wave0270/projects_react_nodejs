@@ -16,7 +16,7 @@ function asyncValidate(data, dispatch, {isValidEmail}) {
 )
 @reduxForm({
   form: 'survey',
-  fields: ['name', 'email', 'occupation', 'currentlyEmployed', 'sex'],
+  fields: ['name', 'email', 'occupation', 'currentlyEmployed', 'sex', 'currentlyEmployedtest', 'occupationtest'],
   validate: surveyValidation,
   asyncValidate,
   asyncBlurFields: ['email']
@@ -34,12 +34,17 @@ class SurveyForm extends Component {
     pristine: PropTypes.bool.isRequired,
     valid: PropTypes.bool.isRequired
   }
+  componentWillMount = () => {
+    console.log('componentWillMount')
+  }
+  
+  componentWillMount:
 
   render() {
     const {
       asyncValidating,
       dirty,
-      fields: {name, email, occupation, currentlyEmployed, sex},
+      fields: {name, email, occupation, currentlyEmployed,currentlyEmployedtest, sex, occupationtest},
       active,
       handleSubmit,
       invalid,
@@ -63,17 +68,19 @@ class SurveyForm extends Component {
           </div>
         </div>
       </div>;
-
+      console.log(currentlyEmployed)
     return (
       <div>
         <form className="form-horizontal" onSubmit={handleSubmit}>
           {renderInput(name, 'Full Name')}
           {renderInput(email, 'Email', true)}
           {renderInput(occupation, 'Occupation')}
+          {renderInput(occupationtest, 'Occupation 2')}
           <div className="form-group">
             <label htmlFor="currentlyEmployed" className="col-sm-2">Currently Employed?</label>
             <div className="col-sm-8">
               <input type="checkbox" id="currentlyEmployed" {...currentlyEmployed}/>
+              <input type="checkbox" id="currentlyEmployedtest" {...currentlyEmployedtest}/>
             </div>
           </div>
           <div className="form-group">

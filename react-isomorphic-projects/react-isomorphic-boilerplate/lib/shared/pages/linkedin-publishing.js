@@ -15,7 +15,7 @@ var _superagent = require('superagent');
 var _superagent2 = _interopRequireDefault(_superagent);
 
 exports['default'] = _react2['default'].createClass({
-	displayName: 'publishing-linkedin',
+	displayName: 'linkedin-publishing',
 
 	getDefaultProps: function getDefaultProps() {
 		return {

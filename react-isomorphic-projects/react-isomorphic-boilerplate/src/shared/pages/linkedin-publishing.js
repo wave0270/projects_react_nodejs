@@ -38,7 +38,7 @@ export default React.createClass( {
 				var res = window.location.search.slice(1, window.location.search.length);
 				var arr = res.split('=')
 				this.setState({status: arr[1] });
-				window.history.pushState('object or string', 'Title', '/publishing-linkedin');
+				window.history.pushState('object or string', 'Title', '/linkedin-publishing');
 			}
 		}
 	},
@@ -56,7 +56,7 @@ export default React.createClass( {
 			.set('Accept', 'application/json')
 			.end(function( error, result ) {
 				sessionStorage.setItem('save', 'true');
-				window.open('/linkedin/calloauth/publishing-linkedin', '_self');
+				window.open('/linkedin/calloauth/linkedin-publishing', '_self');
 				// if(result.body && result.body.data){
 				// 	var json = JSON.parse(result.body.data.text)
 				// 	if(json.message){
@@ -66,7 +66,7 @@ export default React.createClass( {
 				// 	}
 				// }else{
 				// 	sessionStorage.setItem('save', 'true');
-				// 	window.open('/linkedin/calloauth/publishing-linkedin', '_self');
+				// 	window.open('/linkedin/calloauth/linkedin-publishing', '_self');
 				// }
 			});
   },
