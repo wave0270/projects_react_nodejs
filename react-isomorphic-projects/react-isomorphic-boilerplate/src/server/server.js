@@ -36,18 +36,15 @@ app.get('/get-content', function (req, res) {
 });
 
 // call to publish social app configuration function
-app.use(require('./social/linkedin'));
+app.use(require('./api/linkedin'));
+// call to get content of url
+app.use(require('./api/fetch'));
 
 /*****************************/
 app.get('/*', function (req, res) {
   console.log("render global")
   Router.run(routes, req.url, Handler => {
     console.log("Server-1***********************************")
-    // console.log(routes)
-    // console.log("req-1***********************************")
-    // console.log(req)
-    // console.log(req.url)
-    // console.log(req.path)
     res.render('Html.jsx', { content: <Handler /> });
   });
 });

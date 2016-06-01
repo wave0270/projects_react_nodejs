@@ -1,5 +1,5 @@
 import React from "react";
-import request from 'superagent';
+var API = require('../api/common');
 
 export default React.createClass( {
 	getDefaultProps : function(){
@@ -8,6 +8,7 @@ export default React.createClass( {
 		};
 	},
 	getInitialState: function(){
+
 		console.log('getInitialState')
 		return {
 			config: {
@@ -26,7 +27,8 @@ export default React.createClass( {
 	      "visibility": {
 	        "code": "anyone"
 	      }
-			}
+			},
+			isLoading: false
 		};
 	},
 	componentDidMount: function(){
@@ -48,28 +50,55 @@ export default React.createClass( {
 			sessionStorage.removeItem('save')
 		}
 	},
-  publishing: function(){
-		this.setState({message: ''});
+
+	callSharing: function(){
+		this.setState({isLoading: true});
 		var that = this;
-		request.post('/linkedin-call')
-			.send(this.state)
-			.set('Accept', 'application/json')
-			.end(function( error, result ) {
-				sessionStorage.setItem('save', 'true');
-				window.open('/linkedin/calloauth/linkedin-publishing', '_self');
-				// if(result.body && result.body.data){
-				// 	var json = JSON.parse(result.body.data.text)
-				// 	if(json.message){
-				// 		that.setState({message: json.message });
-				// 	}else{
-				// 		that.setState({message: 'Post successfully' });
-				// 	}
-				// }else{
-				// 	sessionStorage.setItem('save', 'true');
-				// 	window.open('/linkedin/calloauth/linkedin-publishing', '_self');
-				// }
-			});
+		var params = {
+			method: 'post',
+			key: 'post-share',
+			post: this.state.post
+		}
+		API.post('/linkedin-call', params, function(err,res){
+			console.log(res)
+			if(res.body && res.body.response){
+				switch(res.body.response.status){
+					case 201:
+						var msg ='Linkedin post successfully!'+res.body.response.text ;
+						var isMessage = 'success'
+						break;
+					default:
+						var isMessage = 'error';
+						var msg = JSON.parse(res.body.response.text).message;
+				}
+				that.setState({message: msg,isMessage: isMessage,isLoading: false});
+			}
+		});
   },
+	callGet: function(key){
+		this.state[key] = '';
+		this.setState({isLoading: true});
+		var that = this;
+		var params = {
+			method: 'get',
+			key: 'get-'+key
+		}
+		API.post('/linkedin-call', params, function(err,res){
+			console.log(res)
+			if(res.body && res.body.response){
+				switch(res.body.response.status){
+					case 200:
+						var msg = res.body.response.text;
+						var isMessage = 'success'
+						break;
+					default:
+						var isMessage = 'error';
+						var msg = res.body.response.text;
+				}
+				that.setState({message: msg,isMessage: isMessage,isLoading: false});
+			}
+		});
+	},
 	handlerOnChange: function(name, event){
 		var post = this.state.post;
 		post.content[name] = event.target.value;
@@ -82,7 +111,13 @@ export default React.createClass( {
 	},
   render() {
       return (
-        <div className="container">
+        <div className="container" >
+					{ this.state && this.state.isMessage==='success' && !this.state.isLoading &&
+						<p className="text-primary">{this.state.message} </p>
+					}
+					{ this.state && this.state.isMessage==='error' && !this.state.isLoading &&
+						<p className="text-danger">{this.state.message}</p>
+					}
           <h1>{ this.props.name }</h1>
 					<div className="form-group">
 				    <label htmlFor="">Title:</label>
@@ -105,18 +140,13 @@ export default React.createClass( {
 				    <input className="form-control" placeholder="Comment" value={ this.state.post.comment } onChange={ this.handlerOnChangeComment.bind(this,'comment')} />
 				  </div>
 					<div className="form-group">
-						{ this.state && this.state.status && this.state.status==='201' &&
-							<p className="text-primary">Push successfully!</p>
-						}
-						{ this.state && this.state.status && this.state.status==='400' &&
-							<p className="text-danger">Do not post duplicate content!</p>
-						}
-						{ this.state && this.state.status && this.state.status!=='400' && this.state.status!=='201' &&
-							<p className="text-danger">Push unsuccessfully!</p>
-						}
-						<button className="btn btn-default" onClick={ this.publishing }>Publishing</button>
+						<button className="btn btn-default" onClick={ this.callSharing } disabled={this.state.isLoading}>Share </button>
+						<hr />
+						<p>Profile:</p>
+						<button className="btn btn-default" onClick={ this.callGet.bind(this,'profile')} disabled={this.state.isLoading}>Get profile</button>
+						<p>Company:</p>
+						<button className="btn btn-default" onClick={ this.callGet.bind(this,'companies')} disabled={this.state.isLoading}>Get companies</button>
 				  </div>
-
         </div>
       );
   }

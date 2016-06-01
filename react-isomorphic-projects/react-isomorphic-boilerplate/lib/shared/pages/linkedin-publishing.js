@@ -10,9 +10,7 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _superagent = require('superagent');
-
-var _superagent2 = _interopRequireDefault(_superagent);
+var API = require('../api/common');
 
 exports['default'] = _react2['default'].createClass({
 	displayName: 'linkedin-publishing',
@@ -23,6 +21,7 @@ exports['default'] = _react2['default'].createClass({
 		};
 	},
 	getInitialState: function getInitialState() {
+
 		console.log('getInitialState');
 		return {
 			config: {
@@ -41,7 +40,8 @@ exports['default'] = _react2['default'].createClass({
 				"visibility": {
 					"code": "anyone"
 				}
-			}
+			},
+			isLoading: false
 		};
 	},
 	componentDidMount: function componentDidMount() {
@@ -63,23 +63,53 @@ exports['default'] = _react2['default'].createClass({
 			sessionStorage.removeItem('save');
 		}
 	},
-	publishing: function publishing() {
-		this.setState({ message: '' });
+
+	callSharing: function callSharing() {
+		this.setState({ isLoading: true });
 		var that = this;
-		_superagent2['default'].post('/linkedin-call').send(this.state).set('Accept', 'application/json').end(function (error, result) {
-			sessionStorage.setItem('save', 'true');
-			window.open('/linkedin/calloauth/linkedin-publishing', '_self');
-			// if(result.body && result.body.data){
-			// 	var json = JSON.parse(result.body.data.text)
-			// 	if(json.message){
-			// 		that.setState({message: json.message });
-			// 	}else{
-			// 		that.setState({message: 'Post successfully' });
-			// 	}
-			// }else{
-			// 	sessionStorage.setItem('save', 'true');
-			// 	window.open('/linkedin/calloauth/linkedin-publishing', '_self');
-			// }
+		var params = {
+			method: 'post',
+			key: 'post-share',
+			post: this.state.post
+		};
+		API.post('/linkedin-call', params, function (err, res) {
+			console.log(res);
+			if (res.body && res.body.response) {
+				switch (res.body.response.status) {
+					case 201:
+						var msg = 'Linkedin post successfully!' + res.body.response.text;
+						var isMessage = 'success';
+						break;
+					default:
+						var isMessage = 'error';
+						var msg = JSON.parse(res.body.response.text).message;
+				}
+				that.setState({ message: msg, isMessage: isMessage, isLoading: false });
+			}
+		});
+	},
+	callGet: function callGet(key) {
+		this.state[key] = '';
+		this.setState({ isLoading: true });
+		var that = this;
+		var params = {
+			method: 'get',
+			key: 'get-' + key
+		};
+		API.post('/linkedin-call', params, function (err, res) {
+			console.log(res);
+			if (res.body && res.body.response) {
+				switch (res.body.response.status) {
+					case 200:
+						var msg = res.body.response.text;
+						var isMessage = 'success';
+						break;
+					default:
+						var isMessage = 'error';
+						var msg = res.body.response.text;
+				}
+				that.setState({ message: msg, isMessage: isMessage, isLoading: false });
+			}
 		});
 	},
 	handlerOnChange: function handlerOnChange(name, event) {
@@ -96,6 +126,17 @@ exports['default'] = _react2['default'].createClass({
 		return _react2['default'].createElement(
 			'div',
 			{ className: 'container' },
+			this.state && this.state.isMessage === 'success' && !this.state.isLoading && _react2['default'].createElement(
+				'p',
+				{ className: 'text-primary' },
+				this.state.message,
+				' '
+			),
+			this.state && this.state.isMessage === 'error' && !this.state.isLoading && _react2['default'].createElement(
+				'p',
+				{ className: 'text-danger' },
+				this.state.message
+			),
 			_react2['default'].createElement(
 				'h1',
 				null,
@@ -154,25 +195,31 @@ exports['default'] = _react2['default'].createClass({
 			_react2['default'].createElement(
 				'div',
 				{ className: 'form-group' },
-				this.state && this.state.status && this.state.status === '201' && _react2['default'].createElement(
-					'p',
-					{ className: 'text-primary' },
-					'Push successfully!'
+				_react2['default'].createElement(
+					'button',
+					{ className: 'btn btn-default', onClick: this.callSharing, disabled: this.state.isLoading },
+					'Share '
 				),
-				this.state && this.state.status && this.state.status === '400' && _react2['default'].createElement(
+				_react2['default'].createElement('hr', null),
+				_react2['default'].createElement(
 					'p',
-					{ className: 'text-danger' },
-					'Do not post duplicate content!'
-				),
-				this.state && this.state.status && this.state.status !== '400' && this.state.status !== '201' && _react2['default'].createElement(
-					'p',
-					{ className: 'text-danger' },
-					'Push unsuccessfully!'
+					null,
+					'Profile:'
 				),
 				_react2['default'].createElement(
 					'button',
-					{ className: 'btn btn-default', onClick: this.publishing },
-					'Publishing'
+					{ className: 'btn btn-default', onClick: this.callGet.bind(this, 'profile'), disabled: this.state.isLoading },
+					'Get profile'
+				),
+				_react2['default'].createElement(
+					'p',
+					null,
+					'Company:'
+				),
+				_react2['default'].createElement(
+					'button',
+					{ className: 'btn btn-default', onClick: this.callGet.bind(this, 'companies'), disabled: this.state.isLoading },
+					'Get companies'
 				)
 			)
 		);
