@@ -1,8 +1,5 @@
 import React from "react";
 var API = require('../api/common');
-// var rawBookmarks = require('~/.mozilla/firefox/profile-id/bookmarkbackups/bookmarks-YYYY-MM-DD.json');
-// var BookmarkCollection = require('firefox-bookmarks');
-// var bookmarks = new BookmarkCollection(rawBookmarks);
 
 export default React.createClass( {
 	getDefaultProps : function(){
@@ -55,6 +52,16 @@ export default React.createClass( {
 		// Output simplified bookmark info
 		// bookmarks.toJSON();
 	},
+	callReadFile: function(){
+		var that =  this;
+		API.post('/read-file', {}, function(err,res){
+			if(res){
+				that.setState({body: res.body.body});
+				// console.log(res.body)
+				// document.documentElement.innerHTML = res.body.body;
+			}
+		});
+	},
 	renderHtml: function(html){
 		var myElement = document.getElementById("intro");
 		document.getElementById("demo").innerHTML = html;
@@ -67,9 +74,10 @@ export default React.createClass( {
       return (
         <div className="container" >
 					<input value={this.state.fetchUrl} onChange={this.handlerOnChange.bind(this,'url')}/>
-					<div className="row"><a onClick={this.callGet}>Get Content</a></div>
-					<div className="row"><a onClick={this.callGetFetch}>Get Content By Fetch</a></div>
-					<div className="row"><a onClick={this.getGeoLocation}>Get Location</a></div>
+					<div style={{cursor:'pointer'}} className="row"><a onClick={this.callGet}>Get Content</a></div>
+					<div style={{cursor:'pointer'}} className="row"><a onClick={this.callGetFetch}>Get Content By Fetch</a></div>
+					<div style={{cursor:'pointer'}} className="row"><a onClick={this.getGeoLocation}>Get Location</a></div>
+					<div style={{cursor:'pointer'}} className="row"><a onClick={this.callReadFile}>Read file</a></div>
 					<div className="content row" dangerouslySetInnerHTML={{__html: this.state.body}}></div>
 					<div id="demo"></div>
         </div>

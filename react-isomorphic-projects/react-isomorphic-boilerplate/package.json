@@ -9,7 +9,8 @@
     "watch-js": "./node_modules/.bin/babel src -d lib --experimental -w",
     "dev-server": "node lib/server/webpack",
     "server": "nodemon lib/server/server",
-    "start": "npm run watch-js & npm run dev-server & npm run server",
+    "copy-file": "copyfiles  -f src/shared/offline/Linkedin.html lib/server/api/offline",
+    "start": "npm run watch-js & npm run dev-server & npm run copy-file & npm run server",
     "build": "npm run clean && ./node_modules/.bin/babel src -d lib --experimental"
   },
   "keywords": [

@@ -79,6 +79,32 @@ exports['default'] = _react2['default'].createClass({
 					case 201:
 						var msg = 'Linkedin post successfully!' + res.body.response.text;
 						var isMessage = 'success';
+						window.open(JSON.parse(res.body.response.text).updateUrl, '_blank');
+						break;
+					default:
+						var isMessage = 'error';
+						var msg = JSON.parse(res.body.response.text).message;
+				}
+				that.setState({ message: msg, isMessage: isMessage, isLoading: false });
+			}
+		});
+	},
+	callShareToCompany: function callShareToCompany() {
+		this.setState({ isLoading: true });
+		var that = this;
+		var params = {
+			method: 'post',
+			key: 'post-company',
+			post: this.state.post
+		};
+		API.post('/linkedin-call-id', params, function (err, res) {
+			console.log(res);
+			if (res.body && res.body.response) {
+				switch (res.body.response.status) {
+					case 201:
+						var msg = 'Linkedin post successfully!' + res.body.response.text;
+						var isMessage = 'success';
+						window.open(JSON.parse(res.body.response.text).updateUrl, '_blank');
 						break;
 					default:
 						var isMessage = 'error';
@@ -199,6 +225,11 @@ exports['default'] = _react2['default'].createClass({
 					'button',
 					{ className: 'btn btn-default', onClick: this.callSharing, disabled: this.state.isLoading },
 					'Share '
+				),
+				_react2['default'].createElement(
+					'button',
+					{ className: 'btn btn-default', onClick: this.callShareToCompany, disabled: this.state.isLoading },
+					'Share to Company'
 				),
 				_react2['default'].createElement('hr', null),
 				_react2['default'].createElement(

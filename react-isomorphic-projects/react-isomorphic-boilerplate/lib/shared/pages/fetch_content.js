@@ -11,9 +11,6 @@ var _react = require("react");
 var _react2 = _interopRequireDefault(_react);
 
 var API = require('../api/common');
-// var rawBookmarks = require('~/.mozilla/firefox/profile-id/bookmarkbackups/bookmarks-YYYY-MM-DD.json');
-// var BookmarkCollection = require('firefox-bookmarks');
-// var bookmarks = new BookmarkCollection(rawBookmarks);
 
 exports['default'] = _react2['default'].createClass({
 	displayName: 'fetch_content',
@@ -65,6 +62,16 @@ exports['default'] = _react2['default'].createClass({
 		// Output simplified bookmark info
 		// bookmarks.toJSON();
 	},
+	callReadFile: function callReadFile() {
+		var that = this;
+		API.post('/read-file', {}, function (err, res) {
+			if (res) {
+				that.setState({ body: res.body.body });
+				// console.log(res.body)
+				// document.documentElement.innerHTML = res.body.body;
+			}
+		});
+	},
 	renderHtml: function renderHtml(html) {
 		var myElement = document.getElementById("intro");
 		document.getElementById("demo").innerHTML = html;
@@ -80,7 +87,7 @@ exports['default'] = _react2['default'].createClass({
 			_react2['default'].createElement('input', { value: this.state.fetchUrl, onChange: this.handlerOnChange.bind(this, 'url') }),
 			_react2['default'].createElement(
 				'div',
-				{ className: 'row' },
+				{ style: { cursor: 'pointer' }, className: 'row' },
 				_react2['default'].createElement(
 					'a',
 					{ onClick: this.callGet },
@@ -89,7 +96,7 @@ exports['default'] = _react2['default'].createClass({
 			),
 			_react2['default'].createElement(
 				'div',
-				{ className: 'row' },
+				{ style: { cursor: 'pointer' }, className: 'row' },
 				_react2['default'].createElement(
 					'a',
 					{ onClick: this.callGetFetch },
@@ -98,11 +105,20 @@ exports['default'] = _react2['default'].createClass({
 			),
 			_react2['default'].createElement(
 				'div',
-				{ className: 'row' },
+				{ style: { cursor: 'pointer' }, className: 'row' },
 				_react2['default'].createElement(
 					'a',
 					{ onClick: this.getGeoLocation },
 					'Get Location'
+				)
+			),
+			_react2['default'].createElement(
+				'div',
+				{ style: { cursor: 'pointer' }, className: 'row' },
+				_react2['default'].createElement(
+					'a',
+					{ onClick: this.callReadFile },
+					'Read file'
 				)
 			),
 			_react2['default'].createElement('div', { className: 'content row', dangerouslySetInnerHTML: { __html: this.state.body } }),

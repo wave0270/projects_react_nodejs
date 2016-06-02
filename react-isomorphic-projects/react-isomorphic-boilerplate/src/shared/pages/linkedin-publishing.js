@@ -66,6 +66,32 @@ export default React.createClass( {
 					case 201:
 						var msg ='Linkedin post successfully!'+res.body.response.text ;
 						var isMessage = 'success'
+						window.open(JSON.parse(res.body.response.text).updateUrl,'_blank');
+						break;
+					default:
+						var isMessage = 'error';
+						var msg = JSON.parse(res.body.response.text).message;
+				}
+				that.setState({message: msg,isMessage: isMessage,isLoading: false});
+			}
+		});
+  },
+	callShareToCompany: function(){
+		this.setState({isLoading: true});
+		var that = this;
+		var params = {
+			method: 'post',
+			key: 'post-company',
+			post: this.state.post
+		}
+		API.post('/linkedin-call-id', params, function(err,res){
+			console.log(res)
+			if(res.body && res.body.response){
+				switch(res.body.response.status){
+					case 201:
+						var msg ='Linkedin post successfully!'+res.body.response.text ;
+						var isMessage = 'success';
+						window.open(JSON.parse(res.body.response.text).updateUrl,'_blank');
 						break;
 					default:
 						var isMessage = 'error';
@@ -140,7 +166,9 @@ export default React.createClass( {
 				    <input className="form-control" placeholder="Comment" value={ this.state.post.comment } onChange={ this.handlerOnChangeComment.bind(this,'comment')} />
 				  </div>
 					<div className="form-group">
+
 						<button className="btn btn-default" onClick={ this.callSharing } disabled={this.state.isLoading}>Share </button>
+						<button className="btn btn-default" onClick={ this.callShareToCompany } disabled={this.state.isLoading}>Share to Company</button>
 						<hr />
 						<p>Profile:</p>
 						<button className="btn btn-default" onClick={ this.callGet.bind(this,'profile')} disabled={this.state.isLoading}>Get profile</button>

@@ -89,7 +89,7 @@ var APILIST = {
   'get-profile'   : 'https://api.linkedin.com/v1/people/~:(id,num-connections,picture-url,firstName,lastName,headline,siteStandardProfileRequest)?format=json',
   'get-companies' : 'https://api.linkedin.com/v1/companies?format=json&is-company-admin=true',
   'post-share'    : 'https://api.linkedin.com/v1/people/~/shares?format=json',
-  'post-company'  : 'https://api.linkedin.com/v1/companies/param_id/shares?format=json'
+  'post-company'  : 'https://api.linkedin.com/v1/companies/10783197/shares?format=json'
 };
 app.post('/linkedin-call', function(req, res) {
   if(linkedinData.results && linkedinData.results.access_token){
@@ -113,21 +113,39 @@ app.post('/linkedin-call', function(req, res) {
 /*
 * Company:
 */
-app.get('/linkedin-share-companies-id-:id', function(req, res) {
-  //share to a specific company //10783197:
-  if(!linkedinData.results || (linkedinData.oauthTime+linkedinData.results.expires_in-10)< new Date().getTime()){
-    console.log("call Oauth again")
-    return res.redirect("/linkedin/calloauth/linkedin-share-companies-id-"+req.params.id);
+app.post('/linkedin-call-id', function(req, res) {
+  if(linkedinData.results && linkedinData.results.access_token){
+    var params = {
+      api: APILIST[req.body.key]
+    }
+    switch(req.body.method){
+      case 'post':
+        params.data = req.body.post;
+        post(res, params);
+        break;
+      case 'get':
+        get(res, params);
+        break;
+    }
   }else{
-    console.log("not cal Oauth")
-    request
-    .post('https://api.linkedin.com/v1/companies/'+req.params.id+'/shares?format=json&oauth2_access_token='+linkedinData.results.access_token)
-    .send(TEMPDATA)
-    .end(function(err, response){
-      res.json({data: response, access_token: linkedinData.results});
-    });
+    res.json({error: true, linkedinData: linkedinData });
   }
 });
+// app.get('/linkedin-share-companies-id-:id', function(req, res) {
+//   //share to a specific company //10783197:
+//   if(!linkedinData.results || (linkedinData.oauthTime+linkedinData.results.expires_in-10)< new Date().getTime()){
+//     console.log("call Oauth again")
+//     return res.redirect("/linkedin/calloauth/linkedin-share-companies-id-"+req.params.id);
+//   }else{
+//     console.log("not cal Oauth")
+//     request
+//     .post('https://api.linkedin.com/v1/companies/'+req.params.id+'/shares?format=json&oauth2_access_token='+linkedinData.results.access_token)
+//     .send(TEMPDATA)
+//     .end(function(err, response){
+//       res.json({data: response, access_token: linkedinData.results});
+//     });
+//   }
+// });
 
 
 app.get('/linkedin-add-comment-companies-id-:id', function(req, res) {
