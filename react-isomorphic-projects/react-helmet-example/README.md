@@ -32,3 +32,6 @@ $ npm start
     the document's `<head>` node in its source.
     Then, change pages and watch as `react-helmet` keeps `<head>`
     in sync with the current route.
+
+==============My NOTES:
+

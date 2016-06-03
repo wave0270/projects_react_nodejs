@@ -12,7 +12,7 @@ import Login from './pages/Login';
 /* create a group of routes with nesting */
 let routes = (
     <Router.Route handler={App}>
-        <Router.DefaultRoute name="home" handler={Home} />
+        <Router.DefaultRoute handler={Home} />
         <Router.Route name="login" path="login" handler={Login} />
         <Router.Route name="about" path="about" handler={About} />
         <Router.Route name="news" handler={Content}>

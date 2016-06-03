@@ -4,12 +4,13 @@ import React from 'react';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
 
-import routes from './routes';
+import routes from '../share/routes';
 
 /* create express server */
 let app = express();
 /* static files served from "public" through url /static/ */
 app.use('/static', express.static('public'));
+
 
 /* a single request handler receives every server request
    and routes through react-router */
@@ -39,15 +40,19 @@ app.get('*', function(req, res) {
                  on the server. */
         let html = `
             <!doctype html>
-            <html>
+            <html ${head.htmlAttributes.toString()}>
                 <head>
+                    <!--ALL PAGE -->
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
-                    <link rel="stylesheet" href={domain + "/src/css/style.css"} />
                     <meta charset="utf-8" />
-                    <title>${head.title}</title>
-                    ${head.meta}
-                    ${head.link}
+                    <!--TITLE -->
+                    ${head.title.toString()}
+                    <!--META -->
+                    ${head.meta.toString()}
+                    <!--LINK -->
+                    ${head.link.toString()}
+                    <!--SCRIPT -->
+                    ${head.script.toString()}
                 </head>
                 <body>
                     <div id="app">${renderedBody}</div>

@@ -1,10 +1,10 @@
 var path = require('path');
 
 module.exports = {
-    entry: './client',
+    entry: './src/client/client',
 
     output: {
-        path: path.join(__dirname, 'public/'),
+        path: path.join(__dirname, 'public/'),    /*'public' will be change to 'static'; then use in /src/server/server.js templat*/
         filename: 'client.js',
     },
 

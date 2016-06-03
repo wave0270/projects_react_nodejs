@@ -6,7 +6,7 @@ let About = React.createClass({
         return (
             <div>
                 <Helmet
-                    title="About"
+                    title="About-test"
                     meta={[
                         {property: 'og:title', content: 'About'},
                     ]} />
