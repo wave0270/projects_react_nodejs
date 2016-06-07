@@ -12,6 +12,74 @@ var _react2 = _interopRequireDefault(_react);
 
 var API = require('../api/common');
 
+var ConnectComponent = _react2['default'].createClass({
+	displayName: 'ConnectComponent',
+
+	getInitialState: function getInitialState() {
+		return {
+			status: false,
+			isLoading: false
+		};
+	},
+	popupCenter: function popupCenter(url, title, w, h) {
+		// Fixes dual-screen position                         Most browsers      Firefox
+		var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+		var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+		var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+		var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+		var left = width / 2 - w / 2 + dualScreenLeft;
+		var top = height / 2 - h / 2 + dualScreenTop;
+		var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+		// Puts focus on the newWindow
+		if (window.focus) {
+			newWindow.focus();
+		}
+	},
+	connect: function connect() {
+		this.setState({ isLoading: true });
+		if (localStorage.getItem('isLinkedinConnect')) {
+			localStorage.removeItem('isLinkedinConnect');
+		}
+		var url = 'http://localhost:7000/linkedin/calloauth/linkedin-connect';
+		this.popupCenter(url, 'Signin Linkdein', 300, 500);
+		var that = this;
+		var interval = setInterval(function () {
+			if (localStorage.getItem('isLinkedinConnect')) {
+				var status = localStorage.getItem('isLinkedinConnect') === 'true' ? true : false;
+				that.setState({ status: status, isLoading: false });
+				clearInterval(interval);
+			}
+			/// call your function here
+		}, 1000);
+	},
+	render: function render() {
+		var ButtonComponent = this.state.status ? _react2['default'].createElement(
+			'button',
+			{ className: 'btn btn-primary' },
+			'Connected'
+		) : _react2['default'].createElement(
+			'button',
+			{ onClick: this.connect, className: 'btn btn-default' },
+			'Disconnected'
+		);
+		if (this.state.isLoading) {
+			ButtonComponent = _react2['default'].createElement(
+				'button',
+				{ className: 'btn btn-primary' },
+				'Loading ...'
+			);
+		}
+		return _react2['default'].createElement(
+			'div',
+			null,
+			ButtonComponent
+		);
+	}
+});
+
 exports['default'] = _react2['default'].createClass({
 	displayName: 'linkedin-publishing',
 
@@ -21,9 +89,9 @@ exports['default'] = _react2['default'].createClass({
 		};
 	},
 	getInitialState: function getInitialState() {
-
 		console.log('getInitialState');
 		return {
+			/*wave0270 account*/
 			config: {
 				client_id: "75hebds55kuzda",
 				client_secret: "E3fleb4ZN96CYKXb",
@@ -44,18 +112,22 @@ exports['default'] = _react2['default'].createClass({
 			isLoading: false
 		};
 	},
-	componentDidMount: function componentDidMount() {
+	componentWillMount: function componentWillMount() {
 		console.log('componentWillMount');
-		this.state.config.redirect_uri = window.location.origin + "/linkedin/oauth/callback";
-		if (sessionStorage.getItem('save')) {
-			sessionStorage.removeItem('save');
-			if (window && window.location.search) {
-				var res = window.location.search.slice(1, window.location.search.length);
-				var arr = res.split('=');
-				this.setState({ status: arr[1] });
-				window.history.pushState('object or string', 'Title', '/linkedin-publishing');
-			}
-		}
+		this.callGet('profile');
+	},
+	componentDidMount: function componentDidMount() {
+		console.log('componentDidMount');
+		// this.state.config.redirect_uri = window.location.origin+"/linkedin/oauth/callback";
+		// if(sessionStorage.getItem('save')){
+		// 	sessionStorage.removeItem('save')
+		// 	if(window && window.location.search){
+		// 		var res = window.location.search.slice(1, window.location.search.length);
+		// 		var arr = res.split('=')
+		// 		this.setState({status: arr[1] });
+		// 		window.history.pushState('object or string', 'Title', '/linkedin-publishing');
+		// 	}
+		// }
 	},
 	componentWillUnmount: function componentWillUnmount() {
 		console.log('componentWillUnMount');
@@ -124,11 +196,12 @@ exports['default'] = _react2['default'].createClass({
 		};
 		API.post('/linkedin-call', params, function (err, res) {
 			console.log(res);
-			if (res.body && res.body.response) {
+			if (res && res.body && res.body.response) {
 				switch (res.body.response.status) {
 					case 200:
 						var msg = res.body.response.text;
 						var isMessage = 'success';
+						that.state.isLinkedinConnect = true;
 						break;
 					default:
 						var isMessage = 'error';
@@ -149,6 +222,9 @@ exports['default'] = _react2['default'].createClass({
 		this.setState({ post: post, status: "" });
 	},
 	render: function render() {
+		if (!this.state.isLinkedinConnect) {
+			return _react2['default'].createElement(ConnectComponent, { status: this.state.isLinkedinConnect });
+		}
 		return _react2['default'].createElement(
 			'div',
 			{ className: 'container' },

@@ -40,8 +40,6 @@ Parse.Cloud.beforeSave("Review", function(request, response) {
         console.log("Parse error");
         }
     });
-
-
     response.success();
   }
 });

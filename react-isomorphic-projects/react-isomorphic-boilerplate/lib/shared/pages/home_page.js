@@ -34,7 +34,8 @@ exports["default"] = _react2["default"].createClass({
 				"h1",
 				null,
 				"Hello ",
-				this.props.name
+				this.props.name,
+				" sad"
 			)
 		);
 	}

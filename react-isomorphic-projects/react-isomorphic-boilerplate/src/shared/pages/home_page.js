@@ -14,7 +14,7 @@ export default React.createClass( {
 								htmlAttributes={{"lang": "en", "amp": undefined}} // amp takes no value
 								title="My Title"
 								titleTemplate="MySite.com - %s"/>
-          <h1>Hello { this.props.name }</h1>
+							<h1>Hello { this.props.name } sad</h1>
         </div>
       );
   }

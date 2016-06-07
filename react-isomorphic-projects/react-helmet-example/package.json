@@ -5,21 +5,23 @@
   "main": "src/server/server.js",
   "dependencies": {
     "babel": "^5.8.21",
+    "babel-core": "^5.8.22",
+    "babel-loader": "^5.3.2",
+    "body-parser": "^1.15.1",
     "express": "^4.13.3",
     "react": "^0.13.3",
-    "babel-loader": "^5.3.2",
     "react-helmet": "*",
     "react-router": "^0.13.3",
-    "webpack": "^1.12.0",
-    "babel-core": "^5.8.22"
+    "superagent": "^2.0.0",
+    "webpack": "^1.12.0"
   },
   "devDependencies": {
     "nodemon": "^1.4.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-o": "babel-node src/server/server.js",
-    "start": "nodemon --exec babel-node src/server/server.js"
+    "start-1": "babel-node src/server/server.js",
+    "start": "webpack & nodemon --exec babel-node src/server/server.js"
   },
   "keywords": [
     "react",

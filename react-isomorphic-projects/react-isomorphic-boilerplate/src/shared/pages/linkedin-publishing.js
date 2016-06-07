@@ -1,6 +1,60 @@
 import React from "react";
 var API = require('../api/common');
 
+var ConnectComponent = React.createClass({
+	getInitialState: function(){
+		return {
+			status: false,
+			isLoading: false
+		};
+	},
+	popupCenter: function(url, title, w, h) {
+    // Fixes dual-screen position                         Most browsers      Firefox
+    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+    var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+    var top = ((height / 2) - (h / 2)) + dualScreenTop;
+    var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+    // Puts focus on the newWindow
+    if (window.focus) {
+        newWindow.focus();
+    }
+	},
+	connect: function() {
+		this.setState({isLoading: true});
+		if(localStorage.getItem('isLinkedinConnect')){
+			localStorage.removeItem('isLinkedinConnect');
+		}
+		var url = 'http://localhost:7000/linkedin/calloauth/linkedin-connect';
+		this.popupCenter(url,'Signin Linkdein',300,500);
+		var that = this;
+		var interval= setInterval(function(){
+			if(localStorage.getItem('isLinkedinConnect')){
+				var status = localStorage.getItem('isLinkedinConnect') === 'true'? true: false;
+				that.setState({status: status, isLoading: false});
+				clearInterval(interval);
+			}
+			/// call your function here
+		}, 1000);
+	},
+	render : function(){
+		var ButtonComponent = this.state.status? <button className="btn btn-primary">Connected</button>: <button onClick={this.connect} className="btn btn-default">Disconnected</button>;
+		if(this.state.isLoading){
+			ButtonComponent = <button className="btn btn-primary">Loading ...</button>;
+		}
+		return (
+			<div>
+				{ ButtonComponent }
+			</div>
+		);
+	}
+});
+
 export default React.createClass( {
 	getDefaultProps : function(){
 		return {
@@ -8,9 +62,9 @@ export default React.createClass( {
 		};
 	},
 	getInitialState: function(){
-
 		console.log('getInitialState')
 		return {
+			/*wave0270 account*/
 			config: {
 	      client_id: "75hebds55kuzda",
 	      client_secret: "E3fleb4ZN96CYKXb",
@@ -31,18 +85,22 @@ export default React.createClass( {
 			isLoading: false
 		};
 	},
-	componentDidMount: function(){
+	componentWillMount: function(){
 		console.log('componentWillMount')
-		this.state.config.redirect_uri = window.location.origin+"/linkedin/oauth/callback";
-		if(sessionStorage.getItem('save')){
-			sessionStorage.removeItem('save')
-			if(window && window.location.search){
-				var res = window.location.search.slice(1, window.location.search.length);
-				var arr = res.split('=')
-				this.setState({status: arr[1] });
-				window.history.pushState('object or string', 'Title', '/linkedin-publishing');
-			}
-		}
+		this.callGet('profile');
+	},
+	componentDidMount: function(){
+		console.log('componentDidMount')
+		// this.state.config.redirect_uri = window.location.origin+"/linkedin/oauth/callback";
+		// if(sessionStorage.getItem('save')){
+		// 	sessionStorage.removeItem('save')
+		// 	if(window && window.location.search){
+		// 		var res = window.location.search.slice(1, window.location.search.length);
+		// 		var arr = res.split('=')
+		// 		this.setState({status: arr[1] });
+		// 		window.history.pushState('object or string', 'Title', '/linkedin-publishing');
+		// 	}
+		// }
 	},
 	componentWillUnmount: function(){
 		console.log('componentWillUnMount')
@@ -111,11 +169,12 @@ export default React.createClass( {
 		}
 		API.post('/linkedin-call', params, function(err,res){
 			console.log(res)
-			if(res.body && res.body.response){
+			if(res && res.body && res.body.response){
 				switch(res.body.response.status){
 					case 200:
 						var msg = res.body.response.text;
-						var isMessage = 'success'
+						var isMessage = 'success';
+						that.state.isLinkedinConnect = true;
 						break;
 					default:
 						var isMessage = 'error';
@@ -136,6 +195,9 @@ export default React.createClass( {
 		this.setState({post: post, status: ""});
 	},
   render() {
+		if(!this.state.isLinkedinConnect){
+			return <ConnectComponent status={this.state.isLinkedinConnect} />;
+		}
       return (
         <div className="container" >
 					{ this.state && this.state.isMessage==='success' && !this.state.isLoading &&

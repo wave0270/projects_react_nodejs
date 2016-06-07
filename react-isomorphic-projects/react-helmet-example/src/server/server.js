@@ -8,9 +8,12 @@ import routes from '../share/routes';
 
 /* create express server */
 let app = express();
+// call to publish social app configuration function
+app.use(require('./social/linkedin'));
+/* static files served from "public" through url /static/ */
+app.use(require('./social/facebook'));
 /* static files served from "public" through url /static/ */
 app.use('/static', express.static('public'));
-
 
 /* a single request handler receives every server request
    and routes through react-router */
@@ -30,7 +33,6 @@ app.get('*', function(req, res) {
            https://github.com/nfl/react-helmet#server-usage */
         let renderedBody = React.renderToString(<Root />);
         let head = Helmet.rewind();
-
         /* render document with Helmet-rendered `<head>` info
            and React-rendered body. then, initialize the client
            side via `client.js`.
@@ -42,7 +44,7 @@ app.get('*', function(req, res) {
             <!doctype html>
             <html ${head.htmlAttributes.toString()}>
                 <head>
-                    <!--ALL PAGE -->
+                    <!--ALL PAGE 2324-->
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
                     <meta charset="utf-8" />
                     <!--TITLE -->
@@ -68,5 +70,8 @@ app.get('*', function(req, res) {
     });
 });
 
-var PORT = 5000;
-app.listen(PORT, () => console.log('Listening on http://localhost:'+PORT));
+var server = app.listen(5005, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('Example app listening at http://%s:%s', host, port);
+});

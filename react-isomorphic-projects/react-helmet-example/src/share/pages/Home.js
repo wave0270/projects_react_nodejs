@@ -1,11 +1,15 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import TopMenu from '../components/topmenu';
 
 let Home = React.createClass({
     render: function() {
-
+      // console.log("==============__dirname")
+      // console.log(__dirname)
+      // console.log("==============path.join(__dirname, 'public/')")
+      // console.log(__dirname+'/public/')
         return (
-            <div>
+            <div id="home-contain">
                 <Helmet
                   htmlAttributes={{"lang": "en"}}
                   title="My Title"
@@ -51,14 +55,12 @@ let Home = React.createClass({
                     {"src": "", "type": "text/javascript"},
                   ]}
                     />
-                <nav>
-                    <ul>
-                        <li><a href='/'>home</a></li>
-                        <li><a href='/news'>news</a></li>
-                        <li><a href='/about'>about</a></li>
-                    </ul>
-                </nav>
-                <h1>Home</h1>
+
+                <TopMenu />
+                <div>
+                  <div className="col-sm-4">Left 2</div>
+                  <div className="col-sm-8">Content 2</div>
+                </div>
             </div>
         );
     }

@@ -3,7 +3,6 @@ var express = require('express'),
     request = require('superagent'),
     app = express();
 
-
 /*tem*/
 var TEMPDATA = {
   "comment": "Testing a full company share!",
@@ -45,15 +44,20 @@ export function post(res, params) {
 var scope = ['r_basicprofile', 'r_emailaddress', 'rw_company_admin', 'w_share'];
 // var scope = ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'rw_nus', 'rw_groups', 'w_messages'];
 var linkedinData = {};
-linkedinData = STATICDATA;
+// linkedinData = STATICDATA;
 /*
 * Oauthen:
 */
 app.get('/linkedin/calloauth/:page', function(req, res) {
     if(!linkedinData.params || linkedinData.params.client_id){
+      // linkedinData.params =  {
+	    //   client_id: "75hebds55kuzda",
+	    //   client_secret: "E3fleb4ZN96CYKXb",
+	    //   redirect_uri: "http://localhost:7000/linkedin/oauth/callback"
+	    // };
       linkedinData.params =  {
-	      client_id: "75hebds55kuzda",
-	      client_secret: "E3fleb4ZN96CYKXb",
+	      client_id: "75n88ic26xprbz",
+	      client_secret: "4rFtPUpSa8L33acL",
 	      redirect_uri: "http://localhost:7000/linkedin/oauth/callback"
 	    };
     }
@@ -81,7 +85,7 @@ app.get('/linkedin/oauth/callback', function(req, res) {
           });
           break;
         default:
-          return res.redirect('/'+req.query.page);
+          return res.redirect('/'+req.query.page+'?connectStatus='+response.status);
       };
     });
 });
@@ -90,7 +94,7 @@ var APILIST = {
   'get-profile'   : 'https://api.linkedin.com/v1/people/~:(id,num-connections,picture-url,firstName,lastName,headline,siteStandardProfileRequest)?format=json',
   'get-companies' : 'https://api.linkedin.com/v1/companies?format=json&is-company-admin=true',
   'post-share'    : 'https://api.linkedin.com/v1/people/~/shares?format=json',
-  'post-company'  : 'https://api.linkedin.com/v1/companies/param_id/shares?format=json'
+  'post-company'  : 'https://api.linkedin.com/v1/companies/10783197/shares?format=json'
 };
 app.post('/linkedin-call', function(req, res) {
   if(linkedinData.results && linkedinData.results.access_token){
@@ -114,21 +118,39 @@ app.post('/linkedin-call', function(req, res) {
 /*
 * Company:
 */
-app.get('/linkedin-share-companies-id-:id', function(req, res) {
-  //share to a specific company //10783197:
-  if(!linkedinData.results || (linkedinData.oauthTime+linkedinData.results.expires_in-10)< new Date().getTime()){
-    console.log("call Oauth again")
-    return res.redirect("/linkedin/calloauth/linkedin-share-companies-id-"+req.params.id);
+app.post('/linkedin-call-id', function(req, res) {
+  if(linkedinData.results && linkedinData.results.access_token){
+    var params = {
+      api: APILIST[req.body.key]
+    }
+    switch(req.body.method){
+      case 'post':
+        params.data = req.body.post;
+        post(res, params);
+        break;
+      case 'get':
+        get(res, params);
+        break;
+    }
   }else{
-    console.log("not cal Oauth")
-    request
-    .post('https://api.linkedin.com/v1/companies/'+req.params.id+'/shares?format=json&oauth2_access_token='+linkedinData.results.access_token)
-    .send(TEMPDATA)
-    .end(function(err, response){
-      res.json({data: response, access_token: linkedinData.results});
-    });
+    res.json({error: true, linkedinData: linkedinData });
   }
 });
+// app.get('/linkedin-share-companies-id-:id', function(req, res) {
+//   //share to a specific company //10783197:
+//   if(!linkedinData.results || (linkedinData.oauthTime+linkedinData.results.expires_in-10)< new Date().getTime()){
+//     console.log("call Oauth again")
+//     return res.redirect("/linkedin/calloauth/linkedin-share-companies-id-"+req.params.id);
+//   }else{
+//     console.log("not cal Oauth")
+//     request
+//     .post('https://api.linkedin.com/v1/companies/'+req.params.id+'/shares?format=json&oauth2_access_token='+linkedinData.results.access_token)
+//     .send(TEMPDATA)
+//     .end(function(err, response){
+//       res.json({data: response, access_token: linkedinData.results});
+//     });
+//   }
+// });
 
 
 app.get('/linkedin-add-comment-companies-id-:id', function(req, res) {

@@ -49,15 +49,20 @@ function post(res, params) {
 var scope = ['r_basicprofile', 'r_emailaddress', 'rw_company_admin', 'w_share'];
 // var scope = ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'rw_nus', 'rw_groups', 'w_messages'];
 var linkedinData = {};
-linkedinData = STATICDATA;
+// linkedinData = STATICDATA;
 /*
 * Oauthen:
 */
 app.get('/linkedin/calloauth/:page', function (req, res) {
   if (!linkedinData.params || linkedinData.params.client_id) {
+    // linkedinData.params =  {
+    //   client_id: "75hebds55kuzda",
+    //   client_secret: "E3fleb4ZN96CYKXb",
+    //   redirect_uri: "http://localhost:7000/linkedin/oauth/callback"
+    // };
     linkedinData.params = {
-      client_id: "75hebds55kuzda",
-      client_secret: "E3fleb4ZN96CYKXb",
+      client_id: "75n88ic26xprbz",
+      client_secret: "4rFtPUpSa8L33acL",
       redirect_uri: "http://localhost:7000/linkedin/oauth/callback"
     };
   }
@@ -79,7 +84,7 @@ app.get('/linkedin/oauth/callback', function (req, res) {
         });
         break;
       default:
-        return res.redirect('/' + req.query.page);
+        return res.redirect('/' + req.query.page + '?connectStatus=' + response.status);
     };
   });
 });
