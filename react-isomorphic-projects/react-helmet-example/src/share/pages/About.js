@@ -10,7 +10,7 @@ let About = React.createClass({
               meta={[
                   {property: 'og:title', content: 'About'},
               ]} />
-            About dfdsg test
+            About dfdsg test as
         </div>
       );
     }

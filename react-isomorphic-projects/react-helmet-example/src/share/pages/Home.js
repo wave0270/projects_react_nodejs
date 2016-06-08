@@ -49,7 +49,7 @@ let Home = React.createClass({
                       {"rel": "icon", "href": "https://k14.vcmedia.vn/channel-icon/kenh14-32.png", "sizes": "32x32"},
                       /*css style*/
                       {"rel": "stylesheet", "href": "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"},
-                      {"rel": "stylesheet", "href": "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"}
+                      {"rel": "stylesheet", "href": "/static/css/style.css"}
                   ]}
                   script={[
                     {"src": "", "type": "text/javascript"},
@@ -58,8 +58,9 @@ let Home = React.createClass({
 
                 <TopMenu />
                 <div>
-                  <div className="col-sm-4">Left 2</div>
+                  <div className="col-sm-4">Left 2 as</div>
                   <div className="col-sm-8">Content 2</div>
+                  <div className="col-sm-8"><img src="/static/img/images.jpeg" /></div>
                 </div>
             </div>
         );
