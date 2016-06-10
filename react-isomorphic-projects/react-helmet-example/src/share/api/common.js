@@ -9,6 +9,7 @@ export function get(url, params, callBack) {
   });
 }
 export function post(url, params, callBack) {
+  console.log(params)
   request
   .post(url)
   .send(params)

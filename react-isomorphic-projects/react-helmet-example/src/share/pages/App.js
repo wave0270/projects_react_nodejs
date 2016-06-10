@@ -11,8 +11,8 @@ let App = React.createClass({
       //     </ul>
       // </nav>
         return (
-            <div>
-                <Router.RouteHandler />
+            <div className='container'>
+                <Router.RouteHandler test="asdasd" />
             </div>
         );
     }

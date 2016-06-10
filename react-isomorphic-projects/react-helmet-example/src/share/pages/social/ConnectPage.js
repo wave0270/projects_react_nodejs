@@ -1,14 +1,15 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import Connect from '../../components/social/connects';
+import Connects from '../../components/social/Connects';
+import LinkedList from '../../components/social/LinkedList';
 
 export default React.createClass({
     render: function() {
       return (
         <div>
-          <Connect />
-            main ...
+          <Connects />
+          <LinkedList />
         </div>
       );
     }

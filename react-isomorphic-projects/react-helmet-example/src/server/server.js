@@ -1,19 +1,27 @@
-import express from 'express';
-
 import React from 'react';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
+import express from 'express';
 
 import routes from '../share/routes';
 
+var bodyParser = require('body-parser');
 /* create express server */
 let app = express();
+/*********************************/
+/*parse application/json*/
+app.use(bodyParser.urlencoded({	extended: false	}));
+app.use(bodyParser.json());
+app.use(bodyParser.text());
+/*********************************/
+/* static files served from "public" through url /static/ */
+app.use('/static', express.static('public'));
+/*********************************/
+
 // call to publish social app configuration function
 app.use(require('./social/linkedin'));
 /* static files served from "public" through url /static/ */
 app.use(require('./social/facebook'));
-/* static files served from "public" through url /static/ */
-app.use('/static', express.static('public'));
 
 /* a single request handler receives every server request
    and routes through react-router */
@@ -44,8 +52,9 @@ app.get('*', function(req, res) {
             <!doctype html>
             <html ${head.htmlAttributes.toString()}>
                 <head>
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
                     <!--ALL PAGE 2324-->
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
                     <meta charset="utf-8" />
                     <!--TITLE -->
                     ${head.title.toString()}
@@ -69,9 +78,12 @@ app.get('*', function(req, res) {
         res.end();
     });
 });
+/*********************************/
 
-var server = app.listen(5005, function () {
+/*config server*/
+var server = app.listen(5000, function () {
   var host = server.address().address;
   var port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
 });
+/*********************************/
