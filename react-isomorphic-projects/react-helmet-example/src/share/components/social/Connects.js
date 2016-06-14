@@ -14,7 +14,7 @@ export default React.createClass({
     console.log('getInitialState')
 		return {
       linkedin: {
-  			isLoading: false,
+  			isLoading: true,
         isConnect: false
       },
       windowSize: {
@@ -48,11 +48,13 @@ export default React.createClass({
       var profile = {};
 			if(res && res.body && res.body.response && res.body.response.status === 200){
         linkedin.isConnect = true;
+        linkedin.isLoading = false;
         profile = JSON.parse(res.body.response.text);
 			}else{
+        linkedin.isLoading = false;
         linkedin.isConnect = false;
       }
-      that.setState({linkedin: linkedin, profile: profile});
+      that.setState({linkedin: linkedin, profile: profile, });
 		});
 	},
   disConnect: function(){
@@ -124,14 +126,20 @@ export default React.createClass({
   //   });
 	// },
 	render : function(){
-		var LinkedinButton = this.state.linkedin.isConnect? <button className="btn btn-default">Disconnect</button>: <button onClick={this.OAuth2Linkedin} className="btn btn-info">Connect</button>;
-		if(this.state.linkedin.isLoading){
-      LinkedinButton = <button className="btn btn-default">Connecting</button>;
+		var LinkedinButton = this.state.linkedin.isConnect? <button className="btn btn-default">Connected</button>: <button onClick={this.OAuth2Linkedin} className="btn btn-info">Disconnecting</button>;
+    console.log(this.state.linkedin.isLoading)
+    if(this.state.linkedin.isLoading){
+      LinkedinButton = <button className="btn btn-default">Loading</button>;
 		}
 		return (
-			<div className="container">
+			<div>
         <div className="panel panel-info">
           <div className="panel-heading">
+            {
+              this.state.linkedin.isConnect &&
+              <h3 className="panel-title"><img src={this.state.profile.pictureUrl} style={{width:'17px',height:'17px'}} />  Hello {this.state.profile.firstName} {this.state.profile.lastName} - {this.state.profile.headline}</h3>
+            }
+
             <h3 className="panel-title">Linkedin</h3>
           </div>
           <div className="panel-body">
@@ -143,9 +151,7 @@ export default React.createClass({
             </div>
           </div>
         </div>
-
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52d34a5433d85b84"></script>
-
 			</div>
 		);
 	}

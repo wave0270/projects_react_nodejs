@@ -62,7 +62,7 @@ export default React.createClass({
   },
   render: function() {
       return (
-        <div className="container">
+        <div>
           { this.state.linkedin.isConnect &&
             <div className="panel panel-primary">
               <div className="panel-heading">

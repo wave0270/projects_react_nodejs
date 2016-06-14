@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 
 import Connects from '../../components/social/Connects';
 import LinkedList from '../../components/social/LinkedList';
+import PostToWall from '../../components/social/PostToWall';
 
 export default React.createClass({
     render: function() {
@@ -10,6 +11,7 @@ export default React.createClass({
         <div>
           <Connects />
           <LinkedList />
+          <PostToWall />
         </div>
       );
     }
