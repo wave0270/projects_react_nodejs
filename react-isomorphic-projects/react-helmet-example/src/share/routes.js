@@ -9,6 +9,7 @@ import BlogPosts from './pages/BlogPosts';
 /*social*/
 import ConnectPage from './pages/social/ConnectPage';
 import ConnectPageResult from './pages/social/ConnectPageResult';
+import ConfigPage from './pages/social/ConfigPage';
 /*authen*/
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -22,6 +23,7 @@ let routes = (
         <Router.Route name="about" path="about" handler={About} />
         <Router.Route name="social-connect" path="social-connect" handler={ConnectPage} />
         <Router.Route name="social-connect-result" path="social-connect-result" handler={ConnectPageResult} />
+        <Router.Route name="social-config" path="social-config" handler={ConfigPage} />
         <Router.Route name="news" handler={Content}>
             <Router.DefaultRoute name="all" handler={BlogPosts} />
             <Router.Route name="news-tag" path="tag/:tag" handler={BlogPosts} />

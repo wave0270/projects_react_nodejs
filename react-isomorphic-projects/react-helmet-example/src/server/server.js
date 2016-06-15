@@ -1,3 +1,5 @@
+//https://medium.com/startup-study-group/40-npm-modules-we-can-t-live-without-36e29e352e3a#.sm38wgvpi
+//not yet use modules: bcryptjs, compression, fs-extra, get-value, object-set
 import React from 'react';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
@@ -5,6 +7,7 @@ import express from 'express';
 
 import routes from '../share/routes';
 
+var compression = require('compression'); //It compresses server responses so the data travels faster across the internet
 var bodyParser = require('body-parser');
 /* create express server */
 let app = express();
@@ -13,6 +16,10 @@ let app = express();
 app.use(bodyParser.urlencoded({	extended: false	}));
 app.use(bodyParser.json());
 app.use(bodyParser.text());
+/*********************************/
+
+/*compresses server responses*/
+app.use(compression());
 /*********************************/
 /* static files served from "public" through url /static/ */
 app.use('/static', express.static('public'));
@@ -52,8 +59,7 @@ app.get('*', function(req, res) {
             <!doctype html>
             <html ${head.htmlAttributes.toString()}>
                 <head>
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
                     <!--ALL PAGE 2324-->
                     <meta charset="utf-8" />
                     <!--TITLE -->
@@ -67,8 +73,9 @@ app.get('*', function(req, res) {
                 </head>
                 <body>
                     <div id="app">${renderedBody}</div>
-
-                    <script src="/static/client.js"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+          
                 </body>
             </html>
         `;

@@ -3,27 +3,34 @@ var express = require('express'),
     request = require('superagent'),
     app = express();
 /*local parse server*/
-var parseAPI = require('../parser/api');
-var Url = require('url');
+var parseAPI = require('../parser/social');
+
+/*
+* CONTAINS
+*/
+var SOCIALCONFIG = {
+  linkedin: {
+    client_id: "75n88ic26xprbz",
+    client_secret: "4rFtPUpSa8L33acL",
+    accessToken: [],
+  },
+  facebook: {
+    client_id: "75n88ic26xprbz",
+    client_secret: "4rFtPUpSa8L33acL",
+    accessToken: [],
+  }
+};
 
 var LINKEDINCONFIG={};
+/*
+* END CONTAINS
+*/
 parseAPI.get(null,function(err,res){
   if(res && res.status === 200){
-    if(res.body.results.length > 0){
-      LINKEDINCONFIG = res.body.results[0];
-    }else{
-      var linkedin = {
-	      client_id: "75n88ic26xprbz",
-	      client_secret: "4rFtPUpSa8L33acL"
-	    }
-      parseAPI.post({linkedin: linkedin},function(err,res){
-        if(!err){
-          LINKEDINCONFIG = linkedin;
-        }else{
-          console.log('**********Social not save!')
-        }
-      });
-    }
+    LINKEDINCONFIG = res;
+    // if(res.body.results.length > 0){
+    //   LINKEDINCONFIG = res.body.results[0];
+    // }
   }
 });
 /*common functions:*/
