@@ -29,6 +29,8 @@ app.use('/static', express.static('public'));
 app.use(require('./social/linkedin'));
 /* static files served from "public" through url /static/ */
 app.use(require('./social/facebook'));
+/*execute Database*/
+app.use(require('./parser/common'));
 
 /* a single request handler receives every server request
    and routes through react-router */
@@ -60,6 +62,7 @@ app.get('*', function(req, res) {
             <html ${head.htmlAttributes.toString()}>
                 <head>
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
                     <!--ALL PAGE 2324-->
                     <meta charset="utf-8" />
                     <!--TITLE -->
@@ -75,7 +78,7 @@ app.get('*', function(req, res) {
                     <div id="app">${renderedBody}</div>
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
                     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-          
+                    <script src="static/client.js"></script>
                 </body>
             </html>
         `;
@@ -85,6 +88,7 @@ app.get('*', function(req, res) {
         res.end();
     });
 });
+
 /*********************************/
 
 /*config server*/

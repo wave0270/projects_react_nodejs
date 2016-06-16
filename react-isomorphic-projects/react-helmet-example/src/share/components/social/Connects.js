@@ -67,6 +67,17 @@ export default React.createClass({
       that.setState();
 		});
   },
+  testParse: function(){
+    var params = {
+      "test": "test"
+    }
+    API.post('/parse', params, function(err,res){
+      console.log(res)
+			if(res && res.body && res.body.response && res.body.response.status === 200){
+
+			}
+		});
+  },
 	popupCenter: function(url, title) {
     var w = this.state.windowSize.width;
     var h = this.state.windowSize.width;

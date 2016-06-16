@@ -17,6 +17,7 @@
     "get-value": "^2.0.5",
     "object-set": "^1.0.1",
     "react": "^0.13.3",
+    "react-bootstrap": "^0.29.4",
     "react-dom": "^15.1.0",
     "react-helmet": "*",
     "react-router": "^0.13.3",
