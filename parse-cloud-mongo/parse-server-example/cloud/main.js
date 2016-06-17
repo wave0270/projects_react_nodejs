@@ -57,3 +57,35 @@ Parse.Cloud.afterDelete('Review', function(request) {
   console.log("/*afterDelete*****************************/");
     // code here
   })
+
+/**********************/
+Parse.Cloud.beforeSave("UserTB", function(request, response) {
+  // console.log("/*beforeSave: User*****************************/");
+  // console.log(request)
+  // console.log('request.object=========================')
+  // console.log(request.object.id)
+  response.success();
+});
+Parse.Cloud.afterSave("UserTB", function(request, response) {
+  console.log("/*afterSave: User*****************************/");
+  console.log(request)
+  console.log("response")
+  console.log(response)
+  /*return full object after save*/
+  query = new Parse.Query("UserTB");
+  query.equalTo( 'objectId', request.object.id )
+  query.find({
+    success: function(object) {
+      console.log('query seccess=========================')
+      console.log(JSON.parse(JSON.stringify(object)))
+      response.success(object);
+    },
+    error: function(object, error) {
+      console.log('query error=========================')
+      console.log(error)
+      response.error();
+    }
+  });
+  /*End*/
+
+});

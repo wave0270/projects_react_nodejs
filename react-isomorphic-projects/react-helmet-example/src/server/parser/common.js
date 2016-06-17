@@ -7,11 +7,31 @@ var PARSEID = 'Value-ID-X-Parse-Application';
 var ROOTURL = 'http://localhost:1338/parse/classes/';
 /*end*/
 
-export function getResult(res, error, response, url) {
+export function getResult(method, res, error, response, url, objectId ) {
   if(error){
-    res.json({error: error, response: null,url: url})
+    res.json({error: true, response: response,url: url})
   }else{
-    res.json({error: error, response: response.body,url: url})
+    switch(method){
+      // case 'post':
+      //   superagent
+      //   .get(ROOTURL+req.body.table+'/'+response.body.objectId)
+      //   .set('X-Parse-Application-Id', PARSEID )
+      //   .end(function(error2, response2){
+      //     getResult('get',res, error2, response2, url);
+      //   });
+      //   break;
+      // case 'put':
+      //   superagent
+      //   .get(ROOTURL+req.body.table+'/'+objectId)
+      //   .set('X-Parse-Application-Id', PARSEID )
+      //   .end(function(error2, response2){
+      //     getResult('get',res, error2, response2, url);
+      //   });
+      //   break;
+      default:
+        res.json({error: false, response: response.body,url: url})
+    }
+
   }
 }
 app.post('/parse-data', function(req,res){
@@ -25,7 +45,7 @@ app.post('/parse-data', function(req,res){
       .get(url)
       .set('X-Parse-Application-Id', PARSEID )
       .end(function(error, response){
-        getResult(res, error, response, url);
+        getResult(req.body.method,res, error, response, url);
       });
       break;
     case 'post':
@@ -34,26 +54,26 @@ app.post('/parse-data', function(req,res){
       .send(req.body.params)
       .set('X-Parse-Application-Id', PARSEID )
       .end(function(error, response){
-        getResult(res, error, response, url);
+        getResult(req.body.method,res, error, response, url);
       });
       break;
     case 'put':
-      url += req.body.params.objectId;
+      url = url+'/'+req.body.params.objectId;
       superagent
       .put(url)
       .send(req.body.params)
       .set('X-Parse-Application-Id', PARSEID )
       .end(function(error, response){
-        getResult(res, error, response, url);
+        getResult(req.body.method,res, error, response, url, req.body.params.objectId);
       });
       break;
     case 'del':
-      url += req.body.params.objectId;
+      url = url+'/'+req.body.params.objectId;
       superagent
       .del(url)
       .set('X-Parse-Application-Id', PARSEID )
       .end(function(error, response){
-        getResult(res, error, response, url);
+        getResult(req.body.method,res, error, response, url);
       });
       break;
   }

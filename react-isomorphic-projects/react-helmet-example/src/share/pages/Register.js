@@ -1,85 +1,98 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import superagent from 'superagent';
+var API = require('../api/common');
 
 export default React.createClass({
+
   getInitialState: function(){
     console.log("getInitialState")
     return {
-      userName : "wave",
-      pass: '123456 ',
-      arr: []
+      arr: [],
+      table: 'UserTB',
     };
   },
-
+  componentDidMount: function(){
+    this.getParse();
+  },
   getParse: function(){
     var params = {
 			method: 'get',
-			table: 'User'
+			table: this.state.table,
+      where: {
+      }
 		}
-    superagent
-      .post('/parse-data')
-      .send(params)
-      .end(function(err,data){
-        this.setState({arr: data.response.results})
-        console.log(data)
-      }.bind(this));
+    API.post('/parse-data', params, function(err,data){
+      console.log(data)
+      if(!err){
+        this.setState({arr: data.body.response.results})
+      }
+    }.bind(this));
   },
   postParse: function(){
     var params = {
 			method: 'post',
-			table: 'User',
+			table: this.state.table,
       params: {
         email: 'binh',
         pass: 'binh'
       }
 		}
-    superagent
-      .post('/parse-data')
-      .send(params)
-      .end(function(err,data){
-        console.log(data)
-      });
+    API.post('/parse-data', params, function(err,data){
+      console.log(data)
+      if(!err){
+        params.params.objectId = data.body.response.objectId;
+        this.state.arr.push(params.params);
+        this.setState(this.state)
+      }
+    }.bind(this));
   },
   putParse: function(){
-    var params = {
-			method: 'put',
-			table: 'User',
-      params: this.state.arr[0]
-		}
-    superagent
-      .post('/parse-data')
-      .send(params)
-      .end(function(err,data){
+    console.log('5555555555555555555555')
+    if(this.state.arr.length==0){
+      alert('empty');
+    }else{
+      this.state.arr[0].email = new Date().getTime()+'@gmail.com';
+      delete this.state.arr[0].updatedAt;
+      delete this.state.arr[0].createdAt;
+      var params = {
+  			method: 'put',
+  			table: this.state.table,
+        params: this.state.arr[0]
+  		}
+      API.post('/parse-data', params, function(err,data){
         console.log(data)
-      });
+        if(!err){
+          this.setState(this.state);
+        }
+      }.bind(this));
+    }
   },
   delParse: function(){
-    if(this.state.arr.length<0){
+    if(this.state.arr.length==0){
       alert('empty');
-      return
+    }else{
+      var params = {
+  			method: 'del',
+  			table: this.state.table,
+        params: this.state.arr[0],
+  		}
+      API.post('/parse-data', params, function(err,data){
+        if(!err){
+          this.state.arr.splice(0,1);
+          this.setState(this.state);
+        }
+      }.bind(this));
     }
-    var params = {
-			method: 'del',
-			table: 'User',
-      params: this.state.arr[0]
-		}
-    superagent
-      .post('/parse-data')
-      .send(params)
-      .end(function(err,data){
-        console.log(data)
-      });
   },
     render: function() {
         return (
             <div className="container">
                   <h2 className="form-signin-heading">Please Register</h2>
                   <label htmlFor="inputEmail" className="sr-only">Email address</label>
-                  <input value={this.state.userName} type="email" id="inputEmail" className="form-control" placeholder="Email address" required="" autofocus="" />
+                  <input value={this.state.arr.length>0? this.state.arr[0].email: ''} type="email" id="inputEmail" className="form-control" placeholder="Email address" required="" autofocus="" />
                   <label htmlFor="inputPassword" className="sr-only">Password</label>
-                  <input value={this.state.pass} type="password" id="inputPassword" className="form-control" placeholder="Password" required="" />
+                  <input value={this.state.arr.length>0? this.state.arr[0].pass: ''} type="password" id="inputPassword" className="form-control" placeholder="Password" required="" />
                   {/*
                     <label htmlFor="inputUsername" className="sr-only">User Name</label>
                     <input type="password" id="inputUsername" className="form-control" placeholder="User name" required="" />
@@ -91,6 +104,7 @@ export default React.createClass({
                   <button onClick={this.getParse} className="btn btn-lg btn-primary btn-block">get</button>
                   <button onClick={this.putParse} className="btn btn-lg btn-primary btn-block">put</button>
                   <button onClick={this.delParse} className="btn btn-lg btn-primary btn-block">del</button>
+                  <p>{JSON.stringify(this.state.arr)}</p>
             </div>
         );
     }
