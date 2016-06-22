@@ -117,25 +117,22 @@ export default React.createClass({
 			}
 		}, 1000);
 	},
-  // OAuth2Linkedin: function() {
-  //   console.log('connect linkedin')
-  //   var linkedinStatus = this.state.linkedin;
-  //   linkedinStatus.isLoading = true;
-	// 	this.setState({linkedin: linkedinStatus});
-	// 	if(localStorage.getItem('isLinkedinConnect')){
-	// 		localStorage.removeItem('isLinkedinConnect');
-	// 	}
-	// 	var url = location.origin+'/linkedin/calloauth/social-connect-result';
-	// 	this.popupCenter(url,'Signin Linkdein');
-	// 	var that = this;
-  //   emitter.on('isLinkedinConnect', function (status) {
-  //     // …emitter logic
-  //     linkedinStatus.isConnect = status;
-  //     linkedinStatus.isLoading = false;
+  // OAuth2Linkedin: function(){
+  //   var params = {
+  //     client_id: "75n88ic26xprbz",
+  //     client_secret: "4rFtPUpSa8L33acL",
+  //     redirect_uri: location.origin+'/linkedin/calloauth'
+  //   };
+  //   API.post('/linkedin_calloauth', params, function(err,res){
+  //     console.log(res)
+	// 		if(res && res.body && res.body.response && res.body.response.status === 200){
   //
-  //     that.setState({linkedin: linkedinStatus});
-  //   });
-	// },
+	// 		}else{
+  //
+  //     }
+	// 	});
+  // },
+
 	render : function(){
 		var LinkedinButton = this.state.linkedin.isConnect? <button className="btn btn-default">Connected</button>: <button onClick={this.OAuth2Linkedin} className="btn btn-info">Disconnecting</button>;
     console.log(this.state.linkedin.isLoading)

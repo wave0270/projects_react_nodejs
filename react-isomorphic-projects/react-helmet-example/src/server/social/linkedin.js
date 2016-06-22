@@ -27,10 +27,7 @@ var LINKEDINCONFIG={};
 */
 parseAPI.get(null,function(err,res){
   if(res && res.status === 200){
-    LINKEDINCONFIG = res;
-    // if(res.body.results.length > 0){
-    //   LINKEDINCONFIG = res.body.results[0];
-    // }
+    LINKEDINCONFIG = res.body.results[0];
   }
 });
 /*common functions:*/
@@ -55,6 +52,11 @@ export function post(res, params) {
 var scope = ['r_basicprofile', 'r_emailaddress', 'rw_company_admin', 'w_share'];
 var scope = ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'rw_nus', 'rw_groups', 'w_messages'];
 var linkedinData = {};
+
+// app.post('/linkedin_calloauth', function(req, res) {
+//   var redirect_uri = req.body.redirect_uri;
+//   res.redirect('https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+req.body.client_id+'&state=mA4op-iWJox155Bk&redirect_uri='+redirect_uri+'&scope=r_basicprofile%20r_emailaddress%20rw_company_admin%20w_share');
+// });
 
 app.get('/linkedin/calloauth/:page/:domain', function(req, res) {
     console.log('/linkedin/calloauth/:page')
@@ -87,9 +89,10 @@ app.get('/linkedin/oauth/callback', function(req, res) {
       if(response.status === 200){
         console.log(LINKEDINCONFIG)
         LINKEDINCONFIG.linkedin.access_token = JSON.parse(response.text).access_token;
+        console.log(response.text)
         parseAPI.put({linkedin: JSON.parse(response.text)},function(errParse,resParse){
-          console.log(errParse)
           if(resParse){
+            // console.log('/'+req.query.page+'?connectStatus=')
             return res.redirect('/'+req.query.page+'?connectStatus='+response.status);
           }else{
             return res.redirect('/'+req.query.page+'?connectStatus=500');

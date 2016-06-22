@@ -7,9 +7,9 @@ import About from './pages/About';
 import Content from './pages/Content';
 import BlogPosts from './pages/BlogPosts';
 /*social*/
-import ConnectPage from './pages/social/ConnectPage';
-import ConnectPageResult from './pages/social/ConnectPageResult';
-import ConfigPage from './pages/social/ConfigPage';
+import ConnectPage from './pages/SocialConnectPage';
+import ConnectPageResult from './pages/SocialConnectPageResult';
+import ConfigPage from './pages/SocialConfigPage';
 /*authen*/
 import Login from './pages/Login';
 import Register from './pages/Register';
