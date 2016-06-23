@@ -13,6 +13,10 @@ import ConfigPage from './pages/SocialConfigPage';
 /*authen*/
 import Login from './pages/Login';
 import Register from './pages/Register';
+/*test page*/
+import TestLayout from './test/Layout';
+import Bootstrap from './test/Bootstrap';
+import GridDragDrop from './test/GridDragDrop';
 
 /* create a group of routes with nesting */
 let routes = (
@@ -20,13 +24,18 @@ let routes = (
         <Router.DefaultRoute name="home" handler={Home} />
         <Router.Route name="login" path="login" handler={Login} />
         <Router.Route name="register" path="register" handler={Register} />
-        <Router.Route name="about" path="about" handler={About} />
+        <Router.Route name="about" handler={About} />
         <Router.Route name="social-connect" path="social-connect" handler={ConnectPage} />
         <Router.Route name="social-connect-result" path="social-connect-result" handler={ConnectPageResult} />
         <Router.Route name="social-config" path="social-config" handler={ConfigPage} />
         <Router.Route name="news" handler={Content}>
             <Router.DefaultRoute name="all" handler={BlogPosts} />
             <Router.Route name="news-tag" path="tag/:tag" handler={BlogPosts} />
+            <Router.Route name="about-1" handler={About} />
+        </Router.Route>
+        <Router.Route name="test" handler={TestLayout}>
+            <Router.DefaultRoute name="bootstrap" handler={Bootstrap} />
+            <Router.Route name="grid-drag-drop"  handler={GridDragDrop} />
         </Router.Route>
     </Router.Route>
 );

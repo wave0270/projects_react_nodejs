@@ -4,10 +4,20 @@ import Helmet from 'react-helmet';
 import TopMenu from '../components/TopMenu';
 import NavMenu from '../components/NavMenu';
 /*private page components*/
-
+import superagent from 'superagent';
 import SocialConfig from '../components/social/SocialConfig';
 
 export default React.createClass({
+  updateConfig: function(){
+    var params = {
+      method: 'get',
+      table: 'SocialConfig'
+    };
+    superagent.post('/parse-data')
+      .end(function(err,res){
+
+      });
+  },
     render: function() {
       return (
         <div>

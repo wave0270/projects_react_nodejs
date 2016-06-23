@@ -18,7 +18,6 @@ let NavMenu = React.createClass({
               <li><a href='/register'>register</a></li>
               <li><a href='/social-connect'>social-connect</a></li>
               <li><a href='/social-config'>social-config</a></li>
-              <li><a href='/about'>about</a></li>
 
           </ul>
       );

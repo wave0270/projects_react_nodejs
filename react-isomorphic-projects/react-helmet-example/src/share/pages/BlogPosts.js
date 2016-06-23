@@ -42,6 +42,7 @@ let BlogPosts = React.createClass({
 
     render: function() {
         let { tag } = this.props.params;
+        console.log(this.props)
         let title = 'Posts: ' + (tag ? ' tagged "' + tag + '"' : 'all');
         let posts = PostCollection.slice();
 

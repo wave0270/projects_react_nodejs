@@ -6,10 +6,11 @@ import NavMenu from '../components/NavMenu';
 /*private page components*/
 
 let Home = React.createClass({
-  
+
     render: function() {
         return (
             <div className="w-page" >
+                {/*PAGE-METADATA*/}
                 <Helmet
                   htmlAttributes={{"lang": "en"}}
                   title="My Title"
@@ -55,6 +56,7 @@ let Home = React.createClass({
                     {"src": "", "type": "text/javascript"},
                   ]}
                     />
+                  {/*End PAGE-METADATA*/}
 
                   <div className="main-layout">
                     {/*Top-area*/}

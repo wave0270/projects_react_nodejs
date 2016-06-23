@@ -34,6 +34,12 @@ export function getResult(method, res, error, response, url, objectId ) {
 
   }
 }
+/*
+req.body ={
+  method: 'get',
+  table: 'SocialConfig'
+}
+*/
 app.post('/parse-data', function(req,res){
   var url = ROOTURL+req.body.table;
   if(req.body.where){
