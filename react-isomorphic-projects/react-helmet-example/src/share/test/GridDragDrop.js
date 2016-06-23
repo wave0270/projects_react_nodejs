@@ -7,8 +7,11 @@ export default React.createClass({
       name: 'Test GridDragDrop'
     };
   },
+  testClick: function(){
+    console.log(new Date().getTime())
+  },
     render: function() {
-      console.log("dddddddddddddddd")
+      console.log("dddddddddddddddd"+this.props.name)
         return (
             <div>
                 <Helmet
@@ -19,7 +22,7 @@ export default React.createClass({
                 <h3>
                     {this.props.name}
                 </h3>
-
+                <a onClick={this.testClick}>click test </a>
             </div>
         );
     }

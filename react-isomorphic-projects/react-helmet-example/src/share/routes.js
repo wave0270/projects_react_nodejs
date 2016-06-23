@@ -30,13 +30,11 @@ let routes = (
         <Router.Route name="social-config" path="social-config" handler={ConfigPage} />
         <Router.Route name="news" handler={Content}>
             <Router.DefaultRoute name="all" handler={BlogPosts} />
-            <Router.Route name="news-tag" path="tag/:tag" handler={BlogPosts} />
-            <Router.Route name="about-1" handler={About} />
+            <Router.Route name="news-tag" path="view/:tag" handler={BlogPosts} />
         </Router.Route>
-        <Router.Route name="test" handler={TestLayout}>
-            <Router.DefaultRoute name="bootstrap" handler={Bootstrap} />
-            <Router.Route name="grid-drag-drop"  handler={GridDragDrop} />
-        </Router.Route>
+
+        <Router.Route name="test-bootstrap" handler={Bootstrap} />
+        <Router.Route name="test-grid-drag-drop"  handler={GridDragDrop} />
     </Router.Route>
 );
 

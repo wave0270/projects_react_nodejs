@@ -3,7 +3,13 @@ import Router from 'react-router';
 import Helmet from 'react-helmet';
 
 export default React.createClass({
+  getDefaultProps: function(){
+    return {
+      name: 'Test Layout'
+    };
+  },
     render: function() {
+      console.log("dddddddddddddddd"+this.props.name)
         return (
             <div>
                 <h1>Latest Updates</h1>

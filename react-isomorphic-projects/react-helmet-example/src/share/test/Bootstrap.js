@@ -9,6 +9,7 @@ export default React.createClass({
     };
   },
     render: function() {
+      console.log("dddddddddddddddd"+this.props.name)
         return (
             <div>
                 <Helmet
