@@ -13,6 +13,7 @@ node_modules
 /npm-debug.log*
 npm-debug.log.*
 .gitignore~
+npm-debug.log
 *.sw?
 !*.swf
 
