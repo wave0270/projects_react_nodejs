@@ -10,8 +10,11 @@ export default React.createClass( {
   render() {
       return (
         <div>
-					<Helmet title="home binh title" />
-          <h1>Hello { this.props.name }</h1>
+					<Helmet
+								htmlAttributes={{"lang": "en", "amp": undefined}} // amp takes no value
+								title="My Title"
+								titleTemplate="MySite.com - %s"/>
+							<h1>Hello { this.props.name } sad</h1>
         </div>
       );
   }

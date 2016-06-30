@@ -34,6 +34,14 @@ var _pagesLinkedinPublishing = require("./pages/linkedin-publishing");
 
 var _pagesLinkedinPublishing2 = _interopRequireDefault(_pagesLinkedinPublishing);
 
+var _pagesLinkedinPublishingConnect = require("./pages/linkedin-publishing-connect");
+
+var _pagesLinkedinPublishingConnect2 = _interopRequireDefault(_pagesLinkedinPublishingConnect);
+
+var _pagesFetch_content = require("./pages/fetch_content");
+
+var _pagesFetch_content2 = _interopRequireDefault(_pagesFetch_content);
+
 //test page:
 var _pagesTest_bootstrap_page = require("./pages/test_bootstrap_page");
 
@@ -57,6 +65,8 @@ exports["default"] = _react2["default"].createElement(
   _react2["default"].createElement(_reactRouter.Route, { name: "login", handler: _pagesLogin_page2["default"], path: "/login" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "contact", handler: _pagesContact_page2["default"], path: "/contact" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "linkedin-publishing", handler: _pagesLinkedinPublishing2["default"], path: "/linkedin-publishing" }),
+  _react2["default"].createElement(_reactRouter.Route, { name: "linkedin-connect", handler: _pagesLinkedinPublishingConnect2["default"], path: "/linkedin-connect" }),
+  _react2["default"].createElement(_reactRouter.Route, { name: "fetch-content", handler: _pagesFetch_content2["default"], path: "/fetch-content" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "bootstrap", handler: _pagesTest_bootstrap_page2["default"], path: "/bootstrap" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "test-server", handler: _pagesTest_server_page2["default"], path: "/test-server" }),
   _react2["default"].createElement(_reactRouter.Route, { name: "test-client", handler: _pagesTest_client_page2["default"], path: "/test-client" })

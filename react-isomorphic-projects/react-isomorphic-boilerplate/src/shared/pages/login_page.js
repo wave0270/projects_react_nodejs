@@ -9,7 +9,6 @@ export default React.createClass( {
   render() {
       return (
         <div className="container">
-
           <form className="form-signin">
             <h2 className="form-signin-heading">Please sign in</h2>
             <label htmlFor="inputEmail" className="sr-only">Email address</label>
