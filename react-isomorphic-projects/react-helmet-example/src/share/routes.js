@@ -14,9 +14,10 @@ import ConfigPage from './pages/SocialConfigPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 /*test page*/
-import TestLayout from './test/Layout';
-import Bootstrap from './test/Bootstrap';
+import ReactCircleLife from './test/ReactCircleLife';
 import GridDragDrop from './test/GridDragDrop';
+import GridDragDrop2 from './test/GridDragDrop2';
+import FetchContent from './test/FetchContent';
 
 /* create a group of routes with nesting */
 let routes = (
@@ -33,8 +34,10 @@ let routes = (
             <Router.Route name="news-tag" path="view/:tag" handler={BlogPosts} />
         </Router.Route>
 
-        <Router.Route name="test-bootstrap" handler={Bootstrap} />
+        <Router.Route name="test-react-circle-life" handler={ReactCircleLife} />
         <Router.Route name="test-grid-drag-drop"  handler={GridDragDrop} />
+        <Router.Route name="test-grid-drag-drop-2"  handler={GridDragDrop2} />
+        <Router.Route name="fetch-content"  handler={FetchContent} />
     </Router.Route>
 );
 

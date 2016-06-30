@@ -19,7 +19,6 @@ function get(url, params, callBack) {
 }
 
 function post(url, params, callBack) {
-  console.log(params);
   _superagent2['default'].post(url).send(params).set('Content-Type', "application/json").end(function (err, res) {
     callBack(err, res);
   });

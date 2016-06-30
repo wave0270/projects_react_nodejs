@@ -1,5 +1,8 @@
 //https://medium.com/startup-study-group/40-npm-modules-we-can-t-live-without-36e29e352e3a#.sm38wgvpi
-//not yet use modules: bcryptjs, compression, fs-extra, get-value, object-set
+/*not yet use modules:
+- mini: bcryptjs, compression, fs-extra, get-value, object-set
+- big:  bluebird (mean promise), jsdom, react-grid-layout(dev: react-resizable, react-draggable)
+*/
 import React from 'react';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
@@ -31,6 +34,8 @@ app.use(require('./social/linkedin'));
 app.use(require('./social/facebook'));
 /*execute Database*/
 app.use(require('./parser/common'));
+/*API for get content of web page*/
+app.use(require('./api/fetch'));
 
 /* a single request handler receives every server request
    and routes through react-router */
