@@ -4,7 +4,9 @@ var express = require('express'),
     superagent = require('superagent'),
     fs = require('fs'),
     fetchUrl = require("fetch").fetchUrl,
-    getMeta = require("lets-get-meta");
+    getMeta = require("lets-get-meta"),
+    jsdom = require("jsdom");
+
 
 
 app.post('/fetch', function(req, res) {
@@ -19,7 +21,25 @@ app.post('/read-meta-tag', function(req, res) {
     .end(function(err, data){
           if(!err){
             var meta=getMeta(data.text);
-            res.json({meta: meta, body: data.text } )
+            // res.json({meta: meta, body: data.text } )
+            jsdom.env(
+              data.text,
+              ["http://code.jquery.com/jquery.js"],
+              function (err, window) {
+                res.json({meta: meta, body: window.$(".content.post-detail")[0].outerHTML } );
+                // res.end();
+              }
+            );
+
+            /*jsdom exaple*/
+            // jsdom.env(
+            //   '<p><a class="the-link" href="https://github.com/tmpvar/jsdom">jsdom! nguyen thai binh</a><a id="the-link-2" href="https://github.com/tmpvar/jsdom">nguyen thai binh</a></p>',
+            //   ["http://code.jquery.com/jquery.js"],
+            //   function (err, window) {
+            //     res.json({meta: meta, body: window.$("#the-link-2")[0].outerHTML } );
+            //   }
+            // );
+
           }else{
             res.write("<div>Khong co trang nay ton tai nhe!</div>");
           }

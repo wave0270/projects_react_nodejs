@@ -1,4 +1,7 @@
 import React from "react";
+import Bitly from 'bitly';
+let bitly = new Bitly('a3b3c203e37140ff24e679a181f912d37cb5a0a4');
+
 var API = require('../api/common');
 
 export default React.createClass( {
@@ -43,6 +46,19 @@ export default React.createClass( {
 		}.bind(this));
 	},
 
+	callGetBitlyLink: function(){
+		console.log('callGetBitlyLink')
+		if(this.state.url){
+			var params = {
+				url: this.state.url
+			}
+			API.post('/bitly/create', params, function(err,res){
+				console.log(res)
+				this.setState({body: '', dataStr: res.body.shortUrl});
+			}.bind(this));
+		}
+	},
+
 	getGeoLocation: function(){
 		navigator.geolocation.getCurrentPosition(function(position){
 			var p = {
@@ -68,6 +84,10 @@ export default React.createClass( {
 						<button onClick={this.callGetFetch} className="btn btn-success">Get Content by: fetch</button>
 						<button onClick={this.getGeoLocation} className="btn btn-info">Get Location</button>
 						<button onClick={this.callReadFile} className="btn btn-success">Read file</button>
+					</div>
+					<br />
+					<div className="btn-group">
+						<button onClick={this.callGetBitlyLink} className="btn btn-info">Get Bit.ly link</button>
 					</div>
 					<div className="content row"> {this.state.dataStr}</div>
 					<div className="content row" dangerouslySetInnerHTML={{__html: this.state.body}}></div>

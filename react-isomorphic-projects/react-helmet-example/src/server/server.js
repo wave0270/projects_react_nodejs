@@ -36,6 +36,8 @@ app.use(require('./social/facebook'));
 app.use(require('./parser/common'));
 /*API for get content of web page*/
 app.use(require('./api/fetch'));
+/*API bitly*/
+app.use(require('./api/bitly'));
 
 /* a single request handler receives every server request
    and routes through react-router */
