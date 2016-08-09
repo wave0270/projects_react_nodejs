@@ -27,7 +27,7 @@ var ChildCom = React.createClass({
 
 export default React.createClass({
   getDefaultProps: function(){
-    console.log('getDefaultProps')
+    console.log('test life circle: getDefaultProps')
     return {
       name: 'Test test-react-circle-life'
     };
@@ -45,6 +45,9 @@ export default React.createClass({
   componentDidMount: function(){
     console.log('componentDidMount')
   },
+  componentWillReceiveProps: function(){
+    console.log('componentWillReceiveProps')
+  },
   shouldComponentUpdate: function(){
     /*
     true (default): allow run render()
@@ -52,6 +55,15 @@ export default React.createClass({
     */
     console.log('shouldComponentUpdate')
     return true;
+  },
+  componentWillUpdate: function(){
+    console.log('componentWillUpdate')
+  },
+  componentDidUpdate: function(){
+    console.log('componentDidUpdate')
+  },
+  componentWillUnmount: function(){
+    console.log('componentWillUnmount')
   },
   handleOnChange: function(e){
     this.setState({id: e.target.value});

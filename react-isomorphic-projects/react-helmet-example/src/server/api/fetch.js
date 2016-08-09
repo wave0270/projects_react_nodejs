@@ -11,6 +11,7 @@ var express = require('express'),
 
 app.post('/fetch', function(req, res) {
   fetchUrl(req.body.url, function(error, meta, body){
+
     res.json({error: error, meta: meta, body: body.toString()});
   });
 });
@@ -19,17 +20,24 @@ app.post('/read-meta-tag', function(req, res) {
   superagent
     .get(req.body.url)
     .end(function(err, data){
+      console.log(err)
           if(!err){
-            var meta=getMeta(data.text);
-            // res.json({meta: meta, body: data.text } )
-            jsdom.env(
-              data.text,
-              ["http://code.jquery.com/jquery.js"],
-              function (err, window) {
-                res.json({meta: meta, body: window.$(".content.post-detail")[0].outerHTML } );
-                // res.end();
-              }
-            );
+            if(data.text.indexOf('Invalid redirect URI')>-1){
+              res.json({meta: 's',body: data.text} );
+            }else{
+              res.json({meta: 's',body: 'Client Id error'} );
+            }
+
+            // var meta=getMeta(data.text);
+            // // res.json({meta: meta, body: data.text } )
+            // jsdom.env(
+            //   data.text,
+            //   ["http://code.jquery.com/jquery.js"],
+            //   function (err, window) {
+            //     res.json({meta: meta, body: window.$(".content.post-detail")[0].outerHTML } );
+            //     // res.end();
+            //   }
+            // );
 
             /*jsdom exaple*/
             // jsdom.env(
@@ -41,7 +49,7 @@ app.post('/read-meta-tag', function(req, res) {
             // );
 
           }else{
-            res.write("<div>Khong co trang nay ton tai nhe!</div>");
+            res.json({meta: 's',body: JSON.stringify(err)} );
           }
 
     });

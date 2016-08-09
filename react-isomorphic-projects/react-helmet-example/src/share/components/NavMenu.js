@@ -9,7 +9,7 @@ let NavMenu = React.createClass({
           <ul>
               <li>
                 <a href='/'>
-                  <FontAwesome className='super-crazy-colors' name='rocket' size='12px' spin
+                  <FontAwesome className='super-crazy-colors' name='rocket' size='2x' spin
                     style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}/>
                   home</a>
 
@@ -22,7 +22,12 @@ let NavMenu = React.createClass({
               <li><a href='/social-config'>social-config</a></li>
               <li><a href='/test-react-circle-life'>test-react-circle-life</a></li>
               <li><a href='/test-grid-drag-drop'>test-grid-drag-drop</a></li>
+              <li><a href='/test-grid-drag-drop-dashboard'>test-grid-drag-drop-dashboard</a></li>
               <li><a href='/fetch-content'>fetch-content</a></li>
+              <li><a href='/sequelize'>Test sequelize</a></li>
+              <li><a href='/img-to-base64'>Image to base64</a></li>
+              <li><a href='/socket-io'>socket-io</a></li>
+              <li><a href='/sort-drag-drop'>sort-drag-drop</a></li>
           </ul>
       );
     }

@@ -34,4 +34,8 @@ $ npm start
     in sync with the current route.
 
 ==============My NOTES:
-
+# Manual Modules & Functions used:
+1. deep-get-set   : Set and get values on objects via dot-notation strings.
+2. bitly          : create short link with 3rd Bitly Parner
+3. deep-trim-node : Recursively String.trim() object properties of type String.
+4. sequelize      : execute database musql, slisql ...

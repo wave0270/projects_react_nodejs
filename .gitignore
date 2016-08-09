@@ -16,5 +16,6 @@ npm-debug.log.*
 README.md~
 *.sw?
 !*.swf
+*.~
 
 # manual:

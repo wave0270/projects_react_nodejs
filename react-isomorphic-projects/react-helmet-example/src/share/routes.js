@@ -14,10 +14,16 @@ import ConfigPage from './pages/SocialConfigPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 /*test page*/
-import ReactCircleLife from './test/ReactCircleLife';
-import GridDragDrop from './test/GridDragDrop';
-import GridDragDrop2 from './test/GridDragDrop2';
-import FetchContent from './test/FetchContent';
+import ReactCircleLife  from './test/ReactCircleLife';
+import GridDragDrop     from './test/GridDragDrop';
+import GridDragDropDashboard    from './test/drag-n-drop/Main';
+import FetchContent     from './test/FetchContent';
+import Sequelize        from './test/Sequelize';
+import ImgToBase64      from './test/ImgToBase64';
+import Socketio         from './test/Socketio';
+import SortDragDrop     from './test/SortDragDrop';
+
+/**/
 
 /* create a group of routes with nesting */
 let routes = (
@@ -36,8 +42,12 @@ let routes = (
 
         <Router.Route name="test-react-circle-life" handler={ReactCircleLife} />
         <Router.Route name="test-grid-drag-drop"  handler={GridDragDrop} />
-        <Router.Route name="test-grid-drag-drop-2"  handler={GridDragDrop2} />
+        <Router.Route name="test-grid-drag-drop-dashboard"  handler={GridDragDropDashboard} />
         <Router.Route name="fetch-content"  handler={FetchContent} />
+        <Router.Route name="sequelize"  handler={Sequelize} />
+        <Router.Route name="img-to-base64"  handler={ImgToBase64} />
+        <Router.Route name="socket-io"  handler={Socketio} />
+        <Router.Route name="sort-drag-drop"  handler={SortDragDrop} />
     </Router.Route>
 );
 
