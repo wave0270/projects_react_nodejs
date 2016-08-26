@@ -19,75 +19,12 @@ export default React.createClass({
   },
   getInitialState: function(){
     return {
-      isClient: false,
-      sortList: EXAMPLE_DATA
+      sortList: EXAMPLE_DATA,
     };
   },
 
   componentDidMount: function(){
     console.log('componentDidMount')
-    if(window && !this.state.isClient){
-      Sortable = require('sortablejs') ;
-      Sortable.create(sortTrue, {
-        group: "sorting",
-        sort: true,
-        animation: 150,
-        // setData: function (dataTransfer, dragEl) {
-        //     dataTransfer.setData('Text', dragEl.textContent);
-        // },
-
-        // dragging started
-        onStart: function (/**Event*/evt) {
-            evt.oldIndex;  // element index within parent
-        },
-
-        // dragging ended
-        onEnd: function (/**Event*/evt) {
-          console.log(evt)
-            evt.oldIndex;  // element's old index within parent
-            evt.newIndex;  // element's new index within parent
-        },
-
-        // Element is dropped into the list from another list
-        onAdd: function (/**Event*/evt) {
-            var itemEl = evt.item;  // dragged HTMLElement
-            evt.from;  // previous list
-            // + indexes from onEnd
-        },
-
-        // Changed sorting within list
-        onUpdate: function (/**Event*/evt) {
-            var itemEl = evt.item;  // dragged HTMLElement
-            // + indexes from onEnd
-        },
-
-        // Called by any change to the list (add / update / remove)
-        onSort: function (/**Event*/evt) {
-            // same properties as onUpdate
-        },
-
-        // Element is removed from the list into another list
-        onRemove: function (/**Event*/evt) {
-            // same properties as onUpdate
-        },
-
-        // Attempt to drag a filtered element
-        onFilter: function (/**Event*/evt) {
-            var itemEl = evt.item;  // HTMLElement receiving the `mousedown|tapstart` event.
-        },
-
-        // Event when you move an item in the list or between lists
-        onMove: function (/**Event*/evt) {
-            // Example: http://jsbin.com/tuyafe/1/edit?js,output
-            evt.dragged; // dragged HTMLElement
-            evt.draggedRect; // TextRectangle {left, top, right и bottom}
-            evt.related; // HTMLElement on which have guided
-            evt.relatedRect; // TextRectangle
-            // return false; — for cancel
-        }
-      });
-      this.state.isClient = true;
-    }
   },
 
   addNew: function(){
@@ -105,9 +42,43 @@ export default React.createClass({
     this.setState(this.state);
   },
 
+  handleValue: function(id,e){
+    for(var i=0; i<this.state.sortList.length; i++){
+      if(this.state.sortList[i].id == id){
+        this.state.sortList[i].status = e.target.value
+        break;
+      }
+    }
+    this.setState(this.state);
+  },
+
+  dragStart: function(index, event) {
+    console.log('dragStart')
+    this.state.dragIndex = index;
+  },
+
+  dragging: function(index, event) {
+    console.log('dragging')
+  },
+
+  allowDrop: function(index, event) {
+    event.preventDefault();
+    this.setState({dropIndex: index})
+    console.log('allowDrop')
+  },
+
+  drop: function(index, event) {
+    event.preventDefault();
+    var temp = Object.assign({}, this.state.sortList[this.state.dragIndex]);
+    this.state.sortList[this.state.dragIndex] = this.state.sortList[index];
+    this.state.sortList[index] = temp;
+    this.setState({dropIndex: 'df'})
+    console.log('drop')
+  },
+
+
   render: function() {
     console.log("render sort")
-    console.log(this.state.sortList)
     return (
       <div className="w-pages">
         <Helmet
@@ -138,26 +109,26 @@ export default React.createClass({
                     <div id="sortTrue" className="list-group">
                       {this.state.sortList && this.state.sortList.map(function(item,i){
                         return(
-                          <div key={'item-sort-'+i} className="list-group-item">
-                            <div className="row list-content-management">
+                          <div onDrop={this.drop.bind(this,i)} onDragOver={this.allowDrop.bind(this,i)} style={i==this.state.dropIndex? {background:'yellow'}:{}} key={'item-sort-'+i} className="list-group-item">
+                            <div onDragStart={this.dragStart.bind(this,i)} onDrag={this.dragging.bind(this,i)} draggable={true} className="row list-content-management">
                               <div className="col-md-4">
                                 <span className="glyphicon fa fa-bars"></span>
                                 <span className="content-management">{item.name}</span>
                               </div>
                               <div className="col-md-4">
-                                <select className="form-control">
-                                    <option value="1">Draft</option>
-                                    <option value="2">Published</option>
-                                    <option value="3">Breaking</option>
-                                    <option value="">Scheduled</option>
+                                <select value={item.status} onChange={this.handleValue.bind(this,item.id)} className="form-control">
+                                    <option value="Draft">Draft</option>
+                                    <option value="Published">Published</option>
+                                    <option value="Breaking">Breaking</option>
+                                    <option value="Scheduled">Scheduled</option>
                                 </select>
                               </div>
                               <div className="col-md-3">
                                 <select className="form-control">
-                                    <option value="1">Now</option>
-                                    <option value="2">Today</option>
-                                    <option value="3">Next 7 Days</option>
-                                    <option value="">Dark</option>
+                                    <option value="Now">Now</option>
+                                    <option value="Today">Today</option>
+                                    <option value="Next 7 Days">Next 7 Days</option>
+                                    <option value="Dark">Dark</option>
                                 </select>
                               </div>
                               <div className="col-md-1 text-right">
@@ -169,7 +140,7 @@ export default React.createClass({
                       },this)}
                     </div>
                     <button onClick={this.addNew} className="btn btn-primary">Add new</button>
-
+                    <span>old: {this.state.dragIndex} </span><span> - new: {this.state.dropIndex}</span>
                 </div>
                 {/*End Content-area****************/}
 

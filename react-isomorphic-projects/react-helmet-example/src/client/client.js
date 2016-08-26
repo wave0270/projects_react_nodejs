@@ -11,6 +11,6 @@ window.React = React;
 let routes = require('../share/routes');
 
 Router.run(routes, Router.HistoryLocation, function(Root, state) {
-    React.render(<Root />, document.getElementById('app'));
+    React.render(<Root isClient={true} />, document.getElementById('app'));
     console.log('Rendered app on client');
 });

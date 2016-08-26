@@ -77,7 +77,6 @@ app.get('*', function(req, res) {
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
                     <link rel="stylesheet" href="static/css/style.css">
-                      <script src="/socket.io/socket.io.js"></script>
 
                     <!--ALL PAGE 2324-->
                     <meta charset="utf-8" />
@@ -92,7 +91,7 @@ app.get('*', function(req, res) {
                 </head>
                 <body>
                     <div id="app">${renderedBody}</div>
-                    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
                     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
                     <script src="static/client.js"></script>
                 </body>
@@ -127,6 +126,7 @@ io.on('connection', function(client) {
        /*send to specified client which send 'messages' event*/
        client.emit('broad', data);
        /*send to all client which listening 'broad' event*/
+       console.log(data)
        client.broadcast.emit('broad',data);
     });
 });

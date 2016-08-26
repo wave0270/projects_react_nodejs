@@ -20,6 +20,7 @@ export default React.createClass( {
 		return {
 			url: 'http://khoahoc.tv/day-la-7-hang-o-tiem-nang-nhat-nguoi-ngoai-hanh-tinh-co-the-dang-tru-ngu-73181',
 			isLoading: false,
+			errMessage: ''
 		};
 	},
 
@@ -41,6 +42,19 @@ export default React.createClass( {
 			url: this.state.url
 		};
 		API.post('/read-meta-tag', params, function(err,res){
+			if(res){
+				this.setState({isLoading: false, html: res.body.body, dataStr: JSON.stringify(res.body.meta)});
+			}
+		}.bind(this));
+	},
+
+	callGetWithJsdom: function(){
+		this.setState({isLoading: true});
+		var params = {
+			url: this.state.url
+		};
+		API.post('/read-meta-tag-with-jsdom', params, function(err,res){
+			console.log(res)
 			if(res){
 				this.setState({isLoading: false, html: res.body.body, dataStr: JSON.stringify(res.body.meta)});
 			}
@@ -109,6 +123,7 @@ export default React.createClass( {
 						<div className="btn-group">
 							<button onClick={this.callGet} className="btn btn-info">Get Content by: lets-get-meta</button>
 							<button onClick={this.callGetFetch} className="btn btn-success">Get Content by: fetch</button>
+							<button onClick={this.callGetWithJsdom} className="btn btn-success">Get Content + Jsdom</button>
 							<button onClick={this.getGeoLocation} className="btn btn-info">Get Location</button>
 							<button onClick={this.callReadFile} className="btn btn-success">Read file</button>
 						</div>

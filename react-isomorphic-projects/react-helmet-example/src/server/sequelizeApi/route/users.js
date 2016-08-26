@@ -3,17 +3,33 @@
  */
 var express = require('express'),
   bodyParser = require('body-parser'),
-  // superagent = require('superagent'),
   app = express();
 
 var models  = require('../models');
 
-
+/**users table***********************/
 app.post('/users/create', function(req, res) {
   models.User.create({
     username: req.body.username
-  }).then(function() {
-    res.redirect('/');
+  }).then(function(data) {
+    res.json({data: data})
+  });
+});
+
+app.post('/users/update', function(req, res) {
+  models.User.update({
+    where: {
+      id: req.body.id
+    }
+  }).then(function(data) {
+    res.json({data: data})
+  });
+});
+
+app.post('/users/listAll', function(req, res) {
+  models.User.findAll().then(function(data){
+    res.json({data: data})
+    res.end();
   });
 });
 
@@ -22,10 +38,12 @@ app.post('/users/:user_id/destroy', function(req, res) {
     where: {
       id: req.params.user_id
     }
-  }).then(function() {
-    res.redirect('/');
+  }).then(function(data) {
+    res.json({data: data});
   });
 });
+
+/**tasks table***********************/
 
 app.post('/users/:user_id/tasks/create', function(req, res) {
   models.Task.create({
@@ -45,5 +63,8 @@ app.post('/users/:user_id/tasks/:task_id/destroy', function(req, res) {
     res.redirect('/');
   });
 });
+
+
+
 
 module.exports = app;

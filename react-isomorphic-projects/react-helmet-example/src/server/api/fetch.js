@@ -20,36 +20,32 @@ app.post('/read-meta-tag', function(req, res) {
   superagent
     .get(req.body.url)
     .end(function(err, data){
-      console.log(err)
           if(!err){
-            if(data.text.indexOf('Invalid redirect URI')>-1){
-              res.json({meta: 's',body: data.text} );
-            }else{
-              res.json({meta: 's',body: 'Client Id error'} );
-            }
-
-            // var meta=getMeta(data.text);
-            // // res.json({meta: meta, body: data.text } )
-            // jsdom.env(
-            //   data.text,
-            //   ["http://code.jquery.com/jquery.js"],
-            //   function (err, window) {
-            //     res.json({meta: meta, body: window.$(".content.post-detail")[0].outerHTML } );
-            //     // res.end();
-            //   }
-            // );
-
-            /*jsdom exaple*/
-            // jsdom.env(
-            //   '<p><a class="the-link" href="https://github.com/tmpvar/jsdom">jsdom! nguyen thai binh</a><a id="the-link-2" href="https://github.com/tmpvar/jsdom">nguyen thai binh</a></p>',
-            //   ["http://code.jquery.com/jquery.js"],
-            //   function (err, window) {
-            //     res.json({meta: meta, body: window.$("#the-link-2")[0].outerHTML } );
-            //   }
-            // );
-
+            var meta=getMeta(data.text);
+            res.json({meta: meta, body: data.text } );
           }else{
-            res.json({meta: 's',body: JSON.stringify(err)} );
+            res.json({meta: 'none',body: JSON.stringify(err)} );
+          }
+
+    });
+});
+app.post('/read-meta-tag-with-jsdom', function(req, res) {
+  superagent
+    .get(req.body.url)
+    .end(function(err, data){
+          if(!err){
+            /*jsdom exaple*/
+            jsdom.env(
+              data.text,
+              // '<p><a class="the-link" href="https://github.com/tmpvar/jsdom">jsdom! nguyen thai binh</a><a id="the-link-2" href="https://github.com/tmpvar/jsdom">nguyen thai binh</a></p>',
+              ["http://code.jquery.com/jquery.js"],
+              function (err, window) {
+                console.log(window.$("img"))
+                res.json({meta: null, body: window.$("img")[0]? window.$("img")[0].src : 'no image link' } );
+              }
+            );
+          }else{
+            res.json({meta: 'none',body: JSON.stringify(err)} );
           }
 
     });

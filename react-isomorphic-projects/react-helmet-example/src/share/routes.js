@@ -15,13 +15,13 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 /*test page*/
 import ReactCircleLife  from './test/ReactCircleLife';
-import GridDragDrop     from './test/GridDragDrop';
 import GridDragDropDashboard    from './test/drag-n-drop/Main';
+import SortDragDrop     from './test/SortDragDrop';
 import FetchContent     from './test/FetchContent';
 import Sequelize        from './test/Sequelize';
 import ImgToBase64      from './test/ImgToBase64';
 import Socketio         from './test/Socketio';
-import SortDragDrop     from './test/SortDragDrop';
+import FileManager      from './test/FileManager';
 
 /**/
 
@@ -32,6 +32,7 @@ let routes = (
         <Router.Route name="login" path="login" handler={Login} />
         <Router.Route name="register" path="register" handler={Register} />
         <Router.Route name="about" handler={About} />
+
         <Router.Route name="social-connect" path="social-connect" handler={ConnectPage} />
         <Router.Route name="social-connect-result" path="social-connect-result" handler={ConnectPageResult} />
         <Router.Route name="social-config" path="social-config" handler={ConfigPage} />
@@ -41,13 +42,13 @@ let routes = (
         </Router.Route>
 
         <Router.Route name="test-react-circle-life" handler={ReactCircleLife} />
-        <Router.Route name="test-grid-drag-drop"  handler={GridDragDrop} />
         <Router.Route name="test-grid-drag-drop-dashboard"  handler={GridDragDropDashboard} />
         <Router.Route name="fetch-content"  handler={FetchContent} />
         <Router.Route name="sequelize"  handler={Sequelize} />
         <Router.Route name="img-to-base64"  handler={ImgToBase64} />
         <Router.Route name="socket-io"  handler={Socketio} />
         <Router.Route name="sort-drag-drop"  handler={SortDragDrop} />
+        <Router.Route name="file-manager"  handler={FileManager} />
     </Router.Route>
 );
 

@@ -49,8 +49,7 @@ let Home = React.createClass({
                       {"rel": "apple-touch-icon", "href": "https://k14.vcmedia.vn/channel-icon/kenh14-57.png", "sizes": "57x57"},
                       {"rel": "icon", "href": "https://k14.vcmedia.vn/channel-icon/kenh14-32.png", "sizes": "32x32"},
                       /*css style*/
-                      {"rel": "stylesheet", "href": "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"},
-                      {"rel": "stylesheet", "href": "/static/css/style.css"}
+                      {"rel": "stylesheet", "href": ""}
                   ]}
                   script={[
                     {"src": "", "type": "text/javascript"},
