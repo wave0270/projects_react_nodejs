@@ -17,5 +17,6 @@ README.md~
 *.sw?
 !*.swf
 *.~
+.happypack
 
 # manual:
