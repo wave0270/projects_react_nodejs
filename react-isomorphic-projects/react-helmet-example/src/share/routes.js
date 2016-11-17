@@ -13,11 +13,23 @@ import ConfigPage from './pages/SocialConfigPage';
 /*authen*/
 import Login from './pages/Login';
 import Register from './pages/Register';
+/*crawl project*/
+import CrawlData  from './pages/CrawlData';
 /*test page*/
-import ReactCircleLife from './test/ReactCircleLife';
-import GridDragDrop from './test/GridDragDrop';
-import GridDragDrop2 from './test/GridDragDrop2';
-import FetchContent from './test/FetchContent';
+import ReactCircleLife        from './test/ReactCircleLife';
+import ReactCircleLifeES6     from './test/ReactCircleLifeES6';
+import GridDragDropDashboard  from './test/GridDragDropDashboard/Main';
+import SortDragDrop           from './test/SortDragDrop';
+import DnDDragDrop            from './test/DnDDragDrop';
+import FetchContent           from './test/FetchContent';
+import Sequelize              from './test/Sequelize';
+import ImgToBase64            from './test/ImgToBase64';
+import Socketio               from './test/Socketio';
+import FileManager            from './test/FileManager';
+import UILibrary              from './test/UILibrary';
+import ES6Com                 from './test/ES6Com';
+
+/**/
 
 /* create a group of routes with nesting */
 let routes = (
@@ -26,6 +38,7 @@ let routes = (
         <Router.Route name="login" path="login" handler={Login} />
         <Router.Route name="register" path="register" handler={Register} />
         <Router.Route name="about" handler={About} />
+
         <Router.Route name="social-connect" path="social-connect" handler={ConnectPage} />
         <Router.Route name="social-connect-result" path="social-connect-result" handler={ConnectPageResult} />
         <Router.Route name="social-config" path="social-config" handler={ConfigPage} />
@@ -33,11 +46,21 @@ let routes = (
             <Router.DefaultRoute name="all" handler={BlogPosts} />
             <Router.Route name="news-tag" path="view/:tag" handler={BlogPosts} />
         </Router.Route>
-
+        {/*crawl project*/}
+        <Router.Route name="crawl-data" handler={CrawlData} />
+        {/*test*/}
         <Router.Route name="test-react-circle-life" handler={ReactCircleLife} />
-        <Router.Route name="test-grid-drag-drop"  handler={GridDragDrop} />
-        <Router.Route name="test-grid-drag-drop-2"  handler={GridDragDrop2} />
+        <Router.Route name="test-react-circle-life-es6" handler={ReactCircleLifeES6} />
+        <Router.Route name="test-grid-drag-drop-dashboard"  handler={GridDragDropDashboard} />
         <Router.Route name="fetch-content"  handler={FetchContent} />
+        <Router.Route name="sequelize"  handler={Sequelize} />
+        <Router.Route name="img-to-base64"  handler={ImgToBase64} />
+        <Router.Route name="socket-io"  handler={Socketio} />
+        <Router.Route name="sort-drag-drop"  handler={SortDragDrop} />
+        <Router.Route name="dnd-drag-drop"  handler={DnDDragDrop} />
+        <Router.Route name="file-manager"  handler={FileManager} />
+        <Router.Route name="ui-library"  handler={UILibrary} />
+        <Router.Route name="ES6Com"  handler={ES6Com} />
     </Router.Route>
 );
 

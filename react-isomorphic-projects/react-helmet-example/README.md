@@ -34,4 +34,11 @@ $ npm start
     in sync with the current route.
 
 ==============My NOTES:
-
+# Manual Modules & Functions used:
+1. deep-get-set   : Set and get values on objects via dot-notation strings.
+2. bitly          : API - create short link with 3rd Bitly Parner
+3. deep-trim-node : Recursively String.trim() object properties of type String.
+4. sequelize      : DATABASE - execute database musql, slisql ...
+5. react-datetime : UI - for select date & select time - https://www.npmjs.com/package/react-datetime
+6. moment         : UI - format date - http://momentjs.com/docs/
+7. happypack      : SYSTEM - webpack speed booster, makes you happy!

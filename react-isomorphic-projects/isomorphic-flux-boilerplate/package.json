@@ -41,7 +41,7 @@
     "alt-container": "^1.0.0",
     "alt-utils": "^1.0.0",
     "autoprefixer": "^6.1.0",
-    "axios": "^0.11.0",
+    "axios": "^0.12.0",
     "babel": "^6.5.2",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
@@ -95,7 +95,7 @@
     "webpack": "^1.12.6"
   },
   "devDependencies": {
-    "ava": "^0.14.0",
+    "ava": "^0.15.2",
     "babel-plugin-react-transform": "^2.0.2",
     "babel-plugin-transform-react-inline-elements": "^6.8.0",
     "babel-plugin-transform-react-pure-class-to-function": "^1.0.1",

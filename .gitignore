@@ -17,5 +17,7 @@ npm-debug.log
 README.md~
 *.sw?
 !*.swf
+*.~
+.happypack
 
 # manual:

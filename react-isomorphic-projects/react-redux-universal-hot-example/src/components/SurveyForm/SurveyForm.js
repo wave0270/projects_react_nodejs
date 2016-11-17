@@ -38,8 +38,6 @@ class SurveyForm extends Component {
     console.log('componentWillMount')
   }
   
-  componentWillMount:
-
   render() {
     const {
       asyncValidating,
