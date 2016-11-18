@@ -24,6 +24,14 @@ export default {
     'routes.guides': '/guides',
     'routes.login': '/login',
     'routes.profile': '/profile/:seed',
-    'routes.account': '/account'
+    'routes.account': '/account',
+    /*home*/
+    'routes.home': '/home',
+    'home.page-title': 'Home',
+    'home.title': 'Some random home',
+    'home.email': 'Email address home',
+    'home.actions': 'Actions home',
+    'home.add': 'Add random home',
+    'home.profile': 'Profile home'
   }
 };
