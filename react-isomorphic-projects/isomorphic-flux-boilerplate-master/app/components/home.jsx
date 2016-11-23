@@ -51,6 +51,8 @@ class Home extends Component {
   render() {
     const { collection } = this.props
     const { i18n } = this.context
+    console.log('========collection')
+    console.log(collection)
     return (
       <div>
         <h1 className='text-center'>

@@ -1,3 +1,5 @@
+// import request from 'superagent'
+
 class HomeActions {
 
   constructor() {
@@ -19,9 +21,28 @@ class HomeActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: '/users' })
+
+          const response = await alt.request({ url: '/s-users' })
           this.indexSuccess(response)
+
+          // console.log('__dirname:', __dirname)
+          // const response = [ { id: 889 } ]
+
+          // request.get('api/s-users')
+          //   .set('Accept', 'application/json')
+          //   .end((error, response) => {
+          //     if (!error) {
+          //       console.log(response)
+          //       this.indexSuccess(response)
+          //     } else {
+          //       console.log('--------------fail')
+          //       console.log(error)
+          //       this.indexFail({ error })
+          //     }
+          //   })
         } catch (error) {
+          console.log('--------------fail')
+          console.log(error)
           this.indexFail({ error })
         }
         alt.getActions('requests').stop()

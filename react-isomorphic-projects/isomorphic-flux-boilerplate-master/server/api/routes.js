@@ -1,4 +1,14 @@
 import { users } from './data.json'
+import models from './sequelize/models'
+var data;
+models.User.findAll({
+  include: [ models.Task ]
+}).then(function(usersData) {
+  console.log('-----------/s-users')
+  console.log(usersData)
+  data = usersData
+});
+
 
 const simplifyUsers = (collection) => collection
   .map(({ user, seed }) => ({ ...user, seed }))
@@ -18,6 +28,16 @@ function routes(router) {
     } else {
       ctx.body = result
     }
+  })
+
+  router.get('/s-users', async function(ctx) {
+    models.User.findAll({
+      include: [ models.Task ]
+    }).then((usersData) => {
+      console.log('-----------/api/s-users')
+      // ctx.response.json({data: usersData})
+      ctx.body = simplifyUsers(users.slice(0, 3))
+    });
   })
 }
 
