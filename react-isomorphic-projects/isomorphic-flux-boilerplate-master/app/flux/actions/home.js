@@ -21,40 +21,21 @@ class HomeActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-
-          const response = await alt.request({ url: '/s-users' })
+          const response = await alt.request({ url: '/sql/users' })
           this.indexSuccess(response)
-
-          // console.log('__dirname:', __dirname)
-          // const response = [ { id: 889 } ]
-
-          // request.get('api/s-users')
-          //   .set('Accept', 'application/json')
-          //   .end((error, response) => {
-          //     if (!error) {
-          //       console.log(response)
-          //       this.indexSuccess(response)
-          //     } else {
-          //       console.log('--------------fail')
-          //       console.log(error)
-          //       this.indexFail({ error })
-          //     }
-          //   })
         } catch (error) {
-          console.log('--------------fail')
-          console.log(error)
           this.indexFail({ error })
         }
         alt.getActions('requests').stop()
       })
   }
 
-  show(seed) {
+  show(id) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: `/users/${seed}` })
+          const response = await alt.request({ url: `/sql/users/${id}` })
           this.showSuccess(response)
         } catch (error) {
           this.showFail({ error })

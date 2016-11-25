@@ -11,9 +11,11 @@ import responseTime from 'koa-response-time'
 import Router from 'koa-router'
 import convert from 'koa-convert'
 
-import router from './router'
+import router from './router' 
+import routerUser from './api/sequelize/routes/users' 
+
 import config from '../internals/config/private'
-import { apiPrefix } from '../internals/config/public'
+import { apiPrefix, apiSqlPrefix } from '../internals/config/public'
 
 const app = new Koa()
 const env = process.env.NODE_ENV || 'development'
@@ -67,6 +69,8 @@ app.use(apiRouter.routes())
 
 // mount react-router
 app.use(router)
+// mount react-router
+app.use(routerUser)
 
 app.listen(config.port)
 

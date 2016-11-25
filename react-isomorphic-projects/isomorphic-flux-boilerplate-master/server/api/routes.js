@@ -1,13 +1,5 @@
 import { users } from './data.json'
 import models from './sequelize/models'
-var data;
-models.User.findAll({
-  include: [ models.Task ]
-}).then(function(usersData) {
-  console.log('-----------/s-users')
-  console.log(usersData)
-  data = usersData
-});
 
 
 const simplifyUsers = (collection) => collection
@@ -30,15 +22,30 @@ function routes(router) {
     }
   })
 
-  router.get('/s-users', async function(ctx) {
-    models.User.findAll({
+  /* Start sequelize mySQL */
+  router.get('/sql/users', async function(ctx) {
+    console.log('/sql/users')
+    /** get all*/
+    await models.User.findAll({
       include: [ models.Task ]
-    }).then((usersData) => {
-      console.log('-----------/api/s-users')
-      // ctx.response.json({data: usersData})
-      ctx.body = simplifyUsers(users.slice(0, 3))
+    }).then((usersArr) => {
+      ctx.body = usersArr;
     });
   })
+  router.get('/sql/users/:id', async function(ctx) {
+    console.log('/sql/users/:id')
+    /** get one*/
+    const { id } = ctx.params
+
+    await models.User.find({
+      where: {
+        id: id
+      }
+    }).then((user) => {
+      ctx.body = user;
+    });
+  })
+  /* End sequelize mySQL */
 }
 
 // can't export directly function, run into const issue

@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import connect from 'connect-alt'
 import { Link } from 'react-router'
 
+import superagent from 'superagent'
+
 import { replaceParams } from 'utils/localized-routes'
 
 @connect(({ home: { collection } }) => ({ collection }))
@@ -26,16 +28,26 @@ class Home extends Component {
     flux.getActions('home').remove(index)
   }
 
-  renderUser = (user: { seed: string, email: string }, index: number) => {
+  clickTest() {
+    console.log('res')
+    superagent.get('/s-users')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        console.log(res)
+      })
+  }
+
+  renderUser = (user: { id: number, email: string }, index: number) => {
     const { i18n } = this.context
-    const { seed, email } = user
-    const profileRoute: string = replaceParams(i18n('routes.profile'), { seed })
+    const { id, email } = user
+    const profileRoute: string = replaceParams(i18n('routes.profile'), { id })
 
     return (
       <tr className='user--row' key={ index }>
         <td>{ email }</td>
         <td className='text-center'>
-          <Link to={ profileRoute }>{ i18n('home.profile') }</Link>
+          <p>{ user.profile }</p>
+          <Link to={ profileRoute }>{ i18n('user.profile') }</Link>
         </td>
         <td className='text-center'>
           <button
@@ -56,8 +68,9 @@ class Home extends Component {
     return (
       <div>
         <h1 className='text-center'>
-          { i18n('home.title') }
+          BBBBBB dddddd
         </h1>
+        <button onClick={ () => this.clickTest('test') }>BBBBBB test</button>
         <table className='app--users'>
           <thead>
             <tr>

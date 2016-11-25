@@ -1,18 +1,20 @@
+// var express = require('express');
+// var app = express();
+// app.post('/social/profiles', function(req, res) {
+
+
 var models  = require('../models');
 var express = require('express');
-var router  = express.Router();
+var router  = express();
 
 router.get('/s-users', function(req, res) {
+  console.log('--------------/s-users')
   models.User.findAll({
     include: [ models.Task ]
   }).then(function(users) {
     console.log('=========users')
     console.log(user)
     res.json(users)
-    // res.render('index', {
-    //   title: 'Express',
-    //   users: users
-    // });
   });
 });
 

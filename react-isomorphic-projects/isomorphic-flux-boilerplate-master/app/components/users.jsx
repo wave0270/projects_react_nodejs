@@ -55,7 +55,7 @@ class Users extends Component {
     return (
       <div>
         <h1 className='text-center'>
-          { i18n('users.title') }
+          { i18n('users.title') } hghg
         </h1>
         <table className='app--users'>
           <thead>
