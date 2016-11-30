@@ -32,6 +32,14 @@ export default {
     'home.email': 'Email address home',
     'home.actions': 'Actions home',
     'home.add': 'Add random home',
-    'home.profile': 'Profile home'
+    'home.profile': 'Profile',
+    /*news*/
+    'routes.news-list': '/news-list',
+    'news.page-title': 'News',
+    'news.title': 'Some random news',
+    'news.email': 'Email address news',
+    'news.actions': 'Actions news',
+    'news.add': 'Add random news',
+    'news.profile': 'Profile'
   }
 };

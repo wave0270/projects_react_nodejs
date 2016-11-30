@@ -5,9 +5,9 @@
 
 var models  = require('../models');
 var express = require('express');
-var router  = express();
+var router  = express.Router();
 
-router.get('/s-users', function(req, res) {
+router.get('/s-users-all', function(req, res) {
   console.log('--------------/s-users')
   models.User.findAll({
     include: [ models.Task ]

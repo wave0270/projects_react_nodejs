@@ -19,7 +19,7 @@ class UsersActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: '/users' })
+          const response = await alt.request({ url: '/users-static' })
           this.indexSuccess(response)
         } catch (error) {
           this.indexFail({ error })
@@ -33,7 +33,7 @@ class UsersActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: `/users/${seed}` })
+          const response = await alt.request({ url: `/users-static/${seed}` })
           this.showSuccess(response)
         } catch (error) {
           this.showFail({ error })

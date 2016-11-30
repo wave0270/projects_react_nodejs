@@ -28,10 +28,18 @@ export default {
     /*home*/
     'routes.home': '/home',
     'home.page-title': 'Home',
-    'home.title': 'Some random home',
-    'home.email': 'Email address home',
-    'home.actions': 'Actions home',
+    'home.title': 'Some random',
+    'home.email': 'Email address',
+    'home.actions': 'Actions',
     'home.add': 'Add random home',
-    'home.profile': 'Profile home'
+    'home.profile': 'Profile',
+    /*news*/
+    'routes.news-list': '/news-list',
+    'news.page-title': 'News',
+    'news.title': 'Some random news',
+    'news.email': 'Email address news',
+    'news.actions': 'Actions news',
+    'news.add': 'Add random news',
+    'news.profile': 'Profile'
   }
 };

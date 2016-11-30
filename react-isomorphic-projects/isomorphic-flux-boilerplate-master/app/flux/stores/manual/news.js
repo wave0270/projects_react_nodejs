@@ -1,15 +1,15 @@
-class UsersStore {
+class NewsStore {
 
   constructor() {
-    this.bindActions(this.alt.getActions('users'))
+    this.bindActions(this.alt.getActions('news'))
 
     this.collection = []
     this.error = null
   }
 
 
-  onIndexSuccess(users: Object[]) {
-    this.collection = users
+  onIndexSuccess(news: Object[]) {
+    this.collection = news
     this.error = null
   }
 
@@ -17,15 +17,15 @@ class UsersStore {
     this.error = error
   }
 
-  onShowSuccess(user: { seed: string }) {
+  onShowSuccess(news: { id: string }) {
     const index = this.collection
-      .findIndex(({ seed }) => seed === user.seed)
+      .findIndex(({ id }) => id === news.id)
 
     if (index > -1) {
       this.collection = this.collection
-        .map((u, idx) => idx === index ? user : u)
+        .map((u, idx) => idx === index ? news : u)
     } else {
-      this.collection = [ ...this.collection, user ]
+      this.collection = [ ...this.collection, news ]
     }
 
     this.error = null
@@ -36,11 +36,10 @@ class UsersStore {
   }
 
   onRemove(index: number) {
-    console.log('onremove')
     this.collection = this.collection
       .filter((user, idx) => idx !== index)
   }
 
 }
 
-export default UsersStore
+export default NewsStore

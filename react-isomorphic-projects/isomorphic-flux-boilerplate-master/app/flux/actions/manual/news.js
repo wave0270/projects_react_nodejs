@@ -1,6 +1,6 @@
 // import request from 'superagent'
 
-class HomeActions {
+class NewsActions {
 
   constructor() {
     this.generateActions(
@@ -21,7 +21,7 @@ class HomeActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: '/sql/users' })
+          const response = await alt.request({ url: '/sql/news' })
           this.indexSuccess(response)
         } catch (error) {
           this.indexFail({ error })
@@ -35,7 +35,21 @@ class HomeActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: `/sql/users/${id}` })
+          const response = await alt.request({ url: `/sql/news/${id}` })
+          this.showSuccess(response)
+        } catch (error) {
+          this.showFail({ error })
+        }
+        alt.getActions('requests').stop()
+      })
+  }
+
+  update(id) {
+    return (dispatch, alt) =>
+      alt.resolve(async () => {
+        try {
+          alt.getActions('requests').start()
+          const response = await alt.request({ url: `/sql/news/${id}` })
           this.showSuccess(response)
         } catch (error) {
           this.showFail({ error })
@@ -46,4 +60,4 @@ class HomeActions {
 
 }
 
-export default HomeActions
+export default NewsActions

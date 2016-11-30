@@ -27,6 +27,11 @@ app.use(convert(logger()))
 // various security headers
 app.use(helmet())
 
+//make ctx.request.body for poat API:
+app.use(convert(require('koa-bodyparser')({
+  onerror: (err, ctx) => { ctx.throw('Invalid payload', 422); }
+})));
+
 if (env === 'production') {
   // set debug env to `koa` only
   // must be set programmaticaly for windows

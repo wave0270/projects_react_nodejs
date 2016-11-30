@@ -2,12 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import connect from 'connect-alt'
 import { Link } from 'react-router'
 
-import superagent from 'superagent'
-
 import { replaceParams } from 'utils/localized-routes'
 
-@connect(({ home: { collection } }) => ({ collection }))
-class Home extends Component {
+@connect(({ news: { collection } }) => ({ collection }))
+class News extends Component {
 
   static propTypes = { collection: PropTypes.array.isRequired }
 
@@ -19,39 +17,36 @@ class Home extends Component {
   componentWillMount() {
     const { flux, i18n } = this.context
 
-    flux.getActions('helmet').update({ title: i18n('home.page-title') })
-    flux.getActions('home').index()
+    flux.getActions('helmet').update({ title: i18n('news.page-title') })
+    flux.getActions('news').index()
   }
 
   handleRemove(index: number) {
     const { flux } = this.context
-    flux.getActions('home').remove(index)
+    flux.getActions('news').remove(index)
   }
 
-  clickTest() {
-    const obj = {
-      name: 'new'
-    }
-    console.log(obj)
-    superagent.post('/api/sql/users-new')
-      .set('Accept', 'application/json')
-      .send(obj)
-      .end((err, res) => {
-        console.log(res)
-      })
-    /* get list */
-    // superagent.get('/api/sql/news')
-    //   .set('Accept', 'application/json')
-    //   .end((err, res) => {
-    //     console.log(res)
-    //   })
-    /* get a specific */
-    // superagent.post('/api/sql/users-put')
-    //   .set('Accept', 'application/json')
-    //   .send({ id: 1 })
-    //   .end((err, res) => {
-    //     console.log(res)
-    //   })
+  renderNew = (child, index) => {
+    const { i18n } = this.context
+    const { id, title, image } = child
+    // const profileRoute: string = replaceParams(i18n('routes.profile'), { id })
+
+    return (
+      <tr className='user--row' key={ index }>
+        <td><img src={ image } alt={ title } width='100' height='60' /></td>
+        <td>{ title }</td>
+        <td className='text-center'>
+          <Link to={ `/news-detail/${id}` } >{ i18n('news.profile') }</Link>
+        </td>
+        <td className='text-center'>
+          <button
+            className='user--remove'
+            onClick={ () => this.handleRemove(index, id) }>
+            X
+          </button>
+        </td>
+      </tr>
+    )
   }
 
   renderUser = (user: { seed: string, email: string }, index: number) => {
@@ -63,19 +58,13 @@ class Home extends Component {
       <tr className='user--row' key={ index }>
         <td>{ email }</td>
         <td className='text-center'>
-          <Link to={ profileRoute }>{ i18n('users.profile') }</Link>
+          <Link to={ profileRoute }>{ i18n('news.profile') }</Link>
         </td>
         <td className='text-center'>
           <button
             className='user--remove'
             onClick={ () => this.handleRemove(index) }>
             X
-          </button>
-        </td>
-        <td className='text-center'>
-          <button
-            onClick={ () => this.handleAdd() }>
-            Add
           </button>
         </td>
       </tr>
@@ -85,22 +74,23 @@ class Home extends Component {
   render() {
     const { collection } = this.props
     const { i18n } = this.context
+    console.log('---------------')
+    console.log(collection.length)
 
     return (
       <div>
         <h1 className='text-center'>
-          BBBBBB dddddd
+          { i18n('news.title') }
         </h1>
-        <button onClick={ () => this.clickTest() }>BBBBBB test</button>
         <table className='app--users'>
           <thead>
             <tr>
-              <th> { i18n('home.email') } </th>
-              <th colSpan='2'> { i18n('home.actions') } </th>
+              <th> { i18n('news.email') } </th>
+              <th colSpan='2'> { i18n('news.actions') } </th>
             </tr>
           </thead>
           <tbody>
-            { collection.map(this.renderUser) }
+            { collection.map(this.renderNew) }
           </tbody>
         </table>
       </div>
@@ -109,4 +99,4 @@ class Home extends Component {
 
 }
 
-export default Home
+export default News
