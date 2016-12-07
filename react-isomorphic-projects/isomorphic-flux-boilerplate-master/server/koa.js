@@ -12,10 +12,21 @@ import Router from 'koa-router'
 import convert from 'koa-convert'
 
 import router from './router' 
-import routerUser from './api/sequelize/routes/users' 
-
 import config from '../internals/config/private'
 import { apiPrefix, apiSqlPrefix } from '../internals/config/public'
+/** Manual module */
+import Crawler from './crawl/crawler'
+
+/** set interval*/
+// let interval = setInterval(() => {
+//   console.log('----------------------------')
+//   console.log(Crawler.name)
+//   Crawler.testFunction('new function')
+//   console.log('----------------------------')
+// }, 3000)
+/** end set interval*/
+
+
 
 const app = new Koa()
 const env = process.env.NODE_ENV || 'development'
@@ -74,8 +85,6 @@ app.use(apiRouter.routes())
 
 // mount react-router
 app.use(router)
-// mount react-router
-app.use(routerUser)
 
 app.listen(config.port)
 

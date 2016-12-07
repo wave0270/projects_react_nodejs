@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 
-import Header from 'components/header'
-import Footer from 'components/footer'
+import Header from 'components/layout-default/header'
+import Footer from 'components/layout-default/footer'
 
+/** this.context: flux + store
+ *  this.props: route + location
+*/
 /* istanbul ignore next */
 if (process.env.BROWSER) require('styles/app.css')
 
