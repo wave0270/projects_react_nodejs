@@ -90,34 +90,45 @@ function routes(router) {
   })
 
   router.get('/read-meta-tag-with-jsdom', async function(ctx) {
-    await axios.get('http://truyenyy.com/doc-truyen/dau-pha-thuong-khung/chuong-1174/')
-    .then(function (response) {
-      // console.log(response);
-      let images = ''
-      jsdom.env(
-        response.data,
-        function (err, window) {
-          /** 
-            childDom.parentNode
-            parentNode.tagName
-            window.document.querySelectorAll("div[data-oembed-url]")
-            domTMP.querySelector("iframe").src
-            var div = window.document.createElement('div');
-            bigParentNode.insertBefore(div.firstChild,parent);
-            parentOldDom.removeChild(domTMP);
-          */
-          images = window.document.querySelector("img").src;
-          console.log(ctx)
-          ctx.body = {da: images}
+    let p1 = new Promise(
+        function(resolve, reject) {
+           axios.get('http://truyenyy.com/doc-truyen/dau-pha-thuong-khung/chuong-1174/')
+          .then(function (response) {
+            let images = ''
+            jsdom.env(
+              response.data,
+              function (err, window) {
+                /** 
+                  childDom.parentNode
+                  parentNode.tagName
+                  window.document.querySelectorAll("div[data-oembed-url]")
+                  domTMP.querySelector("iframe").src
+                  var div = window.document.createElement('div');
+                  bigParentNode.insertBefore(div.firstChild,parent);
+                  parentOldDom.removeChild(domTMP);
+                */
+                images = window.document.querySelector("img").src;
+                resolve({data: images});
+              }
+            );
+          }).catch(function (error) {
+            resolve({data: error});
+          })
         }
-      );
-      ctx.body = {da: images}
-      // ctx.res.json({da: images}) 
-    })
-    .catch(function (error) {
-      console.log(error);
-      ctx.body = {da: 'err'}
-    });
+    );
+
+    await p1.then(
+        function(val) {
+            ctx.body = val
+        })
+    .catch(
+        function(reason) {
+            ctx.body = {data: 'err'}
+        });
+
+
+
+    
   })
 
   /* End sequelize mySQL */
