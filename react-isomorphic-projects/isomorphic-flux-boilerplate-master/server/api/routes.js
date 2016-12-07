@@ -1,12 +1,26 @@
 import { users } from './data.json'
 import models from './sequelize/models'
+import axios from 'axios'
+import jsdom from 'jsdom'
 
 
 const simplifyUsers = (collection) => collection
   .map(({ user, seed }) => ({ ...user, seed }))
   .map(({ email, name, seed, picture }) => ({ email, name, seed, picture }))
 
-let NEWS = [];
+/** table configuration */
+const ITEM_LIMIT = 10
+const TABLE_MAP = {
+  users: {
+    table: 'User',
+    limit: ITEM_LIMIT
+  },
+  news: {
+    table: 'news_beauty_tb',
+    limit: 50
+  }
+}
+
 
 function routes(router) {
   router.get('/users-static', async function (ctx) {
@@ -24,81 +38,88 @@ function routes(router) {
   })
 
   /* Start sequelize mySQL */
-  router.get('/sql/users', async function(ctx) {
-    // ctx.body = simplifyUsers(users.slice(0, 10))
+  router.get('/sql/:tb', async function(ctx) {
     /** get all*/
-    await models.User.findAll({
-      offset: 0, limit: 50 
-    }).then((usersArr) => {
-      ctx.body = usersArr;
-    });
-  })
-
-  router.get('/sql/users/:id', async function(ctx) {
-    /** get one*/
-    const { id } = ctx.params
-    await models.User.find({
-      where: {
-        id: id
-      }
-    }).then((user) => {
-      ctx.body = user;
-    });
-  })
-
-  router.post('/sql/users-put', async function(ctx, dataAPI, dataAPIArgs) {
-    const { id } = ctx.request.body
-    await models.User.find({
-      where: {
-        id: id
-      }
-    }).then((user) => {
-      ctx.body = user;
-    });
-  })
-
-  router.post('/sql/users-new', async function(ctx, dataAPI, dataAPIArgs) {
-    // const { id } = ctx.request.body
-    const data = {
-      "gender": "female",
-      "email": "clara.coleman83@example.com",
-      "username": "smallsnake436",
-      "password": "total",
-      "salt": "ROOujBwn",
-      "sha1": "81f58d15787d3e0a63685facfa139399f05f947c",
-      "sha256": "0687fe39adb0e43c28c8ffb70e84baa2ea2e1bae0afa349db31b4e861208ec8e",
-      "registered": "1238304997",
-      "dob": "56822726",
-      "phone": "(951)-385-6121",
-      "cell": "(657)-919-3511",
-      "picture": "http://api.randomuser.me/portraits/women/72.jpg",
-      "nationality": "US"
-    }
-    await models.User.create(data).then((user) => {
-      ctx.body = user
-    })
-  })
-
-  router.get('/sql/news', async function(ctx) {
-    /** get all*/
-    console.log('call news ---------------------')
-    await models.news_beauty_tb.findAll({
-    }).then((arr) => {
-      // console.log(arr[0].title)
+    const { tb } = ctx.params
+    await models[table].findAll({ limit })
+    .then((arr) => {
       ctx.body = arr;
-    });
-  })
-  router.get('/sql/news/:id', async function (ctx) {
-    const { id } = ctx.params
-    await models.news_beauty_tb.find({
-      where: {
-        id: id
-      }
-    }).then((obj) => {
-      // console.log(obj.id)
+    }); 
+  }) 
+
+  router.get('/sql/:tb/:id', async function(ctx) {
+    /** get one*/
+    const { id, tb } = ctx.params
+    const { table } = TABLE_MAP[tb]
+    await models[table].find({ where: { id: id }})
+    .then((obj) => {
       ctx.body = obj;
     });
   })
+
+  router.del('/sql/:tb/:id', async function(ctx) {
+    /** delete one*/
+    const { id, tb } = ctx.params
+    const { table } = TABLE_MAP[tb]
+    await models[table].destroy({ where: { id}})
+    .then((obj) => {
+      ctx.body = obj;
+    });
+  })
+
+  router.post('/sql/:tb', async function(ctx) {
+    /** add new one*/
+    const { tb } = ctx.params
+    const { table } = TABLE_MAP[tb]
+    const { data } = ctx.request.body
+    await models[table].create(data)
+    .then((obj) => {
+      ctx.body = obj
+    })
+  })
+
+  router.put('/sql/:tb/:id', async function(ctx) {
+    /** edit one*/
+    const { id, tb } = ctx.params
+    const { table } = TABLE_MAP[tb]
+    const { data } = ctx.request.body
+    await models[table].update(data, { where: { id }})
+    .then((obj) => {
+      ctx.body = obj
+    });
+  })
+
+  router.get('/read-meta-tag-with-jsdom', async function(ctx) {
+    await axios.get('http://truyenyy.com/doc-truyen/dau-pha-thuong-khung/chuong-1174/')
+    .then(function (response) {
+      // console.log(response);
+      let images = ''
+      jsdom.env(
+        response.data,
+        function (err, window) {
+          /** 
+            childDom.parentNode
+            parentNode.tagName
+            window.document.querySelectorAll("div[data-oembed-url]")
+            domTMP.querySelector("iframe").src
+            var div = window.document.createElement('div');
+            bigParentNode.insertBefore(div.firstChild,parent);
+            parentOldDom.removeChild(domTMP);
+          */
+          images = window.document.querySelector("img").src;
+          console.log(ctx)
+          ctx.body = {da: images}
+        }
+      );
+      ctx.body = {da: images}
+      // ctx.res.json({da: images}) 
+    })
+    .catch(function (error) {
+      console.log(error);
+      ctx.body = {da: 'err'}
+    });
+  })
+
   /* End sequelize mySQL */
 }
 
