@@ -1,7 +1,6 @@
 import { users } from './data.json'
 import models from './sequelize/models'
-import axios from 'axios'
-import jsdom from 'jsdom'
+import StartCrawling from '../crawl/startCrawling'
 
 
 const simplifyUsers = (collection) => collection
@@ -41,6 +40,7 @@ function routes(router) {
   router.get('/sql/:tb', async function(ctx) {
     /** get all*/
     const { tb } = ctx.params
+    const { table, limit } = TABLE_MAP[tb]
     await models[table].findAll({ limit })
     .then((arr) => {
       ctx.body = arr;
@@ -90,45 +90,7 @@ function routes(router) {
   })
 
   router.get('/read-meta-tag-with-jsdom', async function(ctx) {
-    let p1 = new Promise(
-        function(resolve, reject) {
-           axios.get('http://truyenyy.com/doc-truyen/dau-pha-thuong-khung/chuong-1174/')
-          .then(function (response) {
-            let images = ''
-            jsdom.env(
-              response.data,
-              function (err, window) {
-                /** 
-                  childDom.parentNode
-                  parentNode.tagName
-                  window.document.querySelectorAll("div[data-oembed-url]")
-                  domTMP.querySelector("iframe").src
-                  var div = window.document.createElement('div');
-                  bigParentNode.insertBefore(div.firstChild,parent);
-                  parentOldDom.removeChild(domTMP);
-                */
-                images = window.document.querySelector("img").src;
-                resolve({data: images});
-              }
-            );
-          }).catch(function (error) {
-            resolve({data: error});
-          })
-        }
-    );
-
-    await p1.then(
-        function(val) {
-            ctx.body = val
-        })
-    .catch(
-        function(reason) {
-            ctx.body = {data: 'err'}
-        });
-
-
-
-    
+    await StartCrawling.start(ctx);
   })
 
   /* End sequelize mySQL */

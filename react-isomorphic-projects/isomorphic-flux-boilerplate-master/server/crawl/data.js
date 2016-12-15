@@ -421,6 +421,7 @@ const WEBSITE_DATA = {
 	}
 }
 
+export default WEBSITE_DATA
 
 
 /***********************************************************/

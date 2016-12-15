@@ -1,4 +1,8 @@
-import Crawler from 'crawler'
+import Crawler from './crawler'
+import axios from 'axios'
+import jsdom from 'jsdom'
+import WEBSITE_DATA from './data'
+import Custom from './custom'
 
 let StartCrawling = {
     NEWS_LIST: [],
@@ -63,15 +67,136 @@ let StartCrawling = {
         return arr_2
     },
 
-    start(){
+    // async start(ctx){
+    //     let urlArr = [
+    //         'http://khoahoc.tv/',
+    //         'http://vnexpress.net/'
+    //     ]
+    //     let promiseArr = [];
+    //     urlArr.forEach((e,i) => {
+    //         let p = new Promise( (resolve, reject) => {
+    //             axios.get(e)
+    //             .then((response) => {
+    //                 console.log(response)
+    //                 jsdom.env(
+    //                     response.data,
+    //                     (err, window) => {
+    //                         let result = [];
+    //                         let images = window.document.querySelectorAll("img");
+    //                         for(let k in images){
+    //                             result.push(images[k].src)
+    //                         }
+    //                         resolve({data: result});
+    //                     }
+    //                 );
+    //                 }).catch((error) => {
+    //                     resolve({data: error});
+    //                 })
+    //             }
+    //         );
+    //         promiseArr.push(p)
+    //     })
+
+    //     await Promise.all(promiseArr).then(values => { 
+    //         ctx.body = values
+    //     }).catch(reason => { 
+    //         ctx.body = reason
+    //     });
+    // },
+
+    /** 
+     childDom.parentNode
+    parentNode.tagName
+    window.document.querySelectorAll("div[data-oembed-url]")
+    domTMP.querySelector("iframe").src
+    var div = window.document.createElement('div');
+    bigParentNode.insertBefore(div.firstChild,parent);
+    parentOldDom.removeChild(domTMP);
+    */
+    async start(ctx){
+        let urlArr = WEBSITE_DATA.vnexpress_beauty;
+        let path_obj = WEBSITE_DATA.vnexpress_beauty_obj;
+        let promiseArr = [];
+        let listArr = [];
+        urlArr.forEach((e, i) => {
+            let urlObj = e;
+            let p = new Promise( (resolve, reject) => {
+                axios.get(urlObj.url)
+                .then((response) => {
+                    const html = Custom.afterGetRemoteUrl(response.data);
+                    jsdom.env(
+                        html,
+                        (err, window) => {
+                            
+                            let oldLength = listArr.length;
+                            for(let i = (path_obj.csspath.length-1); i>=0; i--){
+                                listArr = Crawler.getList(window.document,listArr,path_obj.csspath[i],path_obj.domain,urlObj.type,urlObj.table);
+                            }
+                            resolve({ status: true, info: e, number: (listArr.length - oldLength) });
+                        }
+                    );
+                    }).catch((error) => {
+                        resolve({status: false, info: e});
+                    })
+                }
+            );
+            promiseArr.push(p)
+        })
+
+        await Promise.all(promiseArr).then(async (values) => { 
+            await this.getDetailAll({ status: values, data: listArr}, ctx);
+            // ctx.body = { status: values, data: listArr}
+        })
+    },
+
+    async getDetailAll(list, ctx){
+     console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+        console.log(list.data.length)
+        let promiseArr = [];
+        list.data.forEach((e, i) => {
+            let p = new Promise( (resolve, reject) => {
+                console.log(i, e.href)
+                axios.get(e.href)
+                .then((response) => {
+                    // console.log(response.data)
+                    const html = Custom.afterGetRemoteUrl(response.data);
+                    jsdom.env(
+                        html,
+                        (err, window) => {
+                            console.log('-----------------')
+                            console.log(list.data[i])
+                            list.data[i].detail_new = "ok"
+                            resolve({ status: true });
+                        }
+                    );
+                    }).catch((error) => {
+                        resolve({status: false });
+                    })
+                }
+            );
+            promiseArr.push(p)
+        })
+
+        await Promise.all(promiseArr).then(values => { 
+            console.log('ok')
+            ctx.body = { data: list }
+        }).catch(reason => { 
+            console.log('error')
+            ctx.body = { data: list }
+        });
+    },
+
+
+    start2(){
         var start_time = new Date().getTime();
         var arr = [];
+        
         /*get news list : is ok*/
 
         /*vnexpress.net:106*/
-        // for(var i=0; i<vnexpress_beauty.length; i++){
-        // 		arr = Crawler.getListAll(vnexpress_beauty_obj,vnexpress_beauty[i],arr);
-        // }
+        for(var i=0; i<vnexpress_beauty.length; i++){
+        	arr = Crawler.getListAll(vnexpress_beauty_obj,vnexpress_beauty[i],arr);
+        }
         // /*phunutoday.vn:*/
         // for(var i=0; i<phunutoday_vn.length; i++){
         // 		arr = Crawler.getListAll(phunutoday_vn_obj,phunutoday_vn[i],arr);

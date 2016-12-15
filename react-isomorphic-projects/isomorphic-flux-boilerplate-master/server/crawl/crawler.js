@@ -1,3 +1,5 @@
+import Custom from './custom'
+
 let Crawler = {
 	name : 'Crawler Module', 
 	
@@ -5,46 +7,108 @@ let Crawler = {
 		console.log(a)
 	},
 
+	// getListAll(path_obj, url_obj, list_arr, update){
+	// 	/*first page*/
+	// 	var html = Custom.afterGetRemoteUrl(Custom.getRemoteUrl(url_obj.url,false));
+	// 	for(var i=path_obj.csspath.length-1; i>=0; i--){
+	// 		list_arr = this.getList(html,path_obj.csspath[i],list_arr,path_obj.domain,url_obj.type,url_obj.table);
+	// 	}
+	// 	/*from page 2-not use when update*/
+	// 	if(update!='update'){
+	// 		for( var i=2 ; i<=url_obj.num_page; i++){
+	// 			var html = Custom.afterGetRemoteUrl(Custom.getRemoteUrl(String.format(url_obj.url_page,i),false)) ;
+	// 			list_arr = this.getList(html,path_obj.csspath[0],list_arr,path_obj.domain,url_obj.type,url_obj.table);
+	// 		}
+	// 	}
+	// 	return list_arr;
+	// },
+
 	getListAll(path_obj, url_obj, list_arr, update){
 		/*first page*/
-		var html = afterGetRemoteUrl(getRemoteUrl(url_obj.url,false));
+		var html = Custom.afterGetRemoteUrl(Custom.getRemoteUrl(url_obj.url,false));
 		for(var i=path_obj.csspath.length-1; i>=0; i--){
 			list_arr = this.getList(html,path_obj.csspath[i],list_arr,path_obj.domain,url_obj.type,url_obj.table);
-		}
-		/*from page 2-not use when update*/
-		if(update!='update'){
-			for( var i=2 ; i<=url_obj.num_page; i++){
-				var html = afterGetRemoteUrl(getRemoteUrl(String.format(url_obj.url_page,i),false)) ;
-				list_arr = this.getList(html,path_obj.csspath[0],list_arr,path_obj.domain,url_obj.type,url_obj.table);
-			}
 		}
 		return list_arr;
 	},
 
-	getList(html,csspath,list_arr,domain,type,table){
-		var htmlDOM = document.createElement("html");
-		$(htmlDOM).html(html);
+	// getList(html,csspath,list_arr,domain,type,table){
+	// 	var htmlDOM = document.createElement("html");
+	// 	$(htmlDOM).html(html);
+	// 	console.log('csspath.parent_path: ',csspath.parent_path)
+	// 	var list = $(htmlDOM).find(csspath.parent_path);
+	// 	console.log('getList',list.length)
+	// 	for( var i=0; i<list.length; i++){
+	// 		if($(list[i]).find(csspath.title_path).length>0){
+	// 			/*check obj exist in arr*/
+	// 			var status = false;
+	// 			for(var j=0; j<list_arr.length; j++){
+	// 				if(list_arr[j].title == $(list[i]).find(csspath.title_path)[0].textContent.trim()){
+	// 					status = true;
+	// 					break;
+	// 				}
+	// 			}
+	// 			/*add to array if not exist*/
+	// 			if(status==false){
+	// 				var desc = csspath.desc_path != null && $(list[i]).find(csspath.desc_path).length>0 ?$(list[i]).find(csspath.desc_path)[0].textContent.trim(): 'in detail';
+
+	// 				var obj = {
+	// 					title 	: $(list[i]).find(csspath.title_path)[0].textContent.trim(),
+	// 					href	: this.preLink($($(list[i]).find(csspath.href_path)[0]).attr('href_none'),domain),
+	// 					image	: $($(list[i]).find(csspath.image_path)[0]).attr('src_none'),
+	// 					desc	: desc,
+	// 					domain	: domain,
+	// 					type	: type,
+	// 					table	: table,
+	// 					content		: 'no Data',
+	// 					image_full	: 'no Data',
+	// 				};
+	// 				/*domain Youtube.com*/
+	// 				if(domain == 'youtube.com'){
+	// 					obj['time'] = $(list[i]).find(csspath.time_path)[0].textContent.trim();
+	// 					if($(list[i]).find(csspath.quality_path).length>0){
+	// 						obj['quality'] = $(list[i]).find(csspath.quality_path)[0].textContent.trim();
+	// 					}else{
+	// 						obj['quality'] = 'normal';
+	// 					}
+	// 				}
+
+	// 				list_arr.push(obj);
+	// 			}else{
+	// 				/*case: don't find title*/
+	// 				console.log('Error duplicate: '+i)
+	// 				console.log('$(list[i]).find(csspath.title_path)',$(list[i]).find(csspath.title_path)[0].textContent.trim())
+	// 			}
+	// 		}else{
+	// 			/*case: don't find title*/
+	// 			console.log("Error don't find title: ")
+	// 			console.log('list[i',list[i])
+	// 		}
+	// 	}
+	// 	return list_arr;
+	// },
+	getList(htmlDOM,list_arr,csspath,domain,type,table){
 		console.log('csspath.parent_path: ',csspath.parent_path)
-		var list = $(htmlDOM).find(csspath.parent_path);
+		var list = htmlDOM.querySelectorAll(csspath.parent_path);
 		console.log('getList',list.length)
 		for( var i=0; i<list.length; i++){
-			if($(list[i]).find(csspath.title_path).length>0){
+			if(list[i].querySelectorAll(csspath.title_path).length>0){
 				/*check obj exist in arr*/
 				var status = false;
 				for(var j=0; j<list_arr.length; j++){
-					if(list_arr[j].title == $(list[i]).find(csspath.title_path)[0].textContent.trim()){
+					if(list_arr[j].title == list[i].querySelectorAll(csspath.title_path)[0].textContent.trim()){
 						status = true;
 						break;
 					}
 				}
 				/*add to array if not exist*/
 				if(status==false){
-					var desc = csspath.desc_path != null && $(list[i]).find(csspath.desc_path).length>0 ?$(list[i]).find(csspath.desc_path)[0].textContent.trim(): 'in detail';
+					var desc = csspath.desc_path != null && list[i].querySelectorAll(csspath.desc_path).length>0 ? list[i].querySelectorAll(csspath.desc_path)[0].textContent.trim(): 'in detail';
 
 					var obj = {
-						title 	: $(list[i]).find(csspath.title_path)[0].textContent.trim(),
-						href	: this.preLink($($(list[i]).find(csspath.href_path)[0]).attr('href_none'),domain),
-						image	: $($(list[i]).find(csspath.image_path)[0]).attr('src_none'),
+						title 	: list[i].querySelectorAll(csspath.title_path)[0].textContent.trim(),
+						href	: this.preLink(list[i].querySelectorAll(csspath.href_path)[0].getAttribute('href_none'),domain),
+						image	: list[i].querySelectorAll(csspath.image_path)[0].getAttribute('src_none'),
 						desc	: desc,
 						domain	: domain,
 						type	: type,
@@ -54,9 +118,9 @@ let Crawler = {
 					};
 					/*domain Youtube.com*/
 					if(domain == 'youtube.com'){
-						obj['time'] = $(list[i]).find(csspath.time_path)[0].textContent.trim();
-						if($(list[i]).find(csspath.quality_path).length>0){
-							obj['quality'] = $(list[i]).find(csspath.quality_path)[0].textContent.trim();
+						obj['time'] = list[i].querySelectorAll(csspath.time_path)[0].textContent.trim();
+						if(list[i].querySelectorAll(csspath.quality_path).length>0){
+							obj['quality'] = list[i].querySelectorAll(csspath.quality_path)[0].textContent.trim();
 						}else{
 							obj['quality'] = 'normal';
 						}
@@ -66,7 +130,7 @@ let Crawler = {
 				}else{
 					/*case: don't find title*/
 					console.log('Error duplicate: '+i)
-					console.log('$(list[i]).find(csspath.title_path)',$(list[i]).find(csspath.title_path)[0].textContent.trim())
+					console.log('list[i].querySelectorAll(csspath.title_path)',list[i].querySelectorAll(csspath.title_path)[0].textContent.trim())
 				}
 			}else{
 				/*case: don't find title*/
@@ -126,7 +190,7 @@ let Crawler = {
 					break;
 			}
 			/*create DOM*/
-			var html = afterGetRemoteUrl(getRemoteUrl(list_arr[i].href,false)) ;
+			var html = Custom.afterGetRemoteUrl(Custom.getRemoteUrl(list_arr[i].href,false)) ;
 			var htmlDOM = document.createElement("html");
 			$(htmlDOM).html(html);
 
