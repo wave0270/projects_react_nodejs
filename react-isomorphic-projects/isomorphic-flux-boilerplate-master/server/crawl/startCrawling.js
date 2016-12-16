@@ -3,47 +3,35 @@ import axios from 'axios'
 import jsdom from 'jsdom'
 import WEBSITE_DATA from './data'
 import Custom from './custom'
+import models from '../api/sequelize/models'
 
 let StartCrawling = {
     NEWS_LIST: [],
 	INDEX: 0,
 	NEWS_LIST_2: [],
-    html:  `<html>
-                <body>
-                    <div class="newclass">
-                        <p>testing</p>
-                    </div>
-                    <div class="newclass">
-                        <p>testing</p>
-                    </div>
-                    <div class="newclass">
-                        <p>testing</p>
-                    </div>
-                </body>
-            </html>`,
-
-    saveToDatabase(arr){
-        console.log('function saveToDatabase')
-        if(arr !=undefined){
-            var params = {
-                arr		: arr,
-            };
-            console.log('params',params)
-            return
-            $.post(URL_ROOT + 'aj_save_news', params, function (data) {
-                console.log('response data',data)
-                INDEX ++;
-                this.saveToDatabase(this.NEWS_LIST_2[this.INDEX]);
-                // todo
-            }).always(function() {
-                //todo
-            }).error(function(e){
-                if(e.status == 401){
-                    //todo
-                }
-            });
-        }
-    },
+ 
+    // saveToDatabase(arr){
+    //     console.log('function saveToDatabase')
+    //     if(arr !=undefined){
+    //         var params = {
+    //             arr		: arr,
+    //         };
+    //         console.log('params',params)
+    //         return
+    //         $.post(URL_ROOT + 'aj_save_news', params, function (data) {
+    //             console.log('response data',data)
+    //             INDEX ++;
+    //             this.saveToDatabase(this.NEWS_LIST_2[this.INDEX]);
+    //             // todo
+    //         }).always(function() {
+    //             //todo
+    //         }).error(function(e){
+    //             if(e.status == 401){
+    //                 //todo
+    //             }
+    //         });
+    //     }
+    // },
 
     save(){
         this.INDEX = 0;
@@ -67,43 +55,6 @@ let StartCrawling = {
         return arr_2
     },
 
-    // async start(ctx){
-    //     let urlArr = [
-    //         'http://khoahoc.tv/',
-    //         'http://vnexpress.net/'
-    //     ]
-    //     let promiseArr = [];
-    //     urlArr.forEach((e,i) => {
-    //         let p = new Promise( (resolve, reject) => {
-    //             axios.get(e)
-    //             .then((response) => {
-    //                 console.log(response)
-    //                 jsdom.env(
-    //                     response.data,
-    //                     (err, window) => {
-    //                         let result = [];
-    //                         let images = window.document.querySelectorAll("img");
-    //                         for(let k in images){
-    //                             result.push(images[k].src)
-    //                         }
-    //                         resolve({data: result});
-    //                     }
-    //                 );
-    //                 }).catch((error) => {
-    //                     resolve({data: error});
-    //                 })
-    //             }
-    //         );
-    //         promiseArr.push(p)
-    //     })
-
-    //     await Promise.all(promiseArr).then(values => { 
-    //         ctx.body = values
-    //     }).catch(reason => { 
-    //         ctx.body = reason
-    //     });
-    // },
-
     /** 
      childDom.parentNode
     parentNode.tagName
@@ -114,58 +65,62 @@ let StartCrawling = {
     parentOldDom.removeChild(domTMP);
     */
     async start(ctx){
-        let urlArr = WEBSITE_DATA.vnexpress_beauty;
-        let path_obj = WEBSITE_DATA.vnexpress_beauty_obj;
         let promiseArr = [];
         let listArr = [];
-        urlArr.forEach((e, i) => {
-            let urlObj = e;
-            let p = new Promise( (resolve, reject) => {
-                axios.get(urlObj.url)
-                .then((response) => {
-                    const html = Custom.afterGetRemoteUrl(response.data);
-                    jsdom.env(
-                        html,
-                        (err, window) => {
-                            
-                            let oldLength = listArr.length;
-                            for(let i = (path_obj.csspath.length-1); i>=0; i--){
-                                listArr = Crawler.getList(window.document,listArr,path_obj.csspath[i],path_obj.domain,urlObj.type,urlObj.table);
-                            }
-                            resolve({ status: true, info: e, number: (listArr.length - oldLength) });
+        let getDetailErrors = []
+
+        for(let k in WEBSITE_DATA){
+            if(k !== 'youtube_com' || k === 'vnexpress_net'){
+                let urlArr = WEBSITE_DATA[k].pages;
+                let path_obj = WEBSITE_DATA[k].info;
+
+                urlArr.forEach((e, i) => {
+                    let urlObj = e;
+                    let p = new Promise( (resolve, reject) => {
+                        axios.get(urlObj.url)
+                        .then((response) => {
+                            const html = Custom.afterGetRemoteUrl(response.data);
+                            jsdom.env(
+                                html,
+                                (err, window) => {
+                                    let oldLength = listArr.length;
+                                    for(let i = (path_obj.csspath.length-1); i>=0; i--){
+                                        listArr = Crawler.getList(window.document,listArr,path_obj.csspath[i],path_obj.domain,urlObj.type,urlObj.table);
+                                    }
+                                    e.status = true;
+                                    e.number = listArr.length - oldLength;
+                                    resolve(e);
+                                }
+                            );
+                            }).catch((error) => {
+                                e.status = false;
+                                resolve(e);
+                            })
                         }
                     );
-                    }).catch((error) => {
-                        resolve({status: false, info: e});
-                    })
-                }
-            );
-            promiseArr.push(p)
-        })
-
+                    promiseArr.push(p)
+                })
+            }
+        }
+        /** start promise */
         await Promise.all(promiseArr).then(async (values) => { 
-            await this.getDetailAll({ status: values, data: listArr}, ctx);
-            // ctx.body = { status: values, data: listArr}
+            await this.getDetailAll(ctx, { status: values, data: listArr});
         })
     },
 
-    async getDetailAll(list, ctx){
-     console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
-        console.log(list.data.length)
+    async getDetailAll(ctx, list){
         let promiseArr = [];
+        let detailErrs = [];
+
         list.data.forEach((e, i) => {
             let p = new Promise( (resolve, reject) => {
-                console.log(i, e.href)
                 axios.get(e.href)
                 .then((response) => {
-                    // console.log(response.data)
                     const html = Custom.afterGetRemoteUrl(response.data);
                     jsdom.env(
                         html,
                         (err, window) => {
-                            console.log('-----------------')
-                            console.log(list.data[i])
-                            list.data[i].detail_new = "ok"
+                            list.data[i] = Crawler.getDetail(window.document, list.data[i], detailErrs)
                             resolve({ status: true });
                         }
                     );
@@ -177,69 +132,45 @@ let StartCrawling = {
             promiseArr.push(p)
         })
 
-        await Promise.all(promiseArr).then(values => { 
-            console.log('ok')
-            ctx.body = { data: list }
-        }).catch(reason => { 
-            console.log('error')
-            ctx.body = { data: list }
+        await Promise.all(promiseArr).then(async (values) => { 
+            console.log('ok detail-----------------------------')
+            // ctx.body = { list, detailErrs }
+            await this.saveToDatabase(ctx, list, detailErrs);
+        }).catch(async (reason) => { 
+            console.log('error detail--------------------------')
+            // ctx.body = { list, detailErrs }
+            await this.saveToDatabase(ctx, list, detailErrs);
         });
     },
 
-
-    start2(){
-        var start_time = new Date().getTime();
-        var arr = [];
-        
-        /*get news list : is ok*/
-
-        /*vnexpress.net:106*/
-        for(var i=0; i<vnexpress_beauty.length; i++){
-        	arr = Crawler.getListAll(vnexpress_beauty_obj,vnexpress_beauty[i],arr);
+    async saveToDatabase(ctx, list, detailErrs){
+        let results = {
+            success: [],
+            errors: []
         }
-        // /*phunutoday.vn:*/
-        // for(var i=0; i<phunutoday_vn.length; i++){
-        // 		arr = Crawler.getListAll(phunutoday_vn_obj,phunutoday_vn[i],arr);
-        // }
-        // /*va.vn: 103*/
-        // for(var i=0; i<eva_thoitrang.length; i++){
-        // 		arr = Crawler.getListAll(eva_thoitrang_obj,eva_thoitrang[i],arr);
-        // }
+        let promiseArr = [];
+        list.data.forEach((e, i) => {
+            let data = e
 
+            let table = 'news_beauty_tb'
+            let p = new Promise( (resolve, reject) => {
+                    models[table].create(data).then((obj) => {
+                        resolve(obj)
+                    }).catch((error) => {
+                        resolve(error)
+                    })
+                }
+            );
+            promiseArr.push(p)
+        })
 
-        /*get news list : is error*/
-        /*ngoisao.net: can not get title*/
-        // for(var i=0; i<ngoisao_news.length; i++){
-        // 		arr = Crawler.getListAll(ngoisao_news_obj,ngoisao_news[i],arr);
-        // }
-        // /*kenh14.vn: can not get page*/
-        // for(var i=0; i<kenh14_news.length; i++){
-        // 		arr = Crawler.getListAll(kenh14_news_obj,kenh14_news[i],arr);
-        // }
-        // /*be.vn: website bao tri*/
-        // (var i=0; i<ebe_vn.length; i++){
-        // 		arr = Crawler.getListAll(ebe_vn_obj,ebe_vn[i],arr);
-        //
-
-        // et detail content*/
-        console.log("get detail:**********************")
-        arr = Crawler.getDetail(arr);
-
-        /*video*****************************************************/
-        /*youtube.com:*/
-        for(var i=0; i<youtube_com.length; i++){
-            arr = Crawler.getListAll(youtube_com_obj,youtube_com[i],arr);
-        }
-        /*get detail content*/
-        console.log("get detail:**********************")
-        arr = Crawler.getDetailYoutube(arr);
-
-        /*check how long to get data*/
-        var end_time = new Date().getTime();
-        console.log('time: ', end_time-start_time)
-        this.NEWS_LIST = arr;
-        console.log('array length: ' + this.NEWS_LIST.length)
-        console.log('array: ', this.NEWS_LIST)
+        await Promise.all(promiseArr).then(results => {  
+            console.log('ok saveToDatabase-----------------------------')
+            ctx.body = { list, detailErrs , results}
+        }).catch(reason => { 
+            console.log('error saveToDatabase--------------------------')
+            ctx.body = { list, detailErrs, reason }
+        });
     }
 }
 	    

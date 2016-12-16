@@ -2,10 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import connect from 'connect-alt'
 import { Link } from 'react-router'
 
-import { replaceParams } from 'utils/localized-routes'
+import superagent from 'superagent'
 
-@connect(({ users: { collection } }) => ({ collection }))
-class Users extends Component {
+// import { replaceParams } from 'utils/localized-routes'
+
+@connect(({ home: { collection } }) => ({ collection }))
+class Home extends Component {
 
   static propTypes = { collection: PropTypes.array.isRequired }
 
@@ -17,31 +19,101 @@ class Users extends Component {
   componentWillMount() {
     const { flux, i18n } = this.context
 
-    flux.getActions('helmet').update({ title: i18n('users.page-title') })
-    flux.getActions('users').index()
+    flux.getActions('helmet').update({ title: i18n('home.page-title') })
+    flux.getActions('home').index()
   }
 
-  handleRemove(index: number) {
+  handleRemove(index: number, id: number) {
     const { flux } = this.context
-    flux.getActions('users').remove(index)
+    /** remove local */
+    flux.getActions('home').remove(index)
+    /** remove database */
+    superagent.del(`/api/sql/users/${id}`)
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      console.log(res)
+    })
   }
 
-  renderUser = (user: { seed: string, email: string }, index: number) => {
+  clickTest() {
+    /* get list */
+    // superagent.get('/api/sql/news')
+    //   .set('Accept', 'application/json')
+    //   .end((err, res) => {
+    //     console.log(res)
+    //   })
+    /* get a specific */
+    // superagent.post('/api/sql/users-put')
+    //   .set('Accept', 'application/json')
+    //   .send({ id: 1 })
+    //   .end((err, res) => {
+    //     console.log(res)
+    //   })
+    superagent.get('/api/read-meta-tag-with-jsdom')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        console.log(res)
+      })
+  }
+
+  putUser(index, id) {
+    const time = new Date().getTime()
+    const data = {
+      email: `${time}.coleman83@example.com`
+    }
+    superagent.put(`/api/sql/users/${id}`)
+    .set('Accept', 'application/json')
+    .send({ data })
+    .end((err, res) => {
+      console.log(res)
+    })
+  }
+
+  postUser() {
+    const data = {
+      gender: 'female',
+      email: 'clara12.coleman83@example.com',
+      username: 'smallsnake436',
+      password: 'total',
+      salt: 'ROOujBwn',
+      sha1: '81f58d15787d3e0a63685facfa139399f05f947c',
+      sha256: '0687fe39adb0e43c28c8ffb70e84baa2ea2e1bae0afa349db31b4e861208ec8e',
+      registered: '1238304997',
+      dob: '56822726',
+      phone: '(951)-385-6121',
+      cell: '(657)-919-3511',
+      picture: 'http://api.randomuser.me/portraits/women/72.jpg',
+      nationality: 'US'
+    }
+    superagent.post('/api/sql/users')
+    .set('Accept', 'application/json')
+    .send({ data })
+    .end((err, res) => {
+      console.log(res.body)
+    })
+  }
+
+  renderUser = (user, index: number) => {
     const { i18n } = this.context
-    const { seed, email } = user
-    const profileRoute: string = replaceParams(i18n('routes.profile'), { seed })
+    const { email, id } = user
 
     return (
       <tr className='user--row' key={ index }>
         <td>{ email }</td>
         <td className='text-center'>
-          <Link to={ profileRoute }>{ i18n('users.profile') }</Link>
+          <Link >{ i18n('users.profile') }</Link>
         </td>
         <td className='text-center'>
           <button
             className='user--remove'
-            onClick={ () => this.handleRemove(index) }>
+            onClick={ () => this.handleRemove(index, id) }>
             X
+          </button>
+        </td>
+        <td className='text-center'>
+          <button
+            onClick={ () => this.putUser(index, id) }>
+            Edit
           </button>
         </td>
       </tr>
@@ -51,17 +123,20 @@ class Users extends Component {
   render() {
     const { collection } = this.props
     const { i18n } = this.context
+    console.log(collection.length)
 
     return (
       <div>
         <h1 className='text-center'>
-          { i18n('users.title') } hghg
+          Home page
         </h1>
+        <button onClick={ () => this.clickTest() }>Testing</button>
+        <button onClick={ () => this.postUser() }>Add user</button>
         <table className='app--users'>
           <thead>
             <tr>
-              <th> { i18n('users.email') } </th>
-              <th colSpan='2'> { i18n('users.actions') } </th>
+              <th> { i18n('home.email') } </th>
+              <th colSpan='2'> { i18n('home.actions') } </th>
             </tr>
           </thead>
           <tbody>
@@ -74,4 +149,4 @@ class Users extends Component {
 
 }
 
-export default Users
+export default Home

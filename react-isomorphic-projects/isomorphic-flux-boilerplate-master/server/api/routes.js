@@ -8,7 +8,7 @@ const simplifyUsers = (collection) => collection
   .map(({ email, name, seed, picture }) => ({ email, name, seed, picture }))
 
 /** table configuration */
-const ITEM_LIMIT = 10
+const ITEM_LIMIT = 1000
 const TABLE_MAP = {
   users: {
     table: 'User',
@@ -44,7 +44,9 @@ function routes(router) {
     await models[table].findAll({ limit })
     .then((arr) => {
       ctx.body = arr;
-    }); 
+    }).catch((error) => {
+      ctx.body = error
+    })
   }) 
 
   router.get('/sql/:tb/:id', async function(ctx) {
@@ -54,7 +56,9 @@ function routes(router) {
     await models[table].find({ where: { id: id }})
     .then((obj) => {
       ctx.body = obj;
-    });
+    }).catch((error) => {
+      ctx.body = error
+    })
   })
 
   router.del('/sql/:tb/:id', async function(ctx) {
@@ -64,7 +68,9 @@ function routes(router) {
     await models[table].destroy({ where: { id}})
     .then((obj) => {
       ctx.body = obj;
-    });
+    }).catch((error) => {
+      ctx.body = error
+    })
   })
 
   router.post('/sql/:tb', async function(ctx) {
@@ -75,6 +81,9 @@ function routes(router) {
     await models[table].create(data)
     .then((obj) => {
       ctx.body = obj
+    }).catch((error) => {
+      ctx.status = 400;
+      ctx.body = error
     })
   })
 
@@ -86,7 +95,9 @@ function routes(router) {
     await models[table].update(data, { where: { id }})
     .then((obj) => {
       ctx.body = obj
-    });
+    }).catch((error) => {
+      ctx.body = error
+    })
   })
 
   router.get('/read-meta-tag-with-jsdom', async function(ctx) {

@@ -1,4 +1,5 @@
 import Custom from './custom'
+import WEBSITE_DATA from './data'
 
 let Crawler = {
 	name : 'Crawler Module', 
@@ -97,6 +98,7 @@ let Crawler = {
 				var status = false;
 				for(var j=0; j<list_arr.length; j++){
 					if(list_arr[j].title == list[i].querySelectorAll(csspath.title_path)[0].textContent.trim()){
+						console.log('detect duplicate---------------', list_arr[j].title)
 						status = true;
 						break;
 					}
@@ -153,89 +155,146 @@ let Crawler = {
 	},
 
 	checkURL(url) {
+		url = url.toLowerCase();
 		return(url.match(/\.(jpeg|jpg|png)$/) != null);
 	},
 
-	getDetail(list_arr){
-		var err_arr = [];
-		for(var i=0; i<list_arr.length; i++){
-			// /*set default*/
-			// list_arr[i]['content'] = 'no Data';
-			// list_arr[i]['image_full'] = 'no Data';
-			/*select cssdetail*/
-			switch(list_arr[i].domain){
-				case 'vnexpress.net' :
-					var csspath_detail = vnexpress_beauty_obj.csspath_detail;
-					var csspath_remove = vnexpress_beauty_obj.csspath_remove;
-					break;
-				case 'eva.vn' :
-					var csspath_detail = eva_thoitrang_obj.csspath_detail;
-					var csspath_remove = eva_thoitrang_obj.csspath_remove;
-					break;
-				case 'ngoisao.net' :
-					var csspath_detail = ngoisao_news_obj.csspath_detail;
-					var csspath_remove = ngoisao_news_obj.csspath_remove;
-					break;
-				case 'kenh14.vn' :
-					var csspath_detail = kenh14_news_obj.csspath_detail;
-					var csspath_remove = kenh14_news_obj.csspath_remove;
-					break;
-				case 'ebe.vn' :
-					var csspath_detail = ebe_vn_obj.csspath_detail;
-					var csspath_remove = ebe_vn_obj.csspath_remove;
-					break;
-				case 'phunutoday.vn' :
-					var csspath_detail = phunutoday_vn_obj.csspath_detail;
-					var csspath_remove = phunutoday_vn_obj.csspath_remove;
-					break;
-			}
-			/*create DOM*/
-			var html = Custom.afterGetRemoteUrl(Custom.getRemoteUrl(list_arr[i].href,false)) ;
-			var htmlDOM = document.createElement("html");
-			$(htmlDOM).html(html);
+	// getDetail(list_arr){
+	// 	var err_arr = [];
+	// 	for(var i=0; i<list_arr.length; i++){
+	// 		// /*set default*/
+	// 		// list_arr[i]['content'] = 'no Data';
+	// 		// list_arr[i]['image_full'] = 'no Data';
+	// 		/*select cssdetail*/
+	// 		switch(list_arr[i].domain){
+	// 			case 'vnexpress.net' :
+	// 				var csspath_detail = vnexpress_beauty_obj.csspath_detail;
+	// 				var csspath_remove = vnexpress_beauty_obj.csspath_remove;
+	// 				break;
+	// 			case 'eva.vn' :
+	// 				var csspath_detail = eva_thoitrang_obj.csspath_detail;
+	// 				var csspath_remove = eva_thoitrang_obj.csspath_remove;
+	// 				break;
+	// 			case 'ngoisao.net' :
+	// 				var csspath_detail = ngoisao_news_obj.csspath_detail;
+	// 				var csspath_remove = ngoisao_news_obj.csspath_remove;
+	// 				break;
+	// 			case 'kenh14.vn' :
+	// 				var csspath_detail = kenh14_news_obj.csspath_detail;
+	// 				var csspath_remove = kenh14_news_obj.csspath_remove;
+	// 				break;
+	// 			case 'ebe.vn' :
+	// 				var csspath_detail = ebe_vn_obj.csspath_detail;
+	// 				var csspath_remove = ebe_vn_obj.csspath_remove;
+	// 				break;
+	// 			case 'phunutoday.vn' :
+	// 				var csspath_detail = phunutoday_vn_obj.csspath_detail;
+	// 				var csspath_remove = phunutoday_vn_obj.csspath_remove;
+	// 				break;
+	// 		}
+	// 		/*create DOM*/
+	// 		var html = Custom.afterGetRemoteUrl(Custom.getRemoteUrl(list_arr[i].href,false)) ;
+	// 		var htmlDOM = document.createElement("html");
+	// 		$(htmlDOM).html(html);
 
-			/*remove el*/
-			this.removeEL(htmlDOM,csspath_remove);
-			/*get missing description*/
-		list_arr[i]['desc'] = list_arr[i]['desc'] == 'in detail' && $(htmlDOM).find(csspath_detail.desc).length>0?$(htmlDOM).find(csspath_detail.desc)[0].textContent.trim(): list_arr[i]['desc'];
+	// 		/*remove el*/
+	// 		this.removeEL(htmlDOM,csspath_remove);
+	// 		/*get missing description*/
+	// 	list_arr[i]['desc'] = list_arr[i]['desc'] == 'in detail' && $(htmlDOM).find(csspath_detail.desc).length>0?$(htmlDOM).find(csspath_detail.desc)[0].textContent.trim(): list_arr[i]['desc'];
+	// 		/*get content*/
+	// 		var el_content = $(htmlDOM).find(csspath_detail.content);
+	// 		if(el_content.length > 0){
+	// 			var imgs = $(el_content).find('img');
+	// 			console.log(imgs.length)
+	// 			/*get image with extention .jpg, jpeg*/
+	// 			for(var j=0; j<imgs.length ; j++){
+	// 				if(this.checkURL($(imgs[j]).attr('src_none'))){
+	// 					list_arr[i]['image_full'] = $(imgs[j]).attr('src_none');
+	// 					break;
+	// 				}
+	// 			}
+
+	// 			/*case detail content don't have image*/
+	// 			if(list_arr[i]['image_full'] == 'no Data'){
+	// 				list_arr[i]['image_full'] = list_arr[i]['image'];
+	// 			}else{
+	// 				list_arr[i]['content'] = el_content[0].outerHTML.trim();
+	// 				// list_arr[i]['content'] = list_arr[i]['content'].replace(/src_none=/g, "src=").replace(/\>\s+\</g,'');
+	// 				list_arr[i]['content'] = list_arr[i]['content'].replace(/src_none=/g, "src=");
+	// 			}
+	// 			console.log(list_arr[i]['image_full'])
+	// 		}else{
+	// 			list_arr[i]['image_full'] = list_arr[i]['image'];
+	// 			err_arr.push(list_arr[i].href);
+	// 			console.log("Error: don't have image_full in content")
+	// 			// console.log(err_arr)
+	// 		}
+	// 	}
+	// 	list_arr.reverse();
+	// 	return list_arr;
+	// },
+	getDetail(htmlDOM, obj, err_arr){
+		/*select cssdetail*/
+		switch(obj.domain){
+			case 'vnexpress.net' :
+				var csspath_detail = WEBSITE_DATA.vnexpress_net.info.csspath_detail;
+				var csspath_remove = WEBSITE_DATA.vnexpress_net.info.csspath_remove;
+				break;
+			case 'eva.vn' :
+				var csspath_detail = WEBSITE_DATA.eva_vn.info.csspath_detail;
+				var csspath_remove = WEBSITE_DATA.eva_vn.info.csspath_remove;
+				break;
+			case 'ngoisao.net' :
+				var csspath_detail = WEBSITE_DATA.ngoisao_net.info.csspath_detail;
+				var csspath_remove = WEBSITE_DATA.ngoisao_net.info.csspath_remove;
+				break;
+			case 'kenh14.vn' :
+				var csspath_detail = WEBSITE_DATA.kenh14_vn.info.csspath_detail;
+				var csspath_remove = WEBSITE_DATA.kenh14_vn.info.csspath_remove;
+				break;
+			case 'ebe.vn' :
+				var csspath_detail = WEBSITE_DATA.ebe_vn.info.csspath_detail;
+				var csspath_remove = WEBSITE_DATA.ebe_vn.info.csspath_remove;
+				break;
+			case 'phunutoday.vn' :
+				var csspath_detail = WEBSITE_DATA.phunutoday_vn.info.csspath_detail;
+				var csspath_remove = WEBSITE_DATA.phunutoday_vn.info.csspath_remove;
+				break;
+		}
+
+		/*remove el*/
+		this.removeEL(htmlDOM,csspath_remove);
+		/*get missing description*/
+		obj['desc'] = obj['desc'] == 'in detail' && htmlDOM.querySelectorAll(csspath_detail.desc).length>0? htmlDOM.querySelectorAll(csspath_detail.desc)[0].textContent.trim(): obj['desc'];
 			/*get content*/
-			var el_content = $(htmlDOM).find(csspath_detail.content);
+			let el_content = htmlDOM.querySelectorAll(csspath_detail.content);
 			if(el_content.length > 0){
-				var imgs = $(el_content).find('img');
-				console.log(imgs.length)
+				let imgs = el_content[0].querySelectorAll('img');
 				/*get image with extention .jpg, jpeg*/
-				for(var j=0; j<imgs.length ; j++){
-					if(this.checkURL($(imgs[j]).attr('src_none'))){
-						list_arr[i]['image_full'] = $(imgs[j]).attr('src_none');
-						break;
+				let imgArr = [];
+				for(let j=0; j<imgs.length ; j++){
+					if(this.checkURL(imgs[j].getAttribute('src_none'))){
+						imgArr.push(imgs[j].getAttribute('src_none'));
 					}
 				}
-
-				/*case detail content don't have image*/
-				if(list_arr[i]['image_full'] == 'no Data'){
-					list_arr[i]['image_full'] = list_arr[i]['image'];
-				}else{
-					list_arr[i]['content'] = el_content[0].outerHTML.trim();
-					// list_arr[i]['content'] = list_arr[i]['content'].replace(/src_none=/g, "src=").replace(/\>\s+\</g,'');
-					list_arr[i]['content'] = list_arr[i]['content'].replace(/src_none=/g, "src=");
-				}
-				console.log(list_arr[i]['image_full'])
+				obj['image_full'] = JSON.stringify(imgArr);
+				/** get detail content */
+				obj['content'] = el_content[0].outerHTML.trim();
+				obj['content'] = obj['content'].replace(/src_none=/g, "src=");
 			}else{
-				list_arr[i]['image_full'] = list_arr[i]['image'];
-				err_arr.push(list_arr[i].href);
-				console.log("Error: don't have image_full in content")
-				// console.log(err_arr)
+				obj['image_full'] = obj['image'];
+				err_arr.push(obj.href);
+				console.log("Error: don't get detail content.")
 			}
-		}
-		list_arr.reverse();
-		return list_arr;
+		return obj;
 	},
 
 	removeEL(html,arr){
-		for(var i=0; i<arr.length; i++){
-			var list = $(html).find(arr[i]);
-			for( var j=0; j<list.length; j++){
-				$(list[j]).remove();
+		for(let i=0; i<arr.length; i++){
+			let list = html.querySelectorAll(arr[i]);
+			for( let j=0; j<list.length; j++){
+				let element = list[j];
+				element && element.parentNode && element.parentNode.removeChild(element);
 			}
 		}
 	},

@@ -8,8 +8,8 @@ export default function (flux) { /* eslint react/display-name: 0 */
   return (
     <Route component={ require('./components/app') }>
       { generateRoute({
-        paths: [ '/', '/users', '/utilisateurs' ],
-        component: require('./components/users')
+        paths: [ '/users-tmp', '/utilisateurs' ],
+        component: require('./components/users-tmp')
       }) }
       { generateRoute({
         paths: [ '/account', '/mon-compte' ],
@@ -29,16 +29,16 @@ export default function (flux) { /* eslint react/display-name: 0 */
         component: require('./pages/login')
       }) }
       { generateRoute({
-        paths: [ '/home' ],
-        component: require('./components/home')
+        paths: [ '/', 'users' ],
+        component: require('./components/users')
       }) }
       { generateRoute({
-        paths: [ '/news-list' ],
-        component: require('./components/news-list')
+        paths: [ '/manager/news' ],
+        component: require('./components/manager-news')
       }) }
       { generateRoute({
-        paths: [ '/news-detail/:id' ],
-        component: require('./components/news-detail')
+        paths: [ '/manager/news/:id' ],
+        component: require('./components/manager-news-detail')
       }) }
       { generateRoute({
         paths: [ '/news' ],
