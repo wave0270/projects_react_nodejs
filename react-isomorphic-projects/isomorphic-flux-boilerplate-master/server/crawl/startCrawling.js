@@ -6,53 +6,9 @@ import Custom from './custom'
 import models from '../api/sequelize/models'
 
 let StartCrawling = {
-    NEWS_LIST: [],
-	INDEX: 0,
-	NEWS_LIST_2: [],
- 
-    // saveToDatabase(arr){
-    //     console.log('function saveToDatabase')
-    //     if(arr !=undefined){
-    //         var params = {
-    //             arr		: arr,
-    //         };
-    //         console.log('params',params)
-    //         return
-    //         $.post(URL_ROOT + 'aj_save_news', params, function (data) {
-    //             console.log('response data',data)
-    //             INDEX ++;
-    //             this.saveToDatabase(this.NEWS_LIST_2[this.INDEX]);
-    //             // todo
-    //         }).always(function() {
-    //             //todo
-    //         }).error(function(e){
-    //             if(e.status == 401){
-    //                 //todo
-    //             }
-    //         });
-    //     }
-    // },
 
-    save(){
-        this.INDEX = 0;
-        this.NEWS_LIST_2 = this.splitArr(this.NEWS_LIST);
-        this.saveToDatabase(this.NEWS_LIST_2[this.INDEX]);
-    },
-
-    splitArr(arr){
-        var arr_2 = [];
-        var arr_sub = [];
-        for(var i=0; i<arr.length ;i++){
-            arr_sub.push(arr[i]);
-            if( i%50 == 0 && i!=0){
-                arr_2.push(arr_sub);
-                arr_sub = [];
-            }
-        }
-        if(arr_sub.length > 0){
-            arr_2.push(arr_sub);
-        }
-        return arr_2
+    state: {
+        status: null // default, test
     },
 
     /** 
@@ -65,14 +21,22 @@ let StartCrawling = {
     parentOldDom.removeChild(domTMP);
     */
     async start(ctx){
+        this.state.status = 'test'
+
         let promiseArr = [];
         let listArr = [];
         let getDetailErrors = []
 
         for(let k in WEBSITE_DATA){
-            if(k !== 'youtube_com' || k === 'vnexpress_net'){
+            if(k !== 'youtube_com'){
                 let urlArr = WEBSITE_DATA[k].pages;
                 let path_obj = WEBSITE_DATA[k].info;
+
+                /* if just test */
+                if(this.state.status === 'test'){
+                    urlArr = [urlArr[0]]
+                }
+                /* end, if just test */
 
                 urlArr.forEach((e, i) => {
                     let urlObj = e;
@@ -85,15 +49,20 @@ let StartCrawling = {
                                 (err, window) => {
                                     let oldLength = listArr.length;
                                     for(let i = (path_obj.csspath.length-1); i>=0; i--){
-                                        listArr = Crawler.getList(window.document,listArr,path_obj.csspath[i],path_obj.domain,urlObj.type,urlObj.table);
+                                        listArr = Crawler.getList(window.document
+                                                                , listArr
+                                                                , path_obj.csspath[i]
+                                                                , path_obj.domain
+                                                                , urlObj.type
+                                                                , urlObj.table
+                                                                , e)
                                     }
-                                    e.status = true;
                                     e.number = listArr.length - oldLength;
                                     resolve(e);
                                 }
                             );
                             }).catch((error) => {
-                                e.status = false;
+                                e.errors = true;
                                 resolve(e);
                             })
                         }
@@ -103,16 +72,17 @@ let StartCrawling = {
             }
         }
         /** start promise */
-        await Promise.all(promiseArr).then(async (values) => { 
-            await this.getDetailAll(ctx, { status: values, data: listArr});
+        await Promise.all(promiseArr).then(async (status) => { 
+            await this.getDetailAll(ctx, listArr, status);
         })
     },
 
-    async getDetailAll(ctx, list){
+    async getDetailAll(ctx, listArr, status){
+        console.log('Start to get detail --------------------')
         let promiseArr = [];
         let detailErrs = [];
 
-        list.data.forEach((e, i) => {
+        listArr.forEach((e, i) => {
             let p = new Promise( (resolve, reject) => {
                 axios.get(e.href)
                 .then((response) => {
@@ -120,7 +90,7 @@ let StartCrawling = {
                     jsdom.env(
                         html,
                         (err, window) => {
-                            list.data[i] = Crawler.getDetail(window.document, list.data[i], detailErrs)
+                            listArr[i] = Crawler.getDetail(window.document, listArr[i], detailErrs)
                             resolve({ status: true });
                         }
                     );
@@ -134,22 +104,20 @@ let StartCrawling = {
 
         await Promise.all(promiseArr).then(async (values) => { 
             console.log('ok detail-----------------------------')
-            // ctx.body = { list, detailErrs }
-            await this.saveToDatabase(ctx, list, detailErrs);
+            await this.saveToDatabase(ctx, listArr, detailErrs, status);
         }).catch(async (reason) => { 
             console.log('error detail--------------------------')
-            // ctx.body = { list, detailErrs }
-            await this.saveToDatabase(ctx, list, detailErrs);
+            await this.saveToDatabase(ctx, listArr, detailErrs, status);
         });
     },
 
-    async saveToDatabase(ctx, list, detailErrs){
+    async saveToDatabase(ctx, listArr, detailErrs, status){
         let results = {
             success: [],
             errors: []
         }
         let promiseArr = [];
-        list.data.forEach((e, i) => {
+        listArr.forEach((e, i) => {
             let data = e
 
             let table = 'news_beauty_tb'
@@ -166,12 +134,22 @@ let StartCrawling = {
 
         await Promise.all(promiseArr).then(results => {  
             console.log('ok saveToDatabase-----------------------------')
-            ctx.body = { list, detailErrs , results}
+            var saveErrs = this.splitErrors(results)
+            ctx.body = { status, listArr, detailErrs , saveErrs, results}
         }).catch(reason => { 
             console.log('error saveToDatabase--------------------------')
-            ctx.body = { list, detailErrs, reason }
+            ctx.body = { status, listArr, detailErrs, reason }
         });
+    },
+
+    splitErrors(arr){
+        var saveErrs = [];
+        arr.forEach((e,i) => {
+            e.errors ? saveErrs.push(e) : '';
+        })
+        return saveErrs;
     }
+
 }
 	    
 export default StartCrawling

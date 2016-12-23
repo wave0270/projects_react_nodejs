@@ -4,8 +4,8 @@ import { Link } from 'react-router'
 
 import { replaceParams } from 'utils/localized-routes'
 
-@connect(({ users: { collection } }) => ({ collection }))
-class Users extends Component {
+@connect(({ usersStatic: { collection } }) => ({ collection }))
+class UsersStatic extends Component {
 
   static propTypes = { collection: PropTypes.array.isRequired }
 
@@ -17,13 +17,13 @@ class Users extends Component {
   componentWillMount() {
     const { flux, i18n } = this.context
 
-    flux.getActions('helmet').update({ title: i18n('users.page-title') })
-    flux.getActions('users').index()
+    flux.getActions('helmet').update({ title: i18n('usersStatic.page-title') })
+    flux.getActions('usersStatic').index()
   }
 
   handleRemove(index: number) {
     const { flux } = this.context
-    flux.getActions('users').remove(index)
+    flux.getActions('usersStatic').remove(index)
   }
 
   renderUser = (user: { seed: string, email: string }, index: number) => {
@@ -35,7 +35,7 @@ class Users extends Component {
       <tr className='user--row' key={ index }>
         <td>{ email }</td>
         <td className='text-center'>
-          <Link to={ profileRoute }>{ i18n('users.profile') }</Link>
+          <Link to={ profileRoute }>{ i18n('usersStatic.profile') }</Link>
         </td>
         <td className='text-center'>
           <button
@@ -55,13 +55,13 @@ class Users extends Component {
     return (
       <div>
         <h1 className='text-center'>
-          { i18n('users.title') } hghg
+          { i18n('usersStatic.title') } hghg
         </h1>
         <table className='app--users'>
           <thead>
             <tr>
-              <th> { i18n('users.email') } </th>
-              <th colSpan='2'> { i18n('users.actions') } </th>
+              <th> { i18n('usersStatic.email') } </th>
+              <th colSpan='2'> { i18n('usersStatic.actions') } </th>
             </tr>
           </thead>
           <tbody>
@@ -74,4 +74,4 @@ class Users extends Component {
 
 }
 
-export default Users
+export default UsersStatic

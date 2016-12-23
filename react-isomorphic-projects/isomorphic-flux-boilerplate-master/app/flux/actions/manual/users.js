@@ -6,6 +6,9 @@ class UsersActions {
       'showSuccess', 'showFail',
       'remove'
     )
+    this.state = {
+      table: 'users'
+    }
   }
 
   index() {
@@ -19,7 +22,7 @@ class UsersActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: '/users-static' })
+          const response = await alt.request({ url: `/sql/${this.state.table}` })
           this.indexSuccess(response)
         } catch (error) {
           this.indexFail({ error })
@@ -28,12 +31,26 @@ class UsersActions {
       })
   }
 
-  show(seed) {
+  show(id) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: `/users-static/${seed}` })
+          const response = await alt.request({ url: `/sql/${this.state.table}/${id}` })
+          this.showSuccess(response)
+        } catch (error) {
+          this.showFail({ error })
+        }
+        alt.getActions('requests').stop()
+      })
+  }
+
+  update(id) {
+    return (dispatch, alt) =>
+      alt.resolve(async () => {
+        try {
+          alt.getActions('requests').start()
+          const response = await alt.request({ url: `/sql/${this.state.table}/${id}` })
           this.showSuccess(response)
         } catch (error) {
           this.showFail({ error })

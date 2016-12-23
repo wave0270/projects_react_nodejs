@@ -4,7 +4,7 @@ import defer from 'lodash/defer'
 import React, { Component, PropTypes } from 'react'
 import connect from 'connect-alt'
 
-@connect(({ users: { collection } }) => ({ collection }))
+@connect(({ usersStatic: { collection } }) => ({ collection }))
 class Profile extends Component {
 
   static contextTypes = {
@@ -22,7 +22,7 @@ class Profile extends Component {
     const { params: { seed } } = this.props
 
     this.updatePageTitle()
-    flux.getActions('users').show(seed)
+    flux.getActions('usersStatic').show(seed)
   }
 
   componentWillReceiveProps({ collection, params: { seed } }) {

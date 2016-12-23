@@ -11,12 +11,14 @@ const simplifyUsers = (collection) => collection
 const ITEM_LIMIT = 1000
 const TABLE_MAP = {
   users: {
-    table: 'User',
-    limit: ITEM_LIMIT
+    table: 'User'
+    , limit: ITEM_LIMIT
+    , searchKey: 'id'
   },
   news: {
-    table: 'news_beauty_tb',
-    limit: 50
+    table: 'news_beauty_tb'
+    , limit: ITEM_LIMIT
+    , searchKey: 'key'
   }
 }
 
@@ -52,8 +54,9 @@ function routes(router) {
   router.get('/sql/:tb/:id', async function(ctx) {
     /** get one*/
     const { id, tb } = ctx.params
-    const { table } = TABLE_MAP[tb]
-    await models[table].find({ where: { id: id }})
+    const { table, searchKey } = TABLE_MAP[tb]
+    const where = `{ "where": { "${searchKey}": "${id}" }}`
+    await models[table].find(JSON.parse(where))
     .then((obj) => {
       ctx.body = obj;
     }).catch((error) => {

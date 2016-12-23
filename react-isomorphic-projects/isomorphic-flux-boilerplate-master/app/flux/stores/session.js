@@ -14,21 +14,23 @@ class SessionStore {
   }
 
   onLogin({ username }: { username: string }) {
-    this.session = { username }
+    console.log('from on logon -------------', username)
+    if (username === 'wave0270') {
+      this.session = { username }
+      // transition app to `/account`
+      // or to the original asked page
+      /* istanbul ignore if */
+      if (BROWSER) {
+        const { browserHistory } = require('react-router')
+        const [ , nextPath = '/account' ] = window
+          .location.search.match(/\?redirect=(.+)$/) || []
 
-    // transition app to `/account`
-    // or to the original asked page
-    /* istanbul ignore if */
-    if (BROWSER) {
-      const { browserHistory } = require('react-router')
-      const [ , nextPath = '/account' ] = window
-        .location.search.match(/\?redirect=(.+)$/) || []
+        const Cookies = require('cookies-js')
+        Cookies.set('_auth', username)
 
-      const Cookies = require('cookies-js')
-      Cookies.set('_auth', username)
-
-      debug('dev')('redirect after login to %s', nextPath)
-      browserHistory.replace(nextPath)
+        debug('dev')('redirect after login to %s', nextPath)
+        browserHistory.replace(nextPath)
+      }
     }
   }
 

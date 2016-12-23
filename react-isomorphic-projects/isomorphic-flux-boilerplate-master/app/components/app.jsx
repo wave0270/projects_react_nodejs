@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 
-import Header from 'components/layout-default/header'
+import HeaderDefault from 'components/layout-default/header'
 import Footer from 'components/layout-default/footer'
+/**  new layout */
+import HeaderForNews from 'components/layout-news/header'
 
 /** this.context: flux + store
  *  this.props: route + location
@@ -33,13 +35,14 @@ class App extends Component {
 
   render() {
     const { children } = this.props
-
+    let Header = HeaderDefault
+    if (children.props.route.path.indexOf('manager/news') > -1) {
+      Header = HeaderForNews
+    }
     return (
       <div>
         <Header />
-        <hr />
         { children }
-        <hr />
         <Footer />
       </div>
     )

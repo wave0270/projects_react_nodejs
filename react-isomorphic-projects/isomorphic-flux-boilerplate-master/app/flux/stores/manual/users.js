@@ -1,15 +1,15 @@
-class HomeStore {
+class UsersStore {
 
   constructor() {
-    this.bindActions(this.alt.getActions('home'))
+    this.bindActions(this.alt.getActions('users'))
 
     this.collection = []
     this.error = null
   }
 
 
-  onIndexSuccess(home: Object[]) {
-    this.collection = home
+  onIndexSuccess(users: Object[]) {
+    this.collection = users
     this.error = null
   }
 
@@ -17,15 +17,15 @@ class HomeStore {
     this.error = error
   }
 
-  onShowSuccess(home: { seed: string }) {
+  onShowSuccess(users: { seed: string }) {
     const index = this.collection
-      .findIndex(({ seed }) => seed === home.seed)
+      .findIndex(({ seed }) => seed === users.seed)
 
     if (index > -1) {
       this.collection = this.collection
-        .map((u, idx) => idx === index ? home : u)
+        .map((u, idx) => idx === index ? users : u)
     } else {
-      this.collection = [ ...this.collection, home ]
+      this.collection = [ ...this.collection, users ]
     }
 
     this.error = null
@@ -42,4 +42,4 @@ class HomeStore {
 
 }
 
-export default HomeStore
+export default UsersStore

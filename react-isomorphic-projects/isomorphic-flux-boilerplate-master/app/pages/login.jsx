@@ -15,6 +15,7 @@ class LoginPage extends Component {
     // autofill from browser on click into input
     const data = Object.keys(this.refs).reduce((res, input) =>
       ({ ...res, [input]: this.refs[input].value }), {})
+    console.log(data)
     return flux.getActions('session').login(data)
   }
 

@@ -20,21 +20,22 @@ class NewsDetail extends Component {
   componentWillMount() {
     const { flux } = this.context
     const { params: { id } } = this.props
+    console.log('from UI--------------------', this.props)
 
     this.updatePageTitle()
     flux.getActions('news').show(id)
   }
 
-  componentWillReceiveProps({ collection, params: { id } }) {
+  componentWillReceiveProps({ collection, params: { key } }) {
     if ((collection.length !== this.props.collection.length) ||
-        (id !== this.props.params.id)) {
+        (key !== this.props.params.key)) {
       defer(() => this.updatePageTitle())
     }
   }
 
   getUser() {
     const { collection, params: { id } } = this.props
-    return collection.find(u => u.id === Number(id))
+    return collection.find(u => u.key === id)
   }
 
   updatePageTitle() {

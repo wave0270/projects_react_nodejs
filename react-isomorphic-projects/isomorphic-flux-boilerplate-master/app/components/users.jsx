@@ -6,8 +6,8 @@ import superagent from 'superagent'
 
 // import { replaceParams } from 'utils/localized-routes'
 
-@connect(({ home: { collection } }) => ({ collection }))
-class Home extends Component {
+@connect(({ users: { collection } }) => ({ collection }))
+class Users extends Component {
 
   static propTypes = { collection: PropTypes.array.isRequired }
 
@@ -19,41 +19,20 @@ class Home extends Component {
   componentWillMount() {
     const { flux, i18n } = this.context
 
-    flux.getActions('helmet').update({ title: i18n('home.page-title') })
-    flux.getActions('home').index()
+    flux.getActions('helmet').update({ title: i18n('users.page-title') })
+    flux.getActions('users').index()
   }
 
   handleRemove(index: number, id: number) {
     const { flux } = this.context
     /** remove local */
-    flux.getActions('home').remove(index)
+    flux.getActions('users').remove(index)
     /** remove database */
     superagent.del(`/api/sql/users/${id}`)
     .set('Accept', 'application/json')
     .end((err, res) => {
       console.log(res)
     })
-  }
-
-  clickTest() {
-    /* get list */
-    // superagent.get('/api/sql/news')
-    //   .set('Accept', 'application/json')
-    //   .end((err, res) => {
-    //     console.log(res)
-    //   })
-    /* get a specific */
-    // superagent.post('/api/sql/users-put')
-    //   .set('Accept', 'application/json')
-    //   .send({ id: 1 })
-    //   .end((err, res) => {
-    //     console.log(res)
-    //   })
-    superagent.get('/api/read-meta-tag-with-jsdom')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        console.log(res)
-      })
   }
 
   putUser(index, id) {
@@ -128,15 +107,14 @@ class Home extends Component {
     return (
       <div>
         <h1 className='text-center'>
-          Home page
+          users page
         </h1>
-        <button onClick={ () => this.clickTest() }>Testing</button>
         <button onClick={ () => this.postUser() }>Add user</button>
         <table className='app--users'>
           <thead>
             <tr>
-              <th> { i18n('home.email') } </th>
-              <th colSpan='2'> { i18n('home.actions') } </th>
+              <th> { i18n('users.email') } </th>
+              <th colSpan='2'> { i18n('users.actions') } </th>
             </tr>
           </thead>
           <tbody>
@@ -149,4 +127,4 @@ class Home extends Component {
 
 }
 
-export default Home
+export default Users

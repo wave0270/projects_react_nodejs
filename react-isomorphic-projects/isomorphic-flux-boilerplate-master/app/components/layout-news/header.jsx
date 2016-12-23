@@ -47,7 +47,7 @@ class Header extends Component {
     const { locales: [ activeLocale ], i18n } = this.context
 
     return (
-      <header className='app--header'>
+      <header className='app--header--news'>
         { /* Spinner in the top right corner */ }
         <Spinner active={ inProgress } />
 
@@ -55,43 +55,59 @@ class Header extends Component {
         <LangPicker
           activeLocale={ activeLocale }
           onChange={ this.handleLocaleChange } />
+        { /* Links in the navbar */ }
+        <ul className='app--navbar-top reset-list un-select'>
+          <li>
+            <Link to={ i18n('routes.guides') }>
+              News
+            </Link>
+          </li>
+          <li>
+            <Link to={ i18n('routes.guides') }>
+              Video
+            </Link>
+          </li>
+          <li>
+            <Link to={ i18n('routes.guides') }>
+              Comic
+            </Link>
+          </li>
+        </ul>
 
         { /* React Logo in header */ }
         <Link to='/' className='app--logo'>
           <img src={ reactLogo } alt='react-logo' />
         </Link>
 
+
         { /* Links in the navbar */ }
         <ul className='app--navbar text-center reset-list un-select'>
           <li>
-            <Link to={ i18n('routes.users') }>
-              { i18n('header.users') }
+            <Link to={ i18n('routes.guides') }>
+              Home
             </Link>
           </li>
           <li>
             <Link to={ i18n('routes.guides') }>
-              { i18n('header.guides') }
+              Beauty
             </Link>
           </li>
-          { session ?
-            [
-              <li key={ 0 }>
-                <Link to={ i18n('routes.account') }>
-                  { i18n('header.account') }
-                </Link>
-              </li>,
-              <li key={ 1 }>
-                <a href='#' onClick={ this.handleLogout }>
-                  { i18n('header.logout') }
-                </a>
-              </li>
-            ] :
-            <li>
-              <Link to={ i18n('routes.login') }>
-                { i18n('header.login') }
-              </Link>
-            </li>
-          }
+          <li>
+            <Link to={ i18n('routes.guides') }>
+              Personal
+            </Link>
+          </li>
+          <li>
+            <Link to={ i18n('routes.guides') }>
+              Travel
+            </Link>
+          </li>
+          <li>
+            <Link to={ i18n('routes.guides') }>
+              Social
+            </Link>
+          </li>
+          { session ? '' : '' }
         </ul>
         <hr />
       </header>

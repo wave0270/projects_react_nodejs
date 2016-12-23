@@ -1,7 +1,7 @@
-class UsersStore {
+class UsersStaticStore {
 
   constructor() {
-    this.bindActions(this.alt.getActions('users'))
+    this.bindActions(this.alt.getActions('usersStatic'))
 
     this.collection = []
     this.error = null
@@ -43,4 +43,4 @@ class UsersStore {
 
 }
 
-export default UsersStore
+export default UsersStaticStore

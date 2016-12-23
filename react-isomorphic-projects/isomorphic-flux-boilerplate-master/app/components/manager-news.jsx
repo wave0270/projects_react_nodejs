@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import connect from 'connect-alt'
 import { Link } from 'react-router'
 
-import { replaceParams } from 'utils/localized-routes'
 
 @connect(({ news: { collection } }) => ({ collection }))
 class News extends Component {
@@ -28,45 +27,33 @@ class News extends Component {
 
   renderNew = (child, index) => {
     const { i18n } = this.context
-    const { id, title, image, content } = child
-    const isContent = content === 'no Data' ? content : 'ok'
-    // const profileRoute: string = replaceParams(i18n('routes.profile'), { id })
+    const { id, title, key, image, content, href, createdAt, domain, image_full } = child
+    let isContent = content === '...' ? content : 'ok'
+    if (isContent === 'ok') {
+      isContent = image_full.split('***').length > 0 && image_full.split('***')[0] ? 'ok' : 'No image'
+    }
 
     return (
       <tr className='user--row' key={ index }>
         <td><img src={ image } alt={ title } width='100' height='60' /></td>
-        <td>{ title }</td>
+        <td>
+          <p>{ title }</p>
+          <p>{ key }</p>
+        </td>
         <td>{ isContent }</td>
+        <td>{ domain }</td>
+        <td>{ createdAt }</td>
         <td className='text-center'>
-          <Link to={ `/manager/news/${id}` } >{ i18n('news.profile') }</Link>
+          <Link to={ `/manager/news/${key}` } >{ i18n('news.profile') }</Link>
+        </td>
+        <td className='text-center'>
+          <Link to={ href } ><i className='fa fa-external-link-square' aria-hidden='true'></i></Link>
         </td>
         <td className='text-center'>
           <button
             className='user--remove'
             onClick={ () => this.handleRemove(index, id) }>
-            X
-          </button>
-        </td>
-      </tr>
-    )
-  }
-
-  renderUser = (user: { seed: string, email: string }, index: number) => {
-    const { i18n } = this.context
-    const { seed, email } = user
-    const profileRoute: string = replaceParams(i18n('routes.profile'), { seed })
-
-    return (
-      <tr className='user--row' key={ index }>
-        <td>{ email }</td>
-        <td className='text-center'>
-          <Link to={ profileRoute }>{ i18n('news.profile') }</Link>
-        </td>
-        <td className='text-center'>
-          <button
-            className='user--remove'
-            onClick={ () => this.handleRemove(index) }>
-            X
+            <i className='fa fa-times' aria-hidden='true'></i>
           </button>
         </td>
       </tr>
@@ -76,7 +63,6 @@ class News extends Component {
   render() {
     const { collection } = this.props
     const { i18n } = this.context
-    console.log('---------------')
     console.log(collection.length)
 
     return (
@@ -87,8 +73,11 @@ class News extends Component {
         <table className='app--users'>
           <thead>
             <tr>
-              <th> { i18n('news.email') } </th>
-              <th colSpan='2'> { i18n('news.actions') } </th>
+              <th> Image </th>
+              <th> Title </th>
+              <th> DT </th>
+              <th> Domain </th>
+              <th> Time </th>
             </tr>
           </thead>
           <tbody>
@@ -98,7 +87,7 @@ class News extends Component {
       </div>
     )
   }
-
 }
 
-export default News
+const reducer = ({ session: { session } }) => ({ session })
+export default connect('session', reducer)(News)

@@ -36,6 +36,7 @@ class NewsActions {
         try {
           alt.getActions('requests').start()
           const response = await alt.request({ url: `/sql/news/${id}` })
+          console.log('from plus-------------------', response)
           this.showSuccess(response)
         } catch (error) {
           this.showFail({ error })

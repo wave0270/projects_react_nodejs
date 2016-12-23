@@ -1,4 +1,4 @@
-class HomeActions {
+class UsersStaticActions {
 
   constructor() {
     this.generateActions(
@@ -6,9 +6,6 @@ class HomeActions {
       'showSuccess', 'showFail',
       'remove'
     )
-    this.state = {
-      table: 'users'
-    }
   }
 
   index() {
@@ -22,7 +19,7 @@ class HomeActions {
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: `/sql/${this.state.table}` })
+          const response = await alt.request({ url: '/users-static' })
           this.indexSuccess(response)
         } catch (error) {
           this.indexFail({ error })
@@ -31,26 +28,12 @@ class HomeActions {
       })
   }
 
-  show(id) {
+  show(seed) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         try {
           alt.getActions('requests').start()
-          const response = await alt.request({ url: `/sql/${this.state.table}/${id}` })
-          this.showSuccess(response)
-        } catch (error) {
-          this.showFail({ error })
-        }
-        alt.getActions('requests').stop()
-      })
-  }
-
-  update(id) {
-    return (dispatch, alt) =>
-      alt.resolve(async () => {
-        try {
-          alt.getActions('requests').start()
-          const response = await alt.request({ url: `/sql/${this.state.table}/${id}` })
+          const response = await alt.request({ url: `/users-static/${seed}` })
           this.showSuccess(response)
         } catch (error) {
           this.showFail({ error })
@@ -61,4 +44,4 @@ class HomeActions {
 
 }
 
-export default HomeActions
+export default UsersStaticActions
