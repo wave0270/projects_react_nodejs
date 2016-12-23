@@ -56,60 +56,61 @@ class Header extends Component {
           activeLocale={ activeLocale }
           onChange={ this.handleLocaleChange } />
         { /* Links in the navbar */ }
-        <ul className='app--navbar-top reset-list un-select'>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              News
-            </Link>
-          </li>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Video
-            </Link>
-          </li>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Comic
-            </Link>
-          </li>
-        </ul>
+        <div className='app--navbar-top-container'>
+          <ul className='app--navbar un-select'>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                News
+              </Link>
+            </li>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Video
+              </Link>
+            </li>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Comic
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className='header-group-bottom container'>
+          { /* React Logo in header */ }
+          <Link to='/' className='app--logo'>
+            <img src={ reactLogo } alt='react-logo' />
+          </Link>
 
-        { /* React Logo in header */ }
-        <Link to='/' className='app--logo'>
-          <img src={ reactLogo } alt='react-logo' />
-        </Link>
-
-
-        { /* Links in the navbar */ }
-        <ul className='app--navbar text-center reset-list un-select'>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Beauty
-            </Link>
-          </li>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Personal
-            </Link>
-          </li>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Travel
-            </Link>
-          </li>
-          <li>
-            <Link to={ i18n('routes.guides') }>
-              Social
-            </Link>
-          </li>
-          { session ? '' : '' }
-        </ul>
-        <hr />
+          { /* Links in the navbar */ }
+          <ul className='app--navbar text-center reset-list un-select'>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Beauty
+              </Link>
+            </li>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Personal
+              </Link>
+            </li>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Travel
+              </Link>
+            </li>
+            <li>
+              <Link to={ i18n('routes.guides') }>
+                Social
+              </Link>
+            </li>
+            { session ? '' : '' }
+          </ul>
+        </div>
       </header>
     )
   }

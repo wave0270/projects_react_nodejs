@@ -66,7 +66,7 @@ class News extends Component {
     console.log(collection.length)
 
     return (
-      <div>
+      <div className='container'>
         <h1 className='text-center'>
           { i18n('news.title') }
         </h1>
