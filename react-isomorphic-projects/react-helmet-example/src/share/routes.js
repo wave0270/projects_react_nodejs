@@ -20,6 +20,7 @@ import ReactCircleLife        from './test/ReactCircleLife';
 import ReactCircleLifeES6     from './test/ReactCircleLifeES6';
 import GridDragDropDashboard  from './test/GridDragDropDashboard/Main';
 import SortDragDrop           from './test/SortDragDrop';
+import SortDragDropLayout     from './test/SortDragDropLayout';
 import DnDDragDrop            from './test/DnDDragDrop';
 import FetchContent           from './test/FetchContent';
 import Sequelize              from './test/Sequelize';
@@ -57,6 +58,7 @@ let routes = (
         <Router.Route name="img-to-base64"  handler={ImgToBase64} />
         <Router.Route name="socket-io"  handler={Socketio} />
         <Router.Route name="sort-drag-drop"  handler={SortDragDrop} />
+        <Router.Route name="sort-drag-drop-layout" handler={SortDragDropLayout} />
         <Router.Route name="dnd-drag-drop"  handler={DnDDragDrop} />
         <Router.Route name="file-manager"  handler={FileManager} />
         <Router.Route name="ui-library"  handler={UILibrary} />

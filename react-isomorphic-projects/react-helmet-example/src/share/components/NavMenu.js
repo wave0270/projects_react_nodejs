@@ -27,6 +27,7 @@ let NavMenu = React.createClass({
               <li><a href='/test-react-circle-life-es6'>test-react-circle-life-es6</a></li>
               <li><a href='/test-grid-drag-drop-dashboard'>drag-drop: grid-drag-drop</a></li>
               <li><a href='/sort-drag-drop'>drag-drop: basic javascript</a></li>
+              <li><a href='/sort-drag-drop-layout'>drag-drop layout: basic javascript</a></li>
               <li><a href='/dnd-drag-drop'>drag-drop: DnD</a></li>
               <li><a href='/fetch-content'>fetch-content</a></li>
               <li><a href='/sequelize'>Sequelize : SQL</a></li>
