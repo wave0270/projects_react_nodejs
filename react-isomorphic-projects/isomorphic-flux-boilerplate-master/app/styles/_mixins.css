@@ -1,0 +1,27 @@
+@define-mixin testMixin {
+  font-size: 40px;
+  line-height: 20px;
+}
+
+@define-mixin textHover {
+  &:hover{
+    color: $text-color-hover;
+    cursor: pointer;
+  }
+
+  &.active{
+    color: $text-color-active;
+      &:hover{
+      color: $text-color-2;
+      cursor: pointer;
+    }
+  }
+}
+
+@define-mixin aDefault {
+  a{
+    color: $text-color;
+    text-decoration: inherit;
+    @mixin textHover{}
+  }
+}
