@@ -42,10 +42,68 @@ class Header extends Component {
     flux.getActions('session').logout()
   }
 
+  renderTopMenu() {
+    const topMenus = [
+      { title: 'News' },
+      { title: 'Video' },
+      { title: 'Comic' }
+    ]
+    return topMenus.map((e, i) => {
+      const k = i
+      return (
+        <li key={ k }>
+          <Link>
+            { e.title }
+          </Link>
+        </li>
+      )
+    })
+  }
+
+  renderMainMenu() {
+    const menus = [
+      { title: 'Home',
+        childs: [
+          { title: 'Home 1' }
+        ]
+      },
+      { title: 'Beauty' },
+      { title: 'Personal' },
+      { title: 'Travel' },
+      { title: 'Social' }
+    ]
+    return menus.map((e, i) => {
+      const k = i
+      return (
+        <li key={ k }>
+          <Link>
+            { e.title }
+          </Link>
+          { e.childs && e.childs.length > 0 &&
+            <span className='fa-icon'><i className='fa fa-chevron-down' aria-hidden='true'></i></span>
+          }
+          { e.childs && e.childs.length > 0 &&
+            <ul className='level-1'>
+              { e.childs.map((ee, ii) => {
+                const kk = ii
+                return (
+                  <li key={ kk }>
+                    <Link>
+                      { ee.title }
+                    </Link>
+                  </li>
+                )
+              }) }
+            </ul>
+          }
+        </li>
+      )
+    })
+  }
+
   render() {
     const { inProgress, session } = this.props
-    const { locales: [ activeLocale ], i18n } = this.context
-
+    const { locales: [ activeLocale ] } = this.context
     return (
       <header className='app--header--news'>
         { /* Spinner in the top right corner */ }
@@ -57,22 +115,8 @@ class Header extends Component {
           onChange={ this.handleLocaleChange } />
         { /* Links in the navbar */ }
         <div className='app--navbar-top-container'>
-          <ul className='app--navbar un-select'>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                News
-              </Link>
-            </li>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Video
-              </Link>
-            </li>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Comic
-              </Link>
-            </li>
+          <ul className='app--navbar-top un-select'>
+            { this.renderTopMenu() }
           </ul>
         </div>
         <div className='header-group-bottom container'>
@@ -82,34 +126,14 @@ class Header extends Component {
           </Link>
 
           { /* Links in the navbar */ }
-          <ul className='app--navbar text-center reset-list un-select'>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Beauty
-              </Link>
-            </li>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Personal
-              </Link>
-            </li>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Travel
-              </Link>
-            </li>
-            <li>
-              <Link to={ i18n('routes.guides') }>
-                Social
-              </Link>
-            </li>
-            { session ? '' : '' }
-          </ul>
+          <div className='app--navbar-container'>
+            <ul className='app--navbar text-center reset-list un-select'>
+              { this.renderMainMenu() }
+              { session ? '' : '' }
+            </ul>
+            <i className='fa fa-align-left fa-menu fa-left-group' aria-hidden='true'></i>
+            <i className='fa fa-search fa-menu fa-right-group' aria-hidden='true'></i>
+          </div>
         </div>
       </header>
     )

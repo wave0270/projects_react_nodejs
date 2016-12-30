@@ -29,12 +29,13 @@ export default function (flux) { /* eslint react/display-name: 0 */
         component: require('./pages/login')
       }) }
       { generateRoute({
-        paths: [ '/', 'users' ],
+        paths: [ 'users' ],
         component: require('./components/users')
       }) }
       { generateRoute({
         paths: [ '/manager/news' ],
         component: require('./components/manager-news'),
+        layout: 'news',
         onEnter: isConnected(flux)
       }) }
       { generateRoute({
@@ -43,7 +44,8 @@ export default function (flux) { /* eslint react/display-name: 0 */
         onEnter: isConnected(flux)
       }) }
       { generateRoute({
-        paths: [ '/news' ],
+        paths: [ '/', '/news' ],
+        layout: 'news',
         component: require('./components/layout-news/home')
       }) }
       { generateRoute({

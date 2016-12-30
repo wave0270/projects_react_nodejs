@@ -36,7 +36,9 @@ class App extends Component {
   render() {
     const { children } = this.props
     let Header = HeaderDefault
-    if (children.props.route.path.indexOf('manager/news') > -1) {
+    console.log(children.props.route)
+    const newsLayoutComponents = [ '/', '/news' ]
+    if (newsLayoutComponents.some(e => e === children.props.route.path)) {
       Header = HeaderForNews
     }
     return (

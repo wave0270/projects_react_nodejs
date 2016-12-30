@@ -1,7 +1,8 @@
 .lang--picker {
-  bottom: -15px;
-  position: absolute;
+  top: 0;
   right: 9px;
+  position: absolute;
+  line-height: $xxl-px;
 
   li {
     display: inline-block;
