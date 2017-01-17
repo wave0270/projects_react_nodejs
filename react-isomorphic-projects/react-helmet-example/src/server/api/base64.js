@@ -2,9 +2,7 @@
  * External dependencies
  */
 var express = require('express'),
-  bodyParser = require('body-parser'),
-  superagent = require('superagent'),
-  app = express();
+    app = express();
 
 import base64Img from "base64-img";
 

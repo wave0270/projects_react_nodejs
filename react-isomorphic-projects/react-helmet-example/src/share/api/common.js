@@ -9,3 +9,11 @@ export function post(url, params, callBack) {
     callBack(err, res)
   });
 }
+
+export function getImage(url, callBack) {
+  request
+  .get(url)
+  .end(function(err, res){
+    console.log(res)
+  });
+}
