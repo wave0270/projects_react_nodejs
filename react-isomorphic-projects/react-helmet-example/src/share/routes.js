@@ -29,6 +29,7 @@ import Socketio               from './test/Socketio';
 import FileManager            from './test/FileManager';
 import UILibrary              from './test/UILibrary';
 import ES6Com                 from './test/ES6Com';
+import Socials                 from './test/Socials';
 
 /**/
 
@@ -63,6 +64,7 @@ let routes = (
         <Router.Route name="file-manager"  handler={FileManager} />
         <Router.Route name="ui-library"  handler={UILibrary} />
         <Router.Route name="ES6Com"  handler={ES6Com} />
+        <Router.Route name="socials"  handler={Socials} />
     </Router.Route>
 );
 

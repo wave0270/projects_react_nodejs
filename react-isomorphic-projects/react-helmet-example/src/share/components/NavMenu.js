@@ -36,6 +36,7 @@ let NavMenu = React.createClass({
               <li><a href='/socket-io'>socket-io</a></li>
               <li><a href='/file-manager'>File manager</a></li>
               <li><a href='/ui-library'>UI Library</a></li>
+              <li><a href='/socials'>Social page.</a></li>
               
           </ul>
       );
