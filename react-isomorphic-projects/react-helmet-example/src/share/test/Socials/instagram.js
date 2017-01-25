@@ -1,29 +1,6 @@
 import React, { Component } from 'react';
 
-/*Private components*/
-
-// export default React.createClass({
-// 	getDefaultProps: function () {
-// 		return {
-// 			name: 'Social Instagram.'
-// 		};
-// 	},
-// 	render: function () {
-//         const { name } = this.props;
-// 		return (
-// 			<div>
-//                 <h3>{ name }</h3>
-//                 <input type="text" placeholder="eg. www.instagram.com/p/BJX_FggAM_h"
-//                     onKeyPress={ (e) => this.onKeyPress(e) }
-//                     onChange={ (e) => this.onChangeValue(e) }
-//                     value={ url }
-//                     />
-//             </div>
-// 		);
-// 	}
-// });
-
-export default class Instagram extends Component {
+export default class InstagramCOM extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {

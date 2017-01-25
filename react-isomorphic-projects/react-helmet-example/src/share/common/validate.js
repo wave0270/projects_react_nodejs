@@ -1,6 +1,11 @@
 var url = require('url');
-var validateUrl = {
-  test: function(){
-    console.log('binh nguyen')
-  }
+
+var COMMON = {
+	validate: {
+		url: {
+			test: function () {
+				console.log('binh nguyen')
+			}
+		}
+	}
 };
