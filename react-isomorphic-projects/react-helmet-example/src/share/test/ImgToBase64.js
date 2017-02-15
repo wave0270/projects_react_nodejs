@@ -1,4 +1,5 @@
 import React from "react";
+import Helmet from 'react-helmet';
 import base64Img from "base64-img";
 import deep from "deep-get-set";
 
@@ -23,13 +24,16 @@ export default React.createClass({
 			isLoading: false,
 			imgURL: 'http://dienthoai.pro/wp-content/uploads/2016/04/hinh-anh-gai-dep-kute-nhat-1-3-301x450.jpg',
 			// imgURL: 'https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/flip.jpg',
+			file: {},
+			minFile: {}
 		};
 	},
 
 	handleImgBase64WithURL() {
 		this.setState({ isLoading: true });
+		const { imgURL } = this.state
 		var params = {
-			url: this.state.imgURL,
+			imgURL
 		}
 		API.post('/image/base64', params, (err, res) => {
 			this.setState({ isLoading: false, base64Str: res.body.base64Str });
@@ -44,28 +48,19 @@ export default React.createClass({
 	onDragOver(e) {
 		e.preventDefault();
 	},
-
 	onDrop(e) {
+		console.log('---------', 'onDrop')
 		e.preventDefault();
-		var files = e.dataTransfer.files;
-		var fileCount = files.length;
-		var i;
-		console.log('---------', files)
+		let files = e.dataTransfer.files;
+		if(files.length > 0){
+			this.readImage(files[0]);
+		}
+	},
 
-		if (fileCount > 0) {
-			for (i = 0; i < fileCount; i = i + 1) {
-				var file = files[i];
-				var name = file.name;
-				var size = this.bytesToSize(file.size);
-				var type = file.type;
-				var reader = new FileReader();
-				console.log(file)
-				reader.readAsDataURL(file);
-				reader.onload = (e) => {
-					const base64Str = e.target.result;
-					this.setState({ base64Str });
-				};
-			}
+	colectFromBrowser(){
+		let files = document.getElementById("readimg").files;
+		if(files.length > 0){
+			this.readImage(files[0]);
 		}
 	},
 
@@ -73,14 +68,14 @@ export default React.createClass({
 		document.getElementById("readimg").click();
 	},
 
-	readImage() {
-		var fileToLoad = document.getElementById("readimg").files[0];
+	readImage(file) {
 		var fileReader = new FileReader();
-		console.log(fileToLoad)
-		fileReader.readAsDataURL(fileToLoad);
-		fileReader.onload = (fileLoadedEvent) => {
-			var base64Str = fileLoadedEvent.target.result;
-			this.setState({ base64Str })
+		fileReader.readAsDataURL(file);
+		fileReader.onload = (e) => {
+			file.base64Str = e.target.result;
+			this.setState({ file })
+			/** scale image */
+			this.scaleImgByJimp(file.base64Str)
 		};
 	},
 
@@ -91,23 +86,49 @@ export default React.createClass({
 		return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 	},
 
+	scaleImgByJimp(data){
+		console.log('---------', 'handleBuJimp')
+		/** data = base64 or blobUrl*/
+		Jimp.read(data).then((image) => {
+			image.resize(250, Jimp.AUTO )            // resize
+				.quality(90)                 // set JPEG quality
+				// .greyscale()                 // set greyscale
+				.getBase64(Jimp.MIME_JPEG, (err, base64Str) => {
+					var minFile = { base64Str }
+					this.setState({ minFile })
+				});
+		}).catch(function (err) {
+			console.error(err);
+		});
+	},
+
 	render() {
-		const { base64Str } = this.state;
+		const { file = {}, imgURL, minFile = {} } = this.state;
 		return (
 			<div className="container" >
+				<Helmet
+					title={this.props.name+" test"}
+					script={[
+						{"src": "https://cdn.rawgit.com/oliver-moran/jimp/v0.2.27/browser/lib/jimp.min.js", "type": "text/javascript"},
+					]}
+				/>
 				{this.state.isLoading &&
 					<Loading />
 				}
-				<input className="form-control" type="text" onChange={this.handleValue.bind(this, 'imgURL')} value={this.state.imgURL} />
+				<div className="col-sm-6">
+					<input className="form-control" type="text" onChange={this.handleValue.bind(this, 'imgURL')} value={imgURL} />
+				</div>
+				<div className="col-sm-6">
+					<img src={ imgURL } width="100" height="100"/>
+				</div>
 				<button className="btn btn-primary" onClick={this.handleImgBase64WithURL}>Handle Img To Base64 With URL</button>
 				<hr />
 				<div>
-					<p>Get Base64 code</p>
-					<textarea id="getbase64" className="form-control" rows="10" value={base64Str} ></textarea>
-					<input style={ {display: 'none'} } id="readimg" onChange={this.readImage} type="file" name="imagereader" />
+					<p>Get Image by browse:</p>
+					<input style={ {display: 'none'} } id="readimg" onChange={this.colectFromBrowser} type="file" name="imagereader" />
 					<button id="openimage" onClick={this.simulateclick}>open image form file system</button>
 					<hr />
-					<p>Or Drag & Drop</p>
+					<p>Or Get Image by Drag & Drop</p>
 					<div id="getimage"></div>
 					<div id="zona-drop" style={{ width: '200px;', height: '200px;', border: '1px dashed green' }}
 						onDrop={this.onDrop}
@@ -115,9 +136,33 @@ export default React.createClass({
 						>
 					</div>
 				</div>
-				<div className="container">
-					<img width="100%" height="500px" className="panel" src={base64Str} />
+
+				<hr />
+				<h3>Ogirin Image:</h3>
+				<div className="row">
+					<div className="col-sm-6">
+						<img  className="panel" src={file.base64Str} />
+					</div>
+					<div className="col-sm-3">
+						<p>Name: {file.name}</p>
+						<p>Size: {this.bytesToSize(file.size)}</p>
+						<p>Type: {file.type}</p>
+					</div>
+					<div className="col-sm-3">
+						<textarea id="getbase64" className="form-control" rows="10" value={file.base64Str} ></textarea>
+					</div>
 				</div>
+
+				<h3>Min Image:</h3>
+				<div className="row">
+					<div className="col-sm-6">
+						<img className="panel" src={minFile.base64Str} />
+					</div>
+					<div className="col-sm-6">
+						<textarea id="getbase64" className="form-control" rows="10" value={minFile.base64Str} ></textarea>
+					</div>
+				</div>
+				
 			</div>
 		);
 	}

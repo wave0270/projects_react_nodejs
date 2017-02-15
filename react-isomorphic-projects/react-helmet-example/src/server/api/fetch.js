@@ -37,6 +37,7 @@ app.post('/read-meta-tag-with-jsdom', function(req, res) {
     .get(req.body.url)
     .end(function(err, data){
           if(!err){
+            // console.log('======================', data.text)
             var bodytext = `
                     <p>This is image</p>
                     <p>image normal: 2 image</p>
@@ -87,10 +88,16 @@ app.post('/read-meta-tag-with-jsdom', function(req, res) {
                         </div>
                         <p>zzasd 3</p>`;
             bodytext = '<div id="modify-bodytext">'+bodytext+'</div>';
+
+            bodytext = data.text
             /*jsdom exaple*/
             jsdom.env(
               bodytext,
               function (err, window) {
+                console.log('-----------^^-----------',window.document)
+                res.json({meta: 'none',body: 'test', data: window.document.querySelectorAll('script')[0]} );
+                return false;
+
                 var onGetInvalidParent = function(childDom){
                   var inValidTagArr = ['P','H1','H2','H3','H4','H5','H6','SPAN','B','I','A'];
                   var parentNode = childDom.parentNode;
@@ -106,6 +113,7 @@ app.post('/read-meta-tag-with-jsdom', function(req, res) {
                   }
                   return childDom;
                 };
+                
                 /*replace videos*/
                 var arr = window.document.querySelectorAll("div[data-oembed-url]");
                 console.log("video count: "+arr.length)
@@ -118,6 +126,7 @@ app.post('/read-meta-tag-with-jsdom', function(req, res) {
                                     </figure></div>`
                   domTMP.outerHTML = figureStr;
                 }
+                
 
                 /*replace images*/
                 var imgArr = window.document.querySelectorAll("img");
