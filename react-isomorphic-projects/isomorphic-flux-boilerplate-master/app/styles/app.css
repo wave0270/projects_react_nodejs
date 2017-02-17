@@ -2,20 +2,31 @@
 @import 'font-awesome/css/font-awesome.css';
 @import './bootstrap/css/bootstrap.css';
 /**/
-@import './_mixins';
-@import './_variables';
-@import './_fonts';
+@import './_mixins.scss';
+@import './_variables.scss';
+@import './_fonts.scss';
 /**/
 @import './lang-picker';
 @import './spinner';
 @import './header';
 @import './footer';
 /**/
-@import './users';
+@import './users.scss';
+/*@import './layout-news/animate';
+/*@import './layout-news/validationEngine.jquery';
+@import './layout-news/styles';
+@import './layout-news/style';
+@import './layout-news/plugins';
+@import './layout-news/init';*/
+
 
 body {
   font-family: 'Source Sans Pro','Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+img{
+  width: 100%;
+} 
 
 .reset-list {
   margin: 0;

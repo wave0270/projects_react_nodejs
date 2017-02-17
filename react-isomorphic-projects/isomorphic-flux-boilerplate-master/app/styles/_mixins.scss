@@ -25,3 +25,17 @@
     @mixin textHover{}
   }
 }
+
+@define-mixin news-title-1 {
+  .title-area{
+    border-bottom: 1px solid $text-color-active;
+    margin-bottom: 10px;
+    
+    .title{
+      line-height: 36px;
+      border-bottom: 4px solid $text-color-active;
+      padding: 5px 0;
+      color: $text-color-active;
+    }
+  }
+}

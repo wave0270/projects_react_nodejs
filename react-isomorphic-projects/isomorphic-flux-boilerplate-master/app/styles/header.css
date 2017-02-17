@@ -123,6 +123,9 @@
     background: $bg-color;
     padding: $m-px;
 
+    ul{
+      padding: 0;
+    }
     .app--navbar-top{
       @mixin appNavbar{}
       margin: $m-px 0;
