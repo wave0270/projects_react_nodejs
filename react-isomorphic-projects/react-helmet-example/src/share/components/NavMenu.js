@@ -25,6 +25,7 @@ let NavMenu = React.createClass({
               <li><a href='/social-config'>social-config</a></li>
               <li><a href='/test-react-circle-life'>test-react-circle-life</a></li>
               <li><a href='/test-react-circle-life-es6'>test-react-circle-life-es6</a></li>
+              <li><a href='/ES6Com'>Test ES6</a></li>
               <li><a href='/test-grid-drag-drop-dashboard'>drag-drop: grid-drag-drop</a></li>
               <li><a href='/sort-drag-drop'>drag-drop: basic javascript</a></li>
               <li><a href='/sort-drag-drop-layout'>drag-drop layout: basic javascript</a></li>
@@ -35,7 +36,9 @@ let NavMenu = React.createClass({
               <li><a href='/socket-io'>socket-io</a></li>
               <li><a href='/file-manager'>File manager</a></li>
               <li><a href='/ui-library'>UI Library</a></li>
-              <li><a href='/ES6Com'>Test ES6</a></li>
+              <li><a href='/socials'>Social page.</a></li>
+              <li><a href='/handle-PDF'>Handle PDF file</a></li>
+              
           </ul>
       );
     }

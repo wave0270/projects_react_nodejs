@@ -30,6 +30,7 @@ export default React.createClass( {
 		var params = {
 			url: this.state.url
 		};
+		console.log(params)
 		API.post('/fetch', params, function(err,res){
 			if(res){
 				this.setState({isLoading: false, html: res.body.body, dataStr: JSON.stringify(res.body.meta)});
