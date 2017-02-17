@@ -37,6 +37,7 @@ let NavMenu = React.createClass({
               <li><a href='/file-manager'>File manager</a></li>
               <li><a href='/ui-library'>UI Library</a></li>
               <li><a href='/socials'>Social page.</a></li>
+              <li><a href='/handle-PDF'>Handle PDF file</a></li>
               
           </ul>
       );
