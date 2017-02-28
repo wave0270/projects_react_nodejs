@@ -9,11 +9,6 @@ import React, { Component, PropTypes } from 'react'
 */
 /* istanbul ignore next */
 // if (process.env.BROWSER) require('styles/app.css')
-if (process.env.BROWSER) require('styles/layout-news/styles.css')
-if (process.env.BROWSER) require('styles/layout-news/style.css')
-if (process.env.BROWSER) require('styles/layout-news/init.css')
-if (process.env.BROWSER) require('styles/layout-news/plugins.css')
-if (process.env.BROWSER) require('styles/layout-news/animate.css')
 
 class App extends Component {
 

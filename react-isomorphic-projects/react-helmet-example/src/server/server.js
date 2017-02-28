@@ -7,6 +7,7 @@ import React from 'react';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
 import express from 'express';
+import reactElementToJSXString from 'react-element-to-jsx-string';
 
 import routes from '../share/routes';
 var io = require('socket.io')(3030);
@@ -61,7 +62,7 @@ app.get('*', function(req, res) {
 
            Read about why rewinding is necessary on the server:
            https://github.com/nfl/react-helmet#server-usage */
-        let renderedBody = React.renderToString(<Root />);
+        let renderedBody = reactElementToJSXString(<Root />);
         let head = Helmet.rewind();
         /* render document with Helmet-rendered `<head>` info
            and React-rendered body. then, initialize the client

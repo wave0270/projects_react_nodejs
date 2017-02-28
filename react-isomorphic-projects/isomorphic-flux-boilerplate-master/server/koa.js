@@ -17,6 +17,9 @@ import { apiPrefix, apiSqlPrefix } from '../internals/config/public'
 /** Manual module */
 import Crawler from './crawl/crawler'
 
+var serve   = require('koa-static');
+
+
 /** set interval*/
 // let interval = setInterval(() => {
 //   console.log('----------------------------')
@@ -34,10 +37,10 @@ const env = process.env.NODE_ENV || 'development'
 // add header `X-Response-Time`
 app.use(convert(responseTime()))
 app.use(convert(logger()))
+// app.use(serve('/server/public'));
 
 // various security headers
 app.use(helmet())
-
 //make ctx.request.body for poat API:
 app.use(convert(require('koa-bodyparser')({
   onerror: (err, ctx) => { ctx.throw('Invalid payload', 422); }
@@ -63,6 +66,7 @@ if (env === 'development') {
 }
 
 app.use(convert(favicon(path.join(__dirname, '../app/images/favicon.ico'))))
+app.use(convert(favicon(path.join(__dirname, '../assets'))))
 
 const cacheOpts = { maxAge: 86400000, gzip: true }
 
@@ -73,10 +77,12 @@ if (env === 'development') {
     host: `http://0.0.0.0:${webpackConfig.server.port}`,
     map: (filePath) => `assets/${filePath}`
   })
-  app.use(convert(mount('/assets', proxy)))
+  app.use(convert(mount('/assets', '../asset')))
 } else {
-  app.use(convert(mount('/assets', staticCache(path.join(__dirname, '../dist'), cacheOpts))))
+  app.use(convert(mount('/assets', staticCache(path.join(__dirname, '../app'), cacheOpts))))
+  
 }
+app.use(convert(mount('/assets2', staticCache(path.join(__dirname, '../asset'), cacheOpts))))
 
 // mount the Api router
 const apiRouter = new Router({ prefix: apiPrefix })

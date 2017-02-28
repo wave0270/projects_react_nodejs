@@ -3,12 +3,6 @@ import React, { Component, PropTypes } from 'react'
 // import { replaceParams } from 'utils/localized-routes'
 
 // @connect(({ home: { collection } }) => ({ collection }))
-if (process.env.BROWSER) require('styles/layout-news/animate.css')
-if (process.env.BROWSER) require('styles/layout-news/style.css')
-if (process.env.BROWSER) require('styles/layout-news/styles.css')
-if (process.env.BROWSER) require('styles/layout-news/init.css')
-if (process.env.BROWSER) require('styles/layout-news/plugins.css')
-
 
 const img = 'http://hookedoneverything.com/wp-content/uploads/2015/04/panama-featured-iamge1-810x539.jpg'
 class Home extends Component {

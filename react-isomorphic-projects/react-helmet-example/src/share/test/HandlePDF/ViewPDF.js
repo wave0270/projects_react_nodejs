@@ -35,7 +35,7 @@ export default React.createClass({
 	},
 
 	componentDidMount(){
-		const { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
+		let { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
 
 		canvas = document.getElementById('the-canvas'),
 		ctx = canvas.getContext('2d');
@@ -56,7 +56,7 @@ export default React.createClass({
 	 * @param num Page number.
 	 */
 	renderPage(num) {
-		const { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
+		let { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
 
 		pageRendering = true;
 		// Using promise to fetch the page
@@ -92,7 +92,7 @@ export default React.createClass({
 	 * finised. Otherwise, executes rendering immediately.
 	 */
 	queueRenderPage(num) {
-		const { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
+		let { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
 
 		if (pageRendering) {
 			pageNumPending = num;
@@ -105,7 +105,7 @@ export default React.createClass({
 	 * Displays previous page.
 	 */
 	onPrevPage() {
-		const { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
+		let { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
 
 		if (pageNum <= 1) {
 			return;
@@ -118,7 +118,7 @@ export default React.createClass({
 	 * Displays next page.
 	 */
 	onNextPage() {
-		const { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
+		let { pdfDoc, pageNum, pageRendering, pageNumPending, scale, canvas, ctx } = this.state.pdfInfo;
 
 		if (pageNum >= pdfDoc.numPages) {
 			return;
