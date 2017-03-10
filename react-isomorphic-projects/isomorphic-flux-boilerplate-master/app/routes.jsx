@@ -7,6 +7,7 @@ import { isConnected } from 'utils/routes-hooks'
 export default function (flux) { /* eslint react/display-name: 0 */
   return (
     <Route component={ require('./components/app') }>
+      {/** default of project */}
       { generateRoute({
         paths: [ '/users-static', '/utilisateurs' ],
         component: require('./components/users-static')
@@ -28,10 +29,17 @@ export default function (flux) { /* eslint react/display-name: 0 */
         paths: [ '/login', '/connexion' ],
         component: require('./pages/login')
       }) }
+      {/* manual public router */}
+      { generateRoute({
+        paths: [ '/', '/news' ],
+        layout: 'news',
+        component: require('./components/layout-news/home')
+      }) }
       { generateRoute({
         paths: [ 'users' ],
         component: require('./components/users')
       }) }
+      {/* manual private router */}
       { generateRoute({
         paths: [ '/manager/news' ],
         component: require('./components/manager-news'),
@@ -42,11 +50,6 @@ export default function (flux) { /* eslint react/display-name: 0 */
         paths: [ '/manager/news/:id' ],
         component: require('./components/manager-news-detail'),
         onEnter: isConnected(flux)
-      }) }
-      { generateRoute({
-        paths: [ '/', '/news' ],
-        layout: 'news',
-        component: require('./components/layout-news/home')
       }) }
       { generateRoute({
         paths: [ '/manager/crawl' ],
