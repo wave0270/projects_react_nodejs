@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 // import HeaderDefault from 'components/layout-default/header'
 // import Footer from 'components/layout-default/footer'
-/**  new layout */
-// import HeaderForNews from 'components/layout-news/header'
 
 /** this.context: flux + store
  *  this.props: route + location
@@ -34,7 +32,7 @@ class App extends Component {
 
   render() {
     const { children } = this.props
-    console.log(children.props.route)
+    // console.log(children.props.route)
     // const newsLayoutComponents = [ '/', '/news' ]
     // if (newsLayoutComponents.some(e => e === children.props.route.path)) {
     //   Header = HeaderForNews

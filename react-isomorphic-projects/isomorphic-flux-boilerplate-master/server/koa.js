@@ -71,18 +71,25 @@ app.use(convert(favicon(path.join(__dirname, '../assets'))))
 const cacheOpts = { maxAge: 86400000, gzip: true }
 
 // Proxy asset folder to webpack development server in development mode
+
 if (env === 'development') {
   const webpackConfig = require('./../internals/webpack/dev.config')
   const proxy = require('koa-proxy')({
     host: `http://0.0.0.0:${webpackConfig.server.port}`,
     map: (filePath) => `assets/${filePath}`
   })
-  app.use(convert(mount('/assets', '../asset')))
+  console.log('/************* init public folder: /styles */')
+  app.use(convert(mount('/public/styles', staticCache(path.join(__dirname, '../app/styles'), cacheOpts))))
 } else {
-  app.use(convert(mount('/assets', staticCache(path.join(__dirname, '../app'), cacheOpts))))
-  
+  console.log('/************* init public folder: /styles */')
+  app.use(convert(mount('/public/styles', staticCache(path.join(__dirname, '../app/styles'), cacheOpts))))
 }
-app.use(convert(mount('/assets2', staticCache(path.join(__dirname, '../asset'), cacheOpts))))
+console.log('/************* init public folder: /public */')
+/*
+* PC path : '/home/home/Documents/GitHubProjects/projects_react_nodejs/react-isomorphic-projects/isomorphic-flux-boilerplate-master/assets'
+* App path : path.join(__dirname, '../app/styles'
+*/
+app.use(convert(mount('/public/assets', staticCache(path.join(path.join(__dirname, '../assets')), cacheOpts))))
 
 // mount the Api router
 const apiRouter = new Router({ prefix: apiPrefix })

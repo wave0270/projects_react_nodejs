@@ -1,0 +1,51 @@
+.planetshine-purchase { 
+	background: #82b440;
+	height: 55px;
+	padding: 10px 0;
+	width: 100%;
+	z-index: 10; 
+	position: relative;
+	color: #fff;
+	text-align: center;
+	font-size: 14px;
+	font-family: Raleway;
+	font-weight: 200;
+	line-height: 38px;
+}
+
+.planetshine-purchase a {
+	display: inline-block;
+	padding: 6px;
+	color: #fff;
+	border: 2px solid #fff;
+	border-radius: 5px;
+	margin-right: 10px;
+	font-weight: 700;
+	line-height: normal;
+}
+
+.planetshine-purchase a:hover {
+	
+	background: #fff;
+	color: #82b440;
+	
+}
+
+.planetshine-purchase img {
+	margin-left: 10px;
+	position: relative;
+	top: -2px;
+}
+
+@media only screen and (max-width: 767px) {
+
+	.planetshine-purchase {
+		height: auto;
+	}
+
+	.planetshine-purchase a {
+		display: block;
+		margin: 0 50px;
+	}
+
+}

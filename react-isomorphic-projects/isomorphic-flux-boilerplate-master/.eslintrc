@@ -55,10 +55,6 @@
 			2,
 			"never"
 		],
-		"indent": [
-			2,
-			2
-		],
 		"array-bracket-spacing": [
 			2,
 			"always"
@@ -86,6 +82,10 @@
 		"no-script-url": "off",
 		"space-infix-ops": "off",
 		"jsx-a11y/img-has-alt": "off",
-		"react/prefer-stateless-function": "warn"
+		"react/prefer-stateless-function": "off",
+		"no-multi-spaces": "off",
+		"react/jsx-equals-spacing": "off",
+		"jsx-a11y/img-redundant-alt": "warn",
+		"indent": "off"
 	}
 }

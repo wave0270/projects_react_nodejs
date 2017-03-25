@@ -33,7 +33,7 @@ export default function (flux) { /* eslint react/display-name: 0 */
       { generateRoute({
         paths: [ '/', '/news' ],
         layout: 'news',
-        component: require('./components/layout-news/home')
+        component: require('./components/layout-goliath/home')
       }) }
       { generateRoute({
         paths: [ 'users' ],
