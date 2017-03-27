@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 // require('style!css!../css/styles.css');
 // require('style!css!../examples/example-styles.css');
 typeof window !== "undefined" && (window.React = React); // for devtools
