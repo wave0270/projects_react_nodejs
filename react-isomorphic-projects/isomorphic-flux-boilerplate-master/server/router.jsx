@@ -10,6 +10,7 @@ import ApiClient from '../shared/api-client'
 import universalRender from '../shared/universal-render'
 
 export default async function (ctx) {
+  console.log('/************* Define layout type by url: ctx */')
   // Init alt instance
   const client = new ApiClient(ctx.get('cookie'))
   const flux = createFlux(client)
@@ -45,13 +46,19 @@ export default async function (ctx) {
     // Assets name are found into `webpack-stats`
     const assets = require('./webpack-stats.json')
 
+    /*
+    * Customize multi layout with: css link, script link, image link
+    */
+    console.log('/************* Customize multi layout : webpack-stats-manual.json */')
+    const assetsManual = require('./webpack-stats-manual.json')
+
     // Don't cache assets name on dev
     if (process.env.NODE_ENV === 'development') {
       delete require.cache[require.resolve('./webpack-stats.json')]
     }
 
     debug('dev')('return html content')
-    const props = { body, assets, locale, title, description }
+    const props = { body, assets, assetsManual, locale, title, description }
     const html = renderToString(<ServerHTML { ...props } />)
     ctx.status = statusCode
     ctx.body = `<!DOCTYPE html>${html}`

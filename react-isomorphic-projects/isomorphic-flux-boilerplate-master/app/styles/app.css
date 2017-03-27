@@ -1,6 +1,5 @@
 @import 'normalize.css/normalize';
 @import 'font-awesome/css/font-awesome.css';
-@import './bootstrap/css/bootstrap.css';
 /**/
 @import './_mixins.scss';
 @import './_variables.scss';
@@ -12,12 +11,6 @@
 @import './footer';
 /**/
 @import './users.scss';
-/*@import './layout-news/animate';
-/*@import './layout-news/validationEngine.jquery';
-@import './layout-news/styles';
-@import './layout-news/style';
-@import './layout-news/plugins';
-@import './layout-news/init';*/
 
 
 body {

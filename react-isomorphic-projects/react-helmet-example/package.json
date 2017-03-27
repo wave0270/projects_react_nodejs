@@ -27,7 +27,7 @@
     "mysql": "^2.11.1",
     "node-base64-image": "^1.0.1",
     "object-set": "^1.0.1",
-    "react": "^0.14.8",
+    "react": "v15.4.0",
     "react-content-editable": "^1.0.1",
     "react-datetime": "^2.5.0",
     "react-dnd": "^2.1.4",

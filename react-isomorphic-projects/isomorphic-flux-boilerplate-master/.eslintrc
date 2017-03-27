@@ -26,10 +26,6 @@
 		"sinon": true
 	},
 	"rules": {
-		"react/jsx-curly-spacing": [
-			2,
-			"always"
-		],
 		"react/jsx-no-duplicate-props": 2,
 		"react/jsx-no-undef": 2,
 		"react/jsx-quotes": 0,
@@ -59,14 +55,6 @@
 			2,
 			"never"
 		],
-		"indent": [
-			2,
-			2
-		],
-		"object-curly-spacing": [
-			2,
-			"always"
-		],
 		"array-bracket-spacing": [
 			2,
 			"always"
@@ -83,15 +71,21 @@
 		"no-confusing-arrow": 0,
 		"global-require": 0,
 		"import/no-unresolved": 0,
-		"max-len": [
-			1,
-			300
-		],
+		"max-len":"off",
 		"semi": "off",
 		"jsx-quotes": "off",
+		"object-curly-spacing": "off",
 		"react/jsx-indent": "off",
 		"react/jsx-space-before-closing": "off",
 		"no-trailing-spaces": "off",
-		"no-script-url": "off"
+		"react/jsx-curly-spacing": "off",
+		"no-script-url": "off",
+		"space-infix-ops": "off",
+		"jsx-a11y/img-has-alt": "off",
+		"react/prefer-stateless-function": "off",
+		"no-multi-spaces": "off",
+		"react/jsx-equals-spacing": "off",
+		"jsx-a11y/img-redundant-alt": "warn",
+		"indent": "off"
 	}
 }
