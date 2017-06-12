@@ -4,6 +4,7 @@
 - big:  bluebird (mean promise), jsdom, react-grid-layout(dev: react-resizable, react-draggable)
 */
 import React from 'react';
+import ReactDom from 'react-dom';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
 import express from 'express';
@@ -61,7 +62,7 @@ app.get('*', function(req, res) {
 
            Read about why rewinding is necessary on the server:
            https://github.com/nfl/react-helmet#server-usage */
-        let renderedBody = React.renderToString(<Root />);
+        let renderedBody = ReactDom.renderToString(<Root />);
         let head = Helmet.rewind();
         /* render document with Helmet-rendered `<head>` info
            and React-rendered body. then, initialize the client
